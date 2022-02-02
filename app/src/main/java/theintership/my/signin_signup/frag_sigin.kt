@@ -37,6 +37,8 @@ class frag_sigin : Fragment(R.layout.frag_signin), IReplaceFrag {
 
         return binding.root
     }
+    
+    print("Moi ne")
 
 
     fun showSoftKeyboard(view: View) {
