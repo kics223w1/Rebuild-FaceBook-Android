@@ -32,6 +32,8 @@ class frag_signup1 : Fragment(R.layout.frag_signup1), IReplaceFrag {
             )
         }
 
+        println("Huyhuy")
+
         binding.btnSignup1Back.setOnClickListener {
             mainActivity.supportFragmentManager.popBackStack()
         }
