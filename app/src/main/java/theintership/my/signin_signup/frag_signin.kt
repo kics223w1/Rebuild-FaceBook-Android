@@ -12,7 +12,7 @@ import theintership.my.R
 import theintership.my.`interface`.IReplaceFrag
 import theintership.my.databinding.FragSigninBinding
 
-class frag_sigin : Fragment(R.layout.frag_signin), IReplaceFrag {
+class frag_signin : Fragment(R.layout.frag_signin), IReplaceFrag {
 
     private var _binding: FragSigninBinding? = null
     private val binding get() = _binding!!
@@ -37,8 +37,8 @@ class frag_sigin : Fragment(R.layout.frag_signin), IReplaceFrag {
 
         return binding.root
     }
-    
-    print("Moi ne")
+
+
 
 
     fun showSoftKeyboard(view: View) {
