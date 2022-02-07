@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffff"
     android:tag="frag_signup3">
 
     <LinearLayout
@@ -13,6 +14,7 @@
 
         <ImageView
             android:id="@+id/btn_signup3_back"
+            android:background="@drawable/bg_circle_white"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginStart="10dp"
@@ -42,7 +44,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="45dp"
         android:gravity="center"
         android:text="Ngày sinh của bạn là khi nào?"
         android:textColor="#050505"
@@ -50,6 +52,7 @@
         android:textStyle="normal" />
 
     <TextView
+        android:id="@+id/tv_signup3_info"
         android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
@@ -64,7 +67,7 @@
     <DatePicker
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
-        android:id="@+id/datePicker"
+        android:id="@+id/datePicker_signup3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:calendarViewShown="false"
@@ -72,14 +75,14 @@
         android:spinnersShown="true" />
 
     <TextView
-        android:id="@+id/tv_showage"
+        android:id="@+id/tv_signup3_showage"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_marginTop="15dp"
         android:gravity="center"
         android:layout_gravity="center"
         android:textColor="#050505"
-        android:textSize="26sp"
+        android:textSize="20sp"
         android:textStyle="normal" />
 
 

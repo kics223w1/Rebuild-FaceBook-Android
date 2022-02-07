@@ -1,17 +1,40 @@
 package theintership.my
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
-import theintership.my.`interface`.IReplaceFrag
-import theintership.my.signin_signup.frag_sigin
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import theintership.my.signin_signup.Signup1Activity
 
-class MainActivity : AppCompatActivity() , IReplaceFrag{
+//import theintership.my.signin_signup.frag_signin
+
+class MainActivity : AppCompatActivity() {
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        replacefrag(tag = "frag_signin" , frag = frag_sigin() , fm = supportFragmentManager)
+        val btn = findViewById<TextView>(R.id.btn_signin_createAccout)
 
+        btn.setOnClickListener {
+            startActivity(Intent(this , Signup1Activity::class.java))
+            overridePendingTransition(R.anim.slide_in_right , R.anim.slide_out_left)
+        }
+
+
+
+    }
+
+    fun showSoftKeyboard(view: View) {
+        val inputMethodManager =
+            this.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        view.requestFocus()
+        inputMethodManager.showSoftInput(view, 0)
     }
 
 }

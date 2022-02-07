@@ -1,5 +1,6 @@
 package theintership.my.signin_signup
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.LeadingMarginSpan
@@ -17,7 +18,7 @@ class frag_signup4 : Fragment(R.layout.frag_signup4), IToast, IReplaceFrag {
 
     private var _binding: FragSignup4Binding? = null
     private val binding get() = _binding!!
-    private lateinit var mainActivity: MainActivity
+    private lateinit var signup1Activity: Signup1Activity
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,10 +26,19 @@ class frag_signup4 : Fragment(R.layout.frag_signup4), IToast, IReplaceFrag {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragSignup4Binding.inflate(inflater, container, false)
-        mainActivity = activity as MainActivity
+        signup1Activity = activity as Signup1Activity
 
         binding.btnSignup4Back.setOnClickListener {
-            mainActivity.supportFragmentManager.popBackStack()
+            val dialog = dialog(signup1Activity)
+            dialog.show()
+            dialog.btn_cancel.setOnClickListener {
+                startActivity(Intent(signup1Activity, MainActivity::class.java))
+                signup1Activity.overridePendingTransition(
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+                )
+                dialog.dismiss()
+            }
         }
 
         binding.radioSignup4Female.setOnClickListener {
@@ -70,6 +80,7 @@ class frag_signup4 : Fragment(R.layout.frag_signup4), IToast, IReplaceFrag {
             binding.edtGenderCustom.visibility = View.VISIBLE
             binding.tvGender.visibility = View.GONE
         }
+
 
         binding.tvGender.setText(createIndentedText("Nhập giới tính của bạn (không bắt buộc)" , 20 , 0))
         binding.tvLayoutcustom.setText(createIndentedText("Cô ấy" , 20 , 0))

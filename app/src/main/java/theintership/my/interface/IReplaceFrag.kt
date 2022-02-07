@@ -6,6 +6,6 @@ import theintership.my.R
 
 interface IReplaceFrag {
     fun replacefrag(tag : String, frag : Fragment, fm : FragmentManager){
-        fm.beginTransaction().addToBackStack(tag).replace(R.id.layout_mainactivity , frag).commit()
+        fm.beginTransaction().addToBackStack(tag).replace(R.id.layout_Signup1Activity , frag).commit()
     }
 }
