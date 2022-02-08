@@ -13,6 +13,8 @@ import theintership.my.`interface`.IToast
 
 class Signup1Activity : AppCompatActivity(), IReplaceFrag , IToast {
 
+    var go_to_frag_signup3_1 = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
@@ -44,14 +46,8 @@ class Signup1Activity : AppCompatActivity(), IReplaceFrag , IToast {
     }
 
     override fun onBackPressed() {
-        val count = supportFragmentManager.backStackEntryCount
-        val frag_last = supportFragmentManager.getBackStackEntryAt(count - 1)
-        if (frag_last.name == "frag_signup3_1"){
-            supportFragmentManager.popBackStack()
-            supportFragmentManager.popBackStack()
-            return
-        }
-        if (count == 1){
+        val size = supportFragmentManager.backStackEntryCount
+        if (size == 1){
             val dialog = dialog(this)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
@@ -61,12 +57,22 @@ class Signup1Activity : AppCompatActivity(), IReplaceFrag , IToast {
             }
             return
         }
-        if (count > 1){
+        if (size == 0){
+            startActivity(Intent(this, MainActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            return
+        }
+        val frag_last = supportFragmentManager.getBackStackEntryAt(size - 1)
+        val frag_before_last = supportFragmentManager.getBackStackEntryAt(size - 2)
+        if (frag_last.name == "frag_signup3_1" && frag_before_last.name == "frag_signup3"){
+            supportFragmentManager.popBackStack()
             supportFragmentManager.popBackStack()
             return
         }
-        startActivity(Intent(this, MainActivity::class.java))
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+        if (frag_last.name == "frag_signup3_1" && frag_before_last.name != "frag_signup3"){
+            supportFragmentManager.popBackStack()
+            return
+        }
         super.onBackPressed()
     }
 

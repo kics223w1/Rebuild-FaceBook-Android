@@ -31,17 +31,22 @@ class frag_signup3 : Fragment(R.layout.frag_signup3), IReplaceFrag , IToast {
 
         val today = Calendar.getInstance()
         var age = -1
-
+        binding.datePickerSignup3.maxDate = today.timeInMillis
         binding.datePickerSignup3.init(
             today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH)
         ) { view, year, month, day ->
             age = today.get(Calendar.YEAR) - year
-            binding.tvSignup3Showage.text = age.toString() + " tuổi"
+            if (age > 4 && month == today.get(Calendar.MONTH) && day == today.get(Calendar.DAY_OF_MONTH)){
+                binding.tvSignup3Showage.text = "Happy Birthday :))"
+            }else{
+                binding.tvSignup3Showage.text = age.toString() + " tuổi"
+            }
         }
 
 
         binding.btnSignup3Go.setOnClickListener {
             if (!check) {
+                check = true
                 replacefrag(
                     "frag_signup3_1",
                     frag_signup3_1(),
@@ -55,7 +60,6 @@ class frag_signup3 : Fragment(R.layout.frag_signup3), IReplaceFrag , IToast {
                 binding.tvSignup3Info.setTextColor(resources.getColor(R.color.error, null))
                 if (age == -1) binding.tvSignup3Showage.text = "1 tuổi"
                 check = false
-                show("$check" , signup1Activity)
                 return@setOnClickListener
             }
 

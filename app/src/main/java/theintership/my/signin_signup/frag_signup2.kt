@@ -14,37 +14,27 @@ import theintership.my.`interface`.IReplaceFrag
 import theintership.my.`interface`.IToast
 import theintership.my.databinding.FragSignup2Binding
 
-class frag_signup2 : Fragment(R.layout.frag_signup2), IReplaceFrag , IToast {
+class frag_signup2 : Fragment(R.layout.frag_signup2), IReplaceFrag, IToast {
 
     private var _binding: FragSignup2Binding? = null
     private val binding get() = _binding!!
     private lateinit var signup1Activity: Signup1Activity
-    var check_frag_signup3_1 = true
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragSignup2Binding.inflate(inflater , container , false)
+        _binding = FragSignup2Binding.inflate(inflater, container, false)
         signup1Activity = activity as Signup1Activity
         var check = true
 
-        show("$check_frag_signup3_1 trong pop ne" , signup1Activity)
 
         binding.btnSignup2Go.setOnClickListener {
-            if (!check_frag_signup3_1){
-                replacefrag(
-                    tag = "frag_signup3_1",
-                    frag = frag_signup3_1(),
-                    fm = signup1Activity.supportFragmentManager
-                )
-                return@setOnClickListener
-            }
-
             val firstname = binding.edtSignup2Fistname.text.toString()
             val lastname = binding.edtSignup2Lastname.text.toString()
-            if(firstname == "" || lastname == ""){
+            if (firstname == "" || lastname == "") {
                 check = false
                 binding.layoutSignup2Firstname.isErrorEnabled = true
                 binding.layoutSignup2Firstname.error = "ok"
@@ -54,13 +44,24 @@ class frag_signup2 : Fragment(R.layout.frag_signup2), IReplaceFrag , IToast {
                 binding.layoutSignup2Lastname.error = "ok"
                 binding.layoutSignup2Lastname.errorIconDrawable = null
 
-                binding.tvSignup2.setTextColor(resources.getColor(R.color.error , null))
+                binding.tvSignup2.setTextColor(resources.getColor(R.color.error, null))
                 if (firstname == "" && lastname == "")
                     binding.tvSignup2.text = "Vui lòng nhập họ và tên của bạn"
                 if (firstname == "" && lastname != "")
                     binding.tvSignup2.text = "Vui lòng nhập tên của bạn"
                 if (firstname != "" && lastname == "")
                     binding.tvSignup2.text = "Vui lòng nhập họ của bạn"
+                return@setOnClickListener
+            }
+
+            if (signup1Activity.go_to_frag_signup3_1) {
+                val count = signup1Activity.supportFragmentManager.backStackEntryCount
+                show("$count trong frag2", signup1Activity)
+                replacefrag(
+                    tag = "frag_signup3_1",
+                    frag = frag_signup3_1(),
+                    fm = signup1Activity.supportFragmentManager
+                )
                 return@setOnClickListener
             }
 
@@ -75,21 +76,29 @@ class frag_signup2 : Fragment(R.layout.frag_signup2), IReplaceFrag , IToast {
         binding.edtSignup2Lastname.setOnEditorActionListener { textView, i, keyEvent ->
             val firstname = binding.edtSignup2Fistname.text.toString()
             val lastname = binding.edtSignup2Lastname.text.toString()
-            if (i == EditorInfo.IME_ACTION_DONE && firstname != "" && lastname != ""){
-                replacefrag(
-                    tag = "frag_signup3",
-                    frag = frag_signup3(),
-                    fm = signup1Activity.supportFragmentManager
-                )
+            if (i == EditorInfo.IME_ACTION_DONE && firstname != "" && lastname != "") {
+                if (signup1Activity.go_to_frag_signup3_1) {
+                    replacefrag(
+                        tag = "frag_signup3_1",
+                        frag = frag_signup3_1(),
+                        fm = signup1Activity.supportFragmentManager
+                    )
+                } else {
+                    replacefrag(
+                        tag = "frag_signup3",
+                        frag = frag_signup3(),
+                        fm = signup1Activity.supportFragmentManager
+                    )
+                }
                 true
-            }else{
+            } else {
                 false
             }
         }
 
         binding.edtSignup2Fistname.doAfterTextChanged {
-            if (!check){
-                binding.tvSignup2.setTextColor(resources.getColor(R.color.light_grey , null))
+            if (!check) {
+                binding.tvSignup2.setTextColor(resources.getColor(R.color.light_grey, null))
                 binding.tvSignup2.text = "Nhập tên bạn sử dụng trong đời thực"
                 binding.layoutSignup2Firstname.isErrorEnabled = false
                 binding.layoutSignup2Lastname.isErrorEnabled = false
@@ -98,8 +107,8 @@ class frag_signup2 : Fragment(R.layout.frag_signup2), IReplaceFrag , IToast {
         }
 
         binding.edtSignup2Lastname.doAfterTextChanged {
-            if (!check){
-                binding.tvSignup2.setTextColor(resources.getColor(R.color.light_grey , null))
+            if (!check) {
+                binding.tvSignup2.setTextColor(resources.getColor(R.color.light_grey, null))
                 binding.tvSignup2.text = "Nhập tên bạn sử dụng trong đời thực"
                 binding.layoutSignup2Firstname.isErrorEnabled = false
                 binding.layoutSignup2Lastname.isErrorEnabled = false
