@@ -89,7 +89,7 @@
                 android:background="@color/white"
                 android:gravity="start"
                 android:hint="Tên"
-                android:imeOptions="actionGo"
+                android:imeOptions="actionNext"
                 android:inputType="text"
                 android:maxLines="1"
                 android:textColor="@color/black"
