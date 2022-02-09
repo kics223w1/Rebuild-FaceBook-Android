@@ -74,7 +74,7 @@
             android:maxLines="1"
             android:textColor="@color/black"
             android:textColorHint="#a9a9ab"
-            android:textCursorDrawable="@drawable/cursor_color"
+            android:textCursorDrawable="@drawable/cursor_light_blue"
             android:textSize="20sp"
             android:textStyle="normal" />
 

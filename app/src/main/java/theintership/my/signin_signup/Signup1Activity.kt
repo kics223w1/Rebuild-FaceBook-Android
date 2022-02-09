@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import theintership.my.MainActivity
 import theintership.my.R
@@ -23,7 +22,7 @@ class Signup1Activity : AppCompatActivity(), IReplaceFrag , IToast {
         val btnShowDialog = findViewById<TextView>(R.id.btn_signup1_showdialog)
         val btnBack = findViewById<ImageView>(R.id.btn_signup1_back)
 
-
+        
 
         btnGo.setOnClickListener {
             replacefrag(tag = "frag_signup2", frag = frag_signup2(), fm = supportFragmentManager)

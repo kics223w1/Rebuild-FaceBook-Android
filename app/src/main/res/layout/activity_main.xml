@@ -75,48 +75,35 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <EditText
+                android:id="@+id/edt_signin_account"
+                android:hint="Tài khoản"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1"
+                android:drawableBottom="@color/light_blue"
+                android:textCursorDrawable="@drawable/cursor_green"
+                android:textColor="@color/black"
+                android:textColorHint="#a9a9ab"
+                android:textSize="20sp"
+                android:textStyle="normal"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="25dp">
+                android:layout_height="60dp"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_signin_account"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white"
-                    android:gravity="start"
-                    android:hint="Số điện thoại hoặc email"
-                    android:imeOptions="actionGo"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:textColor="@color/black"
-                    android:textColorHint="#a9a9ab"
-                    android:textSize="20sp"
-                    android:textStyle="normal" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
+            <EditText
+                android:id="@+id/edt_signin_password"
+                android:hint="Mật khẩu"
+                android:imeOptions="actionDone"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:drawableBottom="@color/light_blue"
+                android:textCursorDrawable="@drawable/cursor_green"
+                android:textColor="@color/black"
+                android:textColorHint="#a9a9ab"
+                android:textSize="20sp"
+                android:textStyle="normal"
                 android:layout_width="match_parent"
-                android:layout_height="60dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edt_signin_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white"
-                    android:gravity="start"
-                    android:hint="Mật khẩu"
-                    android:imeOptions="actionDone"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:textColor="@color/black"
-                    android:textColorHint="#a9a9ab"
-                    android:textSize="20sp"
-                    android:textStyle="normal" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="60dp"/>
 
             <TextView
                 android:id="@+id/btn_signin_go"
