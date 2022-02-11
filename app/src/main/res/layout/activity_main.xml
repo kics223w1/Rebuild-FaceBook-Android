@@ -12,15 +12,15 @@
 
         <ImageView
             android:id="@+id/one"
-            android:background="#053d87"
             android:layout_width="match_parent"
             android:layout_height="120dp"
+            android:background="#053d87"
             android:src="@drawable/world_icon" />
 
         <LinearLayout
-            android:layout_below="@+id/one"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/one"
             android:orientation="vertical"
             android:padding="20dp">
 
@@ -77,33 +77,58 @@
 
             <EditText
                 android:id="@+id/edt_signin_account"
-                android:hint="Tài khoản"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:drawableBottom="@color/light_blue"
+                android:hint="Số điện thoại hoặc email"
                 android:imeOptions="actionNext"
                 android:inputType="text"
                 android:maxLines="1"
-                android:drawableBottom="@color/light_blue"
-                android:textCursorDrawable="@drawable/cursor_green"
                 android:textColor="@color/black"
                 android:textColorHint="#a9a9ab"
+                android:textCursorDrawable="@drawable/cursor_green"
                 android:textSize="20sp"
-                android:textStyle="normal"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"/>
+                android:textStyle="normal" />
 
-            <EditText
-                android:id="@+id/edt_signin_password"
-                android:hint="Mật khẩu"
-                android:imeOptions="actionDone"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:drawableBottom="@color/light_blue"
-                android:textCursorDrawable="@drawable/cursor_green"
-                android:textColor="@color/black"
-                android:textColorHint="#a9a9ab"
-                android:textSize="20sp"
-                android:textStyle="normal"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"/>
+                android:layout_height="60dp">
+
+                <EditText
+                    android:id="@+id/edt_signin_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawableBottom="@color/light_blue"
+                    android:hint="Mật khẩu"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:textColor="@color/black"
+                    android:textColorHint="#a9a9ab"
+                    android:textCursorDrawable="@drawable/cursor_green"
+                    android:textSize="20sp"
+                    android:textStyle="normal" />
+
+                <ImageView
+                    android:layout_marginEnd="5dp"
+                    android:visibility="invisible"
+                    android:id="@+id/password_see"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:src="@drawable/password_eye" />
+
+                <ImageView
+                    android:layout_marginEnd="5dp"
+                    android:id="@+id/password_nosee"
+                    android:visibility="invisible"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"
+                    android:src="@drawable/line" />
+
+            </FrameLayout>
+
 
             <TextView
                 android:id="@+id/btn_signin_go"
@@ -182,10 +207,10 @@
             <TextView
                 android:id="@+id/btn_signin_createAccout"
                 android:layout_width="match_parent"
-                android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp"
                 android:layout_height="40dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="25dp"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/bg_8dp_all_green"
                 android:gravity="center"
                 android:text="Tạo tài khoản Facebook mới"
