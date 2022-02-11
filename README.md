@@ -1,2 +1,2 @@
 # the-intership
-# Code 60% of facebook
+# Rewrite 60% of facebook for android job :))
