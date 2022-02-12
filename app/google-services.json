@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "17704033104",
+    "project_id": "the-intership",
+    "storage_bucket": "the-intership.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:17704033104:android:d1255580171b0804c16a55",
+        "android_client_info": {
+          "package_name": "theintership.my"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "17704033104-rdk8qu151o9nido4jh9qek4lpv02alej.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "theintership.my",
+            "certificate_hash": "2035b4644c852426e75041bf7a27ba421ac96332"
+          }
+        },
+        {
+          "client_id": "17704033104-6lnai7mlt7adlmfaehfchj26je5d5fc2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChaK6SlvZYX_091VGAvNb98lTB66yJ_J4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "17704033104-6lnai7mlt7adlmfaehfchj26je5d5fc2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
