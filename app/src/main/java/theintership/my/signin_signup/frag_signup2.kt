@@ -25,13 +25,14 @@ import theintership.my.`interface`.IReplaceFrag
 import theintership.my.`interface`.IToast
 import theintership.my.databinding.FragSignup2Binding
 
-class Bat : IGetDataFromFirebase{
+class Bat : IGetDataFromFirebase {
     override fun onSuccess(str: String) {
-        println("debug Vao onSuccess ne $str")
+        val lastname = frag_signup2().takelastname(str)
     }
 }
 
-class frag_signup2 : Fragment(R.layout.frag_signup2), IReplaceFrag, IToast  {
+
+class frag_signup2 : Fragment(R.layout.frag_signup2), IReplaceFrag, IToast {
 
     private var _binding: FragSignup2Binding? = null
     private val binding get() = _binding!!
@@ -56,19 +57,12 @@ class frag_signup2 : Fragment(R.layout.frag_signup2), IReplaceFrag, IToast  {
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(signup1Activity, gso)
+
         Firebase.auth.signOut()
         googleSignInClient.signOut()
-        var bat = Bat()
         googleSignIn()
 
         binding.btnSignup2Go.setOnClickListener {
-            val user = Firebase.auth.currentUser
-            if (user != null) {
-                println("debug user name: ${user.displayName.toString()}")
-                show("Co user trong click ${user.displayName.toString()}" , signup1Activity)
-            } else {
-                println("debug user name khong co")
-            }
             val firstname = binding.edtSignup2Fistname.text.toString()
             val lastname = binding.edtSignup2Lastname.text.toString()
             if (firstname == "" || lastname == "") {
@@ -169,87 +163,76 @@ class frag_signup2 : Fragment(R.layout.frag_signup2), IReplaceFrag, IToast  {
         return binding.root
     }
 
-    private fun readData(){
 
-
-    }
-
-    private fun takelastname(name : String) : String{
+    fun takelastname(name: String): String {
         var index = 0
         var lastname = ""
-        for (i in 0 until name.length){
-            if (name[i] == ' '){
+        for (i in 0 until name.length) {
+            if (name[i] == ' ') {
                 index = i
             }
         }
-        for (i in index + 1 until name.length){
+        for (i in index + 1 until name.length) {
             lastname += name[i]
         }
         return lastname
     }
 
 
-    private fun takefirstname(name : String) : String{
+    private fun takefirstname(name: String): String {
         var index = 0
         var firstname = ""
-        for (i in 0 until name.length){
-            if (name[i] == ' '){
+        for (i in 0 until name.length) {
+            if (name[i] == ' ') {
                 index = i
             }
         }
-        for (i in 0 until index){
+        for (i in 0 until index) {
             firstname += name[i]
         }
         return firstname
     }
 
-    override fun onStart() {
-        super.onStart()
-        val user = auth.currentUser
-        if (user != null){
-            println("debug user co trong start")
-        }else{
-            println("debug user khong co trong start")
-        }
-    }
 
     private fun googleSignIn() {
-        println("debug vao google signIn")
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, 1)
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == 0){
-            return
-        }
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            val account = GoogleSignIn.getSignedInAccountFromIntent(data).result
-            account?.let {
-                firebaseAuthWithGoogle(account , Bat())
+        if (resultCode != 0) {
+            // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+            if (requestCode == RC_SIGN_IN) {
+                val account = GoogleSignIn.getSignedInAccountFromIntent(data).result
+                account?.let {
+                    firebaseAuthWithGoogle(account)
+                }
+            } else {
             }
-            if (account == null){
-                println("debug account null trong activity result")
-            }
-        }else{
-            println("debug khac request code")
         }
     }
 
-    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount , listener : IGetDataFromFirebase) {
+    private fun firebaseAuthWithGoogle(
+        account: GoogleSignInAccount,
+    ) {
+        var a = 1
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-        CoroutineScope(Dispatchers.IO).launch {
-            try{
+        try {
+            CoroutineScope(Dispatchers.IO).launch {
                 auth.signInWithCredential(credential)
-                withContext(Dispatchers.Main){
-                    println("debug vao firebaseAuth")
-                    listener.onSuccess("Ok trong firebaseAuth")
-                }
-            } catch (e : Exception){
-               println("debug firebaseAuth fail")
+            }
+        } catch (e: Exception) {
+            show("Google login fail , pls try again", signup1Activity)
+            a = 2
+        }
+        while (Firebase.auth.currentUser != null || a == 1) {
+            if (Firebase.auth.currentUser != null) {
+                val user = Firebase.auth.currentUser
+                val name = user?.displayName.toString()
+                binding.edtSignup2Lastname.setText(takelastname(name))
+                binding.edtSignup2Fistname.setText(takefirstname(name))
+                break
             }
         }
     }
