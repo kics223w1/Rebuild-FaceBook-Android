@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_main_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:tag="frag_signin">
 
     <RelativeLayout
@@ -110,22 +112,22 @@
                     android:textStyle="normal" />
 
                 <ImageView
-                    android:layout_marginEnd="5dp"
-                    android:visibility="invisible"
                     android:id="@+id/password_see"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center_vertical"
-                    android:src="@drawable/password_eye" />
+                    android:layout_marginEnd="5dp"
+                    android:src="@drawable/password_eye"
+                    android:visibility="invisible" />
 
                 <ImageView
-                    android:layout_marginEnd="5dp"
                     android:id="@+id/password_nosee"
-                    android:visibility="invisible"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right|center_vertical"
-                    android:src="@drawable/line" />
+                    android:layout_marginEnd="5dp"
+                    android:src="@drawable/line"
+                    android:visibility="invisible" />
 
             </FrameLayout>
 
@@ -159,48 +161,30 @@
                 android:orientation="horizontal"
                 android:weightSum="1">
 
-                <com.google.android.material.textfield.TextInputLayout
+                <View
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.4">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:layout_gravity="end"
-                        android:background="@color/white"
-                        android:cursorVisible="false"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.4"
+                    android:background="@android:color/darker_gray" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="0.2"
-                    android:gravity="bottom|center"
+                    android:gravity="center"
                     android:text="HOẶC"
                     android:textColor="#a9a9ab"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputLayout
+                <View
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.4">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:layout_gravity="start"
-                        android:background="@color/white"
-                        android:cursorVisible="false"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false" />
-
-
-                </com.google.android.material.textfield.TextInputLayout>
-
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="0.4"
+                    android:background="@android:color/darker_gray" />
 
             </LinearLayout>
 
@@ -218,7 +202,10 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
+
         </LinearLayout>
+
+
 
     </RelativeLayout>
 

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -12,7 +13,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
@@ -23,7 +23,7 @@ import theintership.my.R
 import theintership.my.`interface`.IGetDataFromFirebase
 import theintership.my.`interface`.IReplaceFrag
 import theintership.my.`interface`.IToast
-import theintership.my.databinding.FragSignup2Binding
+import theintership.my.databinding.FragSignupNameBinding
 
 class Bat : IGetDataFromFirebase {
     override fun onSuccess(str: String) {
@@ -32,9 +32,9 @@ class Bat : IGetDataFromFirebase {
 }
 
 
-class frag_signup2 : Fragment(R.layout.frag_signup2), IReplaceFrag, IToast {
+class frag_signup2 : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToast {
 
-    private var _binding: FragSignup2Binding? = null
+    private var _binding: FragSignupNameBinding? = null
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
     private val RC_SIGN_IN = 1
@@ -47,8 +47,9 @@ class frag_signup2 : Fragment(R.layout.frag_signup2), IReplaceFrag, IToast {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragSignup2Binding.inflate(inflater, container, false)
+        _binding = FragSignupNameBinding.inflate(inflater, container, false)
         signup1Activity = activity as Signup1Activity
+        signup1Activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN or WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         auth = Firebase.auth
         var check = true
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -90,7 +91,7 @@ class frag_signup2 : Fragment(R.layout.frag_signup2), IReplaceFrag, IToast {
                 show("$count trong frag2", signup1Activity)
                 replacefrag(
                     tag = "frag_signup3_1",
-                    frag = frag_signup3_1(),
+                    frag = frag_signup_age(),
                     fm = signup1Activity.supportFragmentManager
                 )
                 return@setOnClickListener
@@ -98,7 +99,7 @@ class frag_signup2 : Fragment(R.layout.frag_signup2), IReplaceFrag, IToast {
 
             replacefrag(
                 tag = "frag_signup3",
-                frag = frag_signup3(),
+                frag = frag_signup_birthday(),
                 fm = signup1Activity.supportFragmentManager
             )
 
@@ -111,13 +112,13 @@ class frag_signup2 : Fragment(R.layout.frag_signup2), IReplaceFrag, IToast {
                 if (signup1Activity.go_to_frag_signup3_1) {
                     replacefrag(
                         tag = "frag_signup3_1",
-                        frag = frag_signup3_1(),
+                        frag = frag_signup_age(),
                         fm = signup1Activity.supportFragmentManager
                     )
                 } else {
                     replacefrag(
                         tag = "frag_signup3",
-                        frag = frag_signup3(),
+                        frag = frag_signup_birthday(),
                         fm = signup1Activity.supportFragmentManager
                     )
                 }

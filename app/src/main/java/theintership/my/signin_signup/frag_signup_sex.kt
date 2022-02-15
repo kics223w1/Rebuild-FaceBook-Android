@@ -12,11 +12,11 @@ import theintership.my.MainActivity
 import theintership.my.R
 import theintership.my.`interface`.IReplaceFrag
 import theintership.my.`interface`.IToast
-import theintership.my.databinding.FragSignup4Binding
+import theintership.my.databinding.FragSignupSexBinding
 
-class frag_signup4 : Fragment(R.layout.frag_signup4), IToast, IReplaceFrag {
+class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag {
 
-    private var _binding: FragSignup4Binding? = null
+    private var _binding: FragSignupSexBinding? = null
     private val binding get() = _binding!!
     private lateinit var signup1Activity: Signup1Activity
 
@@ -25,7 +25,7 @@ class frag_signup4 : Fragment(R.layout.frag_signup4), IToast, IReplaceFrag {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragSignup4Binding.inflate(inflater, container, false)
+        _binding = FragSignupSexBinding.inflate(inflater, container, false)
         signup1Activity = activity as Signup1Activity
 
         binding.btnSignup4Back.setOnClickListener {

@@ -12,6 +12,8 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
     </style>
     <style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/error</item>

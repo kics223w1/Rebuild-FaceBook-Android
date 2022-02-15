@@ -10,13 +10,12 @@ import theintership.my.MainActivity
 import theintership.my.R
 import theintership.my.`interface`.IReplaceFrag
 import theintership.my.`interface`.IToast
-import theintership.my.databinding.FragSignup3Binding
+import theintership.my.databinding.FragSignupBirthdayBinding
 import java.util.*
-import kotlin.math.sign
 
-class frag_signup3 : Fragment(R.layout.frag_signup3), IReplaceFrag , IToast {
+class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday), IReplaceFrag , IToast {
 
-    private var _binding: FragSignup3Binding? = null
+    private var _binding: FragSignupBirthdayBinding? = null
     private val binding get() = _binding!!
     private lateinit var signup1Activity: Signup1Activity
     var check = true
@@ -26,7 +25,7 @@ class frag_signup3 : Fragment(R.layout.frag_signup3), IReplaceFrag , IToast {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragSignup3Binding.inflate(inflater, container, false)
+        _binding = FragSignupBirthdayBinding.inflate(inflater, container, false)
         signup1Activity = activity as Signup1Activity
 
         val today = Calendar.getInstance()
@@ -49,7 +48,7 @@ class frag_signup3 : Fragment(R.layout.frag_signup3), IReplaceFrag , IToast {
                 check = true
                 replacefrag(
                     "frag_signup3_1",
-                    frag_signup3_1(),
+                    frag_signup_age(),
                     signup1Activity.supportFragmentManager
                 )
                 return@setOnClickListener
@@ -66,7 +65,7 @@ class frag_signup3 : Fragment(R.layout.frag_signup3), IReplaceFrag , IToast {
             check = true
             replacefrag(
                 tag = "frag_signup4",
-                frag = frag_signup4(),
+                frag = frag_signup_sex(),
                 fm = signup1Activity.supportFragmentManager
             )
         }

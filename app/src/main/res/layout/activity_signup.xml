@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/layout_Signup1Activity"
+    android:fitsSystemWindows="true"
     android:background="@color/background_white">
 
 
