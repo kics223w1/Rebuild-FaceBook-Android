@@ -98,6 +98,7 @@
                 android:textCursorDrawable="@drawable/cursor_light_blue"
                 android:textSize="20sp"
                 android:textStyle="normal" />
+            <requestFocus/>
 
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:tag="frag_signin">
+<!--    AdjustResize work when RelativeLayout is parent layout-->
+<!--    don't work with scroll view-->
 
     <RelativeLayout
         android:layout_width="match_parent"
