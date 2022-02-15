@@ -7,6 +7,10 @@
     android:tag="frag_signin">
 <!--    AdjustResize work when RelativeLayout is parent layout-->
 <!--    don't work with scroll view-->
+<!--    Remember add alignParentBottom in the view which you want-->
+<!--    that is a footer-->
+<!--    check this link -->
+<!--    https://www.facebook.com/groups/laptrinh.android/posts/4802014289846937/?comment_id=4802356119812754&notif_id=1644891223547432&notif_t=group_comment&ref=notif-->
 
     <RelativeLayout
         android:layout_width="match_parent"
