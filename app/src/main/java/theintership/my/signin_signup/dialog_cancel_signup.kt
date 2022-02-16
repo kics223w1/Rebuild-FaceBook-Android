@@ -7,7 +7,7 @@ import android.view.Window
 import android.widget.TextView
 import theintership.my.R
 
-class dialog_cancel_create_account(context: Context) : Dialog(context) {
+class dialog_cancel_signup(context: Context) : Dialog(context) {
     init {
         setCancelable(true)
     }

@@ -15,7 +15,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/btn_signup2_back"
+            android:id="@+id/btn_signup_name_back"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginStart="10dp"
@@ -55,7 +55,7 @@
         android:textStyle="normal" />
 
     <TextView
-        android:id="@+id/tv_signup2"
+        android:id="@+id/tv_signup_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -72,7 +72,7 @@
         android:orientation="horizontal">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_signup2_firstname"
+            android:id="@+id/layout_signup_name_firstname"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="5dp"
@@ -84,7 +84,7 @@
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edt_signup2_fistname"
+                android:id="@+id/edt_signup_name_fistname"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white"
@@ -104,7 +104,7 @@
 
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_signup2_lastname"
+            android:id="@+id/layout_signup_name_lastname"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
@@ -118,7 +118,7 @@
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edt_signup2_lastname"
+                android:id="@+id/edt_signup_name_lastname"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white"
@@ -139,7 +139,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/btn_signup2_go"
+        android:id="@+id/btn_signup_name_go"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginStart="20dp"

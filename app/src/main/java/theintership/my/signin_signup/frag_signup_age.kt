@@ -29,11 +29,11 @@ class frag_signup_age : Fragment(R.layout.frag_signup_age), IReplaceFrag , IToas
         signup1Activity.go_to_frag_signup3_1 = true
 
 
-        binding.btnSignup31Go.setOnClickListener {
+        binding.btnSignupAgeGo.setOnClickListener {
             replacefrag("frag_signup4", frag_signup_sex(), signup1Activity.supportFragmentManager)
         }
 
-        binding.btnSignup31Popback.setOnClickListener {
+        binding.btnSignupAgePopback.setOnClickListener {
             val size = signup1Activity.supportFragmentManager.backStackEntryCount
             val frag = signup1Activity.supportFragmentManager.getBackStackEntryAt(size - 2)
             //size always >= 2
@@ -48,8 +48,8 @@ class frag_signup_age : Fragment(R.layout.frag_signup_age), IReplaceFrag , IToas
             signup1Activity.supportFragmentManager.popBackStack()
         }
 
-        binding.btnSignup31Back.setOnClickListener {
-            val dialog = dialog_cancel_create_account(signup1Activity)
+        binding.btnSignupAgeBack.setOnClickListener {
+            val dialog = dialog_cancel_signup(signup1Activity)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
                 startActivity(Intent(signup1Activity, MainActivity::class.java))

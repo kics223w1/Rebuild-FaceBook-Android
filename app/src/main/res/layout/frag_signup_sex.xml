@@ -265,5 +265,19 @@
             android:background="@android:color/darker_gray" />
 
 
+        <TextView
+        android:id="@+id/btn_signup_sex_go"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bg_8dp_all_lightblue_ripple"
+        android:gravity="center"
+        android:text="Tiếp"
+        android:textAllCaps="false"
+        android:textColor="#ecfcff"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
     </LinearLayout>
 </ScrollView>

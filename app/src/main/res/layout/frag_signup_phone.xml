@@ -5,7 +5,7 @@
     android:background="@color/background_white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:tag="frag_signup3_1">
+    android:tag="frag_signup_phone">
 
     <LinearLayout
         android:id="@+id/layout1"
@@ -50,51 +50,54 @@
         android:textStyle="normal" />
 
     <TextView
-        android:id="@+id/layout3"
+        android:id="@+id/tv_signup_phone_info"
         android:layout_below="@+id/layout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
         android:gravity="center"
         android:text="Nhập số di động để liên hệ của bạn. Bạn có thể ẩn thông tin này trên trang cá nhân sau."
         android:textColor="#767676"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textStyle="normal" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:layout_below="@+id/layout3"
-        android:id="@+id/layout_signup3_1_age"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginTop="20dp"
-        android:hint="Độ tuổi"
+        android:layout_below="@+id/tv_signup_phone_info"
+        android:id="@+id/layout3"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="25dp"
+        android:hint="Số di động"
         android:layout_centerHorizontal="true"
-        app:boxStrokeColor="@color/light_blue"
-        app:hintTextColor="@color/light_blue"
+        app:boxStrokeColor="#e1582c"
+        app:hintTextColor="#e1582c"
         app:endIconMode="clear_text"
         app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_signup2_fistname"
+            android:id="@+id/edt_signup_phone"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
             android:gravity="start"
-            android:hint="Độ tuổi"
             android:imeOptions="actionDone"
-            android:inputType="text"
+            android:inputType="number"
             android:maxLines="1"
             android:textColor="@color/black"
-            android:textColorHint="#a9a9ab"
             android:textCursorDrawable="@drawable/cursor_light_blue"
             android:textSize="20sp"
             android:textStyle="normal" />
+        <requestFocus/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:layout_below="@+id/layout_signup3_1_age"
-        android:id="@+id/btn_signup3_1_go"
+        android:layout_below="@+id/layout3"
+        android:id="@+id/btn_signup_phone_go"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginStart="20dp"
@@ -111,13 +114,13 @@
 
 
     <TextView
-        android:id="@+id/btn_signup3_1_popback"
+        android:id="@+id/btn_signup_phone_email"
         android:layout_alignParentBottom="true"
         android:textColor="#2361b3"
         android:gravity="center"
         android:textSize="18sp"
         android:textStyle="normal"
-        android:text="Dùng ngày sinh"
+        android:text="Đăng ký bằng địa chỉ email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

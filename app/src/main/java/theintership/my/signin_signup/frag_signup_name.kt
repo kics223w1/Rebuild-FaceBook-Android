@@ -63,26 +63,26 @@ class frag_signup2 : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToast {
         googleSignInClient.signOut()
         googleSignIn()
 
-        binding.btnSignup2Go.setOnClickListener {
-            val firstname = binding.edtSignup2Fistname.text.toString()
-            val lastname = binding.edtSignup2Lastname.text.toString()
+        binding.btnSignupNameGo.setOnClickListener {
+            val firstname = binding.edtSignupNameFistname.text.toString()
+            val lastname = binding.edtSignupNameLastname.text.toString()
             if (firstname == "" || lastname == "") {
                 check = false
-                binding.layoutSignup2Firstname.isErrorEnabled = true
-                binding.layoutSignup2Firstname.error = "ok"
-                binding.layoutSignup2Firstname.errorIconDrawable = null
+                binding.layoutSignupNameFirstname.isErrorEnabled = true
+                binding.layoutSignupNameFirstname.error = "ok"
+                binding.layoutSignupNameFirstname.errorIconDrawable = null
 
-                binding.layoutSignup2Lastname.isErrorEnabled = true
-                binding.layoutSignup2Lastname.error = "ok"
-                binding.layoutSignup2Lastname.errorIconDrawable = null
+                binding.layoutSignupNameLastname.isErrorEnabled = true
+                binding.layoutSignupNameLastname.error = "ok"
+                binding.layoutSignupNameLastname.errorIconDrawable = null
 
-                binding.tvSignup2.setTextColor(resources.getColor(R.color.error, null))
+                binding.tvSignupName.setTextColor(resources.getColor(R.color.error, null))
                 if (firstname == "" && lastname == "")
-                    binding.tvSignup2.text = "Vui lòng nhập họ và tên của bạn"
+                    binding.tvSignupName.text = "Vui lòng nhập họ và tên của bạn"
                 if (firstname == "" && lastname != "")
-                    binding.tvSignup2.text = "Vui lòng nhập tên của bạn"
+                    binding.tvSignupName.text = "Vui lòng nhập tên của bạn"
                 if (firstname != "" && lastname == "")
-                    binding.tvSignup2.text = "Vui lòng nhập họ của bạn"
+                    binding.tvSignupName.text = "Vui lòng nhập họ của bạn"
                 return@setOnClickListener
             }
 
@@ -105,9 +105,9 @@ class frag_signup2 : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToast {
 
         }
 
-        binding.edtSignup2Lastname.setOnEditorActionListener { textView, i, keyEvent ->
-            val firstname = binding.edtSignup2Fistname.text.toString()
-            val lastname = binding.edtSignup2Lastname.text.toString()
+        binding.edtSignupNameLastname.setOnEditorActionListener { textView, i, keyEvent ->
+            val firstname = binding.edtSignupNameFistname.text.toString()
+            val lastname = binding.edtSignupNameLastname.text.toString()
             if (i == EditorInfo.IME_ACTION_DONE && firstname != "" && lastname != "") {
                 if (signup1Activity.go_to_frag_signup3_1) {
                     replacefrag(
@@ -128,28 +128,28 @@ class frag_signup2 : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToast {
             }
         }
 
-        binding.edtSignup2Fistname.doAfterTextChanged {
+        binding.edtSignupNameFistname.doAfterTextChanged {
             if (!check) {
-                binding.tvSignup2.setTextColor(resources.getColor(R.color.light_grey, null))
-                binding.tvSignup2.text = "Nhập tên bạn sử dụng trong đời thực"
-                binding.layoutSignup2Firstname.isErrorEnabled = false
-                binding.layoutSignup2Lastname.isErrorEnabled = false
+                binding.tvSignupName.setTextColor(resources.getColor(R.color.light_grey, null))
+                binding.tvSignupName.text = "Nhập tên bạn sử dụng trong đời thực"
+                binding.layoutSignupNameFirstname.isErrorEnabled = false
+                binding.layoutSignupNameLastname.isErrorEnabled = false
                 check = true
             }
         }
 
-        binding.edtSignup2Lastname.doAfterTextChanged {
+        binding.edtSignupNameLastname.doAfterTextChanged {
             if (!check) {
-                binding.tvSignup2.setTextColor(resources.getColor(R.color.light_grey, null))
-                binding.tvSignup2.text = "Nhập tên bạn sử dụng trong đời thực"
-                binding.layoutSignup2Firstname.isErrorEnabled = false
-                binding.layoutSignup2Lastname.isErrorEnabled = false
+                binding.tvSignupName.setTextColor(resources.getColor(R.color.light_grey, null))
+                binding.tvSignupName.text = "Nhập tên bạn sử dụng trong đời thực"
+                binding.layoutSignupNameFirstname.isErrorEnabled = false
+                binding.layoutSignupNameLastname.isErrorEnabled = false
                 check = true
             }
         }
 
-        binding.btnSignup2Back.setOnClickListener {
-            val dialog = dialog_cancel_create_account(signup1Activity)
+        binding.btnSignupNameBack.setOnClickListener {
+            val dialog = dialog_cancel_signup(signup1Activity)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
                 startActivity(Intent(signup1Activity, MainActivity::class.java))
@@ -231,8 +231,8 @@ class frag_signup2 : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToast {
             if (Firebase.auth.currentUser != null) {
                 val user = Firebase.auth.currentUser
                 val name = user?.displayName.toString()
-                binding.edtSignup2Lastname.setText(takelastname(name))
-                binding.edtSignup2Fistname.setText(takefirstname(name))
+                binding.edtSignupNameLastname.setText(takelastname(name))
+                binding.edtSignupNameFistname.setText(takefirstname(name))
                 break
             }
         }

@@ -11,7 +11,7 @@ import theintership.my.MainActivity
 import theintership.my.R
 import theintership.my.model.language
 
-class rcv_language_adapter(private val interaction: Interaction? = null) :
+class adapter_language(private val interaction: Interaction? = null) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val DIFF_CALLBACK = object : DiffUtil.ItemCallback<language>() {

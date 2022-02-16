@@ -13,7 +13,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import theintership.my.signin_signup.Signup1Activity
-import theintership.my.signin_signup.dialog_show_language_select
+import theintership.my.signin_signup.dialog_showlanguage
 
 
 class MainActivity : AppCompatActivity() {
@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         val btn_showlanguage = findViewById<TextView>(R.id.btn_signin_showlanguage)
 
         btn_showlanguage.setOnClickListener {
-            val dialog = dialog_show_language_select(this)
+            val dialog = dialog_showlanguage(this)
             dialog.show()
         }
 

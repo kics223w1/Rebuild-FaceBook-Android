@@ -4,19 +4,18 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.Window
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import theintership.my.R
 import theintership.my.model.language
 
-class dialog_show_language_select(context: Context) : Dialog(context) , rcv_language_adapter.Interaction {
+class dialog_showlanguage(context: Context) : Dialog(context) , adapter_language.Interaction {
     init {
         setCancelable(false)
     }
 
-    private lateinit var languageAdapter : rcv_language_adapter
+    private lateinit var languageAdapterLanguage : adapter_language
     private lateinit var rcv : RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,11 +28,11 @@ class dialog_show_language_select(context: Context) : Dialog(context) , rcv_lang
         val layoutManager : RecyclerView.LayoutManager = LinearLayoutManager(context)
 
         rcv = findViewById(R.id.rcv_dialog_showlanguage)
-        languageAdapter = rcv_language_adapter(this)
-        languageAdapter.submitList(list)
+        languageAdapterLanguage = adapter_language(this)
+        languageAdapterLanguage.submitList(list)
 
         rcv.layoutManager = layoutManager
-        rcv.adapter = languageAdapter
+        rcv.adapter = languageAdapterLanguage
 
         btn_cancel.setOnClickListener {
             dismiss()
