@@ -49,7 +49,7 @@ class frag_signup_age : Fragment(R.layout.frag_signup_age), IReplaceFrag , IToas
         }
 
         binding.btnSignup31Back.setOnClickListener {
-            val dialog = dialog(signup1Activity)
+            val dialog = dialog_cancel_create_account(signup1Activity)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
                 startActivity(Intent(signup1Activity, MainActivity::class.java))

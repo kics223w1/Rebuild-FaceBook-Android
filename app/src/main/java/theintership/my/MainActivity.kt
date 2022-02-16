@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import theintership.my.signin_signup.Signup1Activity
+import theintership.my.signin_signup.dialog_show_language_select
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,7 +30,12 @@ class MainActivity : AppCompatActivity() {
         val icon_password_nosee = findViewById<ImageView>(R.id.password_nosee)
         val icon_password_see = findViewById<ImageView>(R.id.password_see)
         val btn_signin = findViewById<TextView>(R.id.btn_signin_go)
+        val btn_showlanguage = findViewById<TextView>(R.id.btn_signin_showlanguage)
 
+        btn_showlanguage.setOnClickListener {
+            val dialog = dialog_show_language_select(this)
+            dialog.show()
+        }
 
         edt_signin_password.doAfterTextChanged {
             val password = edt_signin_password.text

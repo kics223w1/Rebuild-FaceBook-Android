@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_8dp_all_white"
+    android:orientation="vertical">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="5dp"
+        android:id="@+id/rcv_dialog_showlanguage"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"/>
+    <View
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:background="#efefef"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <TextView
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_gravity="end"
+        android:layout_marginEnd="20dp"
+        android:gravity="center_vertical"
+        android:text="HỦY"
+        android:textColor="#646466"
+        android:textSize="22sp" />
+</LinearLayout>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/language_layout"
+    android:layout_marginTop="5dp"
+    android:orientation="vertical"
+    android:tag="rcv_item_language">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_itemlanguage_name"
+            android:layout_width="220dp"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:textColor="#939499"
+            android:textSize="20sp" />
+
+        <RadioButton
+            android:buttonTint="@color/light_blue"
+            android:layout_marginStart="10dp"
+            android:layout_gravity="end|center_vertical"
+            android:id="@+id/btn_itemlanguage_chose"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="25dp"
+        android:background="#efefef" />
+
+</LinearLayout>

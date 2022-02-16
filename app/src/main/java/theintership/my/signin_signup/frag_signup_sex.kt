@@ -29,7 +29,7 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
         signup1Activity = activity as Signup1Activity
 
         binding.btnSignup4Back.setOnClickListener {
-            val dialog = dialog(signup1Activity)
+            val dialog = dialog_cancel_create_account(signup1Activity)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
                 startActivity(Intent(signup1Activity, MainActivity::class.java))

@@ -29,7 +29,7 @@ class Signup1Activity : AppCompatActivity(), IReplaceFrag, IToast {
         }
 
         btnShowDialog.setOnClickListener {
-            val dialog = dialog(this)
+            val dialog = dialog_cancel_create_account(this)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
                 startActivity(Intent(this, MainActivity::class.java))
@@ -47,7 +47,7 @@ class Signup1Activity : AppCompatActivity(), IReplaceFrag, IToast {
     override fun onBackPressed() {
         val size = supportFragmentManager.backStackEntryCount
         if (size == 1) {
-            val dialog = dialog(this)
+            val dialog = dialog_cancel_create_account(this)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
                 startActivity(Intent(this, MainActivity::class.java))

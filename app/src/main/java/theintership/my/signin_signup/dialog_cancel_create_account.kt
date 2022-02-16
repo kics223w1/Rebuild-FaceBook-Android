@@ -2,14 +2,12 @@ package theintership.my.signin_signup
 
 import android.app.Dialog
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.Window
 import android.widget.TextView
-import android.widget.Toast
 import theintership.my.R
 
-class dialog(context: Context) : Dialog(context) {
+class dialog_cancel_create_account(context: Context) : Dialog(context) {
     init {
         setCancelable(true)
     }

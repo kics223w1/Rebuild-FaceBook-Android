@@ -58,4 +58,9 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.5'
 
+    //Room
+    implementation("androidx.room:room-runtime:2.4.1")
+
+    //RecyclerView
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
 }

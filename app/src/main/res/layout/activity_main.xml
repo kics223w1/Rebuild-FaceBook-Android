@@ -69,6 +69,7 @@
                 android:src="@drawable/one" />
 
             <TextView
+                android:id="@+id/btn_signin_showlanguage"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
@@ -151,7 +152,7 @@
             android:layout_height="40dp"
             android:layout_below="@id/layout_two"
             android:layout_marginTop="15dp"
-            android:background="@drawable/bg_8dp_all_lightblue"
+            android:background="@drawable/bg_8dp_all_lightblue_ripple"
             android:gravity="center"
             android:text="Đăng nhập"
             android:textAllCaps="false"
@@ -219,7 +220,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            android:background="@drawable/bg_8dp_all_green"
+            android:background="@drawable/bg_8dp_all_green_ripple"
             android:gravity="center"
             android:text="Tạo tài khoản Facebook mới"
             android:textColor="#d9f1e0"
