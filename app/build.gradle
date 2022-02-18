@@ -34,6 +34,14 @@ android {
     buildFeatures{
         viewBinding = true
     }
+    sourceSets {
+        main {
+            res {
+                srcDirs 'src\\main\\res', 'src\\main\\res\\layouts\\chat', 'src\\main\\res\\layouts\\home', 'src\\main\\res\\layouts\\signin_signup', 'src\\main\\res\\layouts\\rcv_item', 'src\\main\\res\\dialog', 'src\\main\\res\\layouts\\dialog', 'src\\main\\res\\layouts\\activity'
+                srcDirs
+            }
+        }
+    }
 }
 
 dependencies {
