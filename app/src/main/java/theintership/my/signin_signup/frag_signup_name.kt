@@ -124,6 +124,13 @@ class frag_signup2 : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToast {
                 }
                 true
             } else {
+                binding.layoutSignupNameFirstname.isErrorEnabled = true
+                binding.layoutSignupNameFirstname.error = "ok"
+                binding.layoutSignupNameFirstname.errorIconDrawable = null
+
+                binding.layoutSignupNameLastname.isErrorEnabled = true
+                binding.layoutSignupNameLastname.error = "ok"
+                binding.layoutSignupNameLastname.errorIconDrawable = null
                 false
             }
         }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import theintership.my.R
 import theintership.my.`interface`.IReplaceFrag
@@ -24,6 +25,7 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone), IReplaceFrag {
         _binding = FragSignupPhoneBinding.inflate(inflater, container, false)
         signup1Activity = activity as Signup1Activity
         signup1Activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        signup1Activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
         binding.btnSignupPhoneGo.setOnClickListener {
             val phone = binding.edtSignupPhone.text.toString()
@@ -37,11 +39,12 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone), IReplaceFrag {
                 "Nhập số di động để liên hệ của bạn. Bạn có thể ẩn thông tin này trên trang cá nhân sau."
             binding.tvSignupPhoneInfo.setTextColor(resources.getColor(R.color.light_grey, null))
             replacefrag(
-                "frag_signup_phone",
-                frag_signup_phone(),
+                "frag_signup_password",
+                frag_signup_password(),
                 signup1Activity.supportFragmentManager
             )
         }
+
 
 
         return binding.root

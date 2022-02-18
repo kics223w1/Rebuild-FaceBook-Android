@@ -41,7 +41,8 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
             }
         }
 
-        binding.radioSignup4Female.setOnClickListener {
+        binding.layoutFemale.setOnClickListener {
+            binding.radioSignup4Female.isChecked = true
             binding.radioSignup4Male.isChecked = false
             binding.radioSignup4Custom.isChecked = false
 
@@ -53,7 +54,8 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
             binding.edtGenderCustom.visibility = View.GONE
         }
 
-        binding.radioSignup4Male.setOnClickListener {
+        binding.layoutMale.setOnClickListener {
+            binding.radioSignup4Male.isChecked = true
             binding.radioSignup4Female.isChecked = false
             binding.radioSignup4Custom.isChecked = false
 
@@ -65,7 +67,8 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
             binding.edtGenderCustom.visibility = View.GONE
         }
 
-        binding.radioSignup4Custom.setOnClickListener {
+        binding.layoutCustomSex.setOnClickListener {
+            binding.radioSignup4Custom.isChecked = true
             binding.radioSignup4Female.isChecked = false
             binding.radioSignup4Male.isChecked = false
 
