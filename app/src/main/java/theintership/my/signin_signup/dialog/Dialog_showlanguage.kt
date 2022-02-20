@@ -1,4 +1,4 @@
-package theintership.my.signin_signup
+package theintership.my.signin_signup.dialog
 
 import android.app.Dialog
 import android.content.Context
@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import theintership.my.R
 import theintership.my.model.language
+import theintership.my.signin_signup.adapter_language
 
 class dialog_showlanguage(context: Context) : Dialog(context) , adapter_language.Interaction {
     init {
@@ -23,7 +24,7 @@ class dialog_showlanguage(context: Context) : Dialog(context) , adapter_language
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.dialog_show_language_select)
 
-        val btn_cancel = findViewById<TextView>(R.id.btn_cancel)
+        val btn_cancel = findViewById<TextView>(R.id.btn_dialog_showLanguage_select_cancel)
         val list = initlist()
         val layoutManager : RecyclerView.LayoutManager = LinearLayoutManager(context)
 

@@ -1,4 +1,4 @@
-package theintership.my.signin_signup
+package theintership.my.signin_signup.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -24,15 +24,16 @@ import theintership.my.`interface`.IGetDataFromFirebase
 import theintership.my.`interface`.IReplaceFrag
 import theintership.my.`interface`.IToast
 import theintership.my.databinding.FragSignupNameBinding
+import theintership.my.signin_signup.Signup1Activity
+import theintership.my.signin_signup.dialog.dialog_stop_signup
 
 class Bat : IGetDataFromFirebase {
     override fun onSuccess(str: String) {
-        val lastname = frag_signup2().takelastname(str)
     }
 }
 
 
-class frag_signup2 : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToast {
+class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToast {
 
     private var _binding: FragSignupNameBinding? = null
     private val binding get() = _binding!!
@@ -51,7 +52,7 @@ class frag_signup2 : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToast {
         signup1Activity = activity as Signup1Activity
         signup1Activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN or WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         auth = Firebase.auth
-        var check = true
+        var check_name_empty = false
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -59,24 +60,20 @@ class frag_signup2 : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToast {
 
         googleSignInClient = GoogleSignIn.getClient(signup1Activity, gso)
 
-        Firebase.auth.signOut()
-        googleSignInClient.signOut()
-        googleSignIn()
+        if (signup1Activity.signup_with_google){
+            Firebase.auth.signOut()
+            googleSignInClient.signOut()
+            googleSignIn()
+            signup1Activity.signup_with_google = false
+        }
 
         binding.btnSignupNameGo.setOnClickListener {
             val firstname = binding.edtSignupNameFistname.text.toString()
             val lastname = binding.edtSignupNameLastname.text.toString()
             if (firstname == "" || lastname == "") {
-                check = false
-                binding.layoutSignupNameFirstname.isErrorEnabled = true
-                binding.layoutSignupNameFirstname.error = "ok"
-                binding.layoutSignupNameFirstname.errorIconDrawable = null
+                check_name_empty = true
+                set_error_edittext()
 
-                binding.layoutSignupNameLastname.isErrorEnabled = true
-                binding.layoutSignupNameLastname.error = "ok"
-                binding.layoutSignupNameLastname.errorIconDrawable = null
-
-                binding.tvSignupName.setTextColor(resources.getColor(R.color.error, null))
                 if (firstname == "" && lastname == "")
                     binding.tvSignupName.text = "Vui lòng nhập họ và tên của bạn"
                 if (firstname == "" && lastname != "")
@@ -86,11 +83,9 @@ class frag_signup2 : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToast {
                 return@setOnClickListener
             }
 
-            if (signup1Activity.go_to_frag_signup3_1) {
-                val count = signup1Activity.supportFragmentManager.backStackEntryCount
-                show("$count trong frag2", signup1Activity)
+            if (signup1Activity.go_to_frag_signup_age) {
                 replacefrag(
-                    tag = "frag_signup3_1",
+                    tag = "frag_signup_age",
                     frag = frag_signup_age(),
                     fm = signup1Activity.supportFragmentManager
                 )
@@ -98,7 +93,7 @@ class frag_signup2 : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToast {
             }
 
             replacefrag(
-                tag = "frag_signup3",
+                tag = "frag_signup_birthday",
                 frag = frag_signup_birthday(),
                 fm = signup1Activity.supportFragmentManager
             )
@@ -109,54 +104,42 @@ class frag_signup2 : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToast {
             val firstname = binding.edtSignupNameFistname.text.toString()
             val lastname = binding.edtSignupNameLastname.text.toString()
             if (i == EditorInfo.IME_ACTION_DONE && firstname != "" && lastname != "") {
-                if (signup1Activity.go_to_frag_signup3_1) {
+                if (signup1Activity.go_to_frag_signup_age) {
                     replacefrag(
-                        tag = "frag_signup3_1",
+                        tag = "frag_signup_age",
                         frag = frag_signup_age(),
                         fm = signup1Activity.supportFragmentManager
                     )
                 } else {
                     replacefrag(
-                        tag = "frag_signup3",
+                        tag = "frag_signup_birthday",
                         frag = frag_signup_birthday(),
                         fm = signup1Activity.supportFragmentManager
                     )
                 }
                 true
             } else {
-                binding.layoutSignupNameFirstname.isErrorEnabled = true
-                binding.layoutSignupNameFirstname.error = "ok"
-                binding.layoutSignupNameFirstname.errorIconDrawable = null
-
-                binding.layoutSignupNameLastname.isErrorEnabled = true
-                binding.layoutSignupNameLastname.error = "ok"
-                binding.layoutSignupNameLastname.errorIconDrawable = null
+                set_error_edittext()
                 false
             }
         }
 
         binding.edtSignupNameFistname.doAfterTextChanged {
-            if (!check) {
-                binding.tvSignupName.setTextColor(resources.getColor(R.color.light_grey, null))
-                binding.tvSignupName.text = "Nhập tên bạn sử dụng trong đời thực"
-                binding.layoutSignupNameFirstname.isErrorEnabled = false
-                binding.layoutSignupNameLastname.isErrorEnabled = false
-                check = true
+            if (check_name_empty) {
+                move_error_edittext()
+                check_name_empty = false
             }
         }
 
         binding.edtSignupNameLastname.doAfterTextChanged {
-            if (!check) {
-                binding.tvSignupName.setTextColor(resources.getColor(R.color.light_grey, null))
-                binding.tvSignupName.text = "Nhập tên bạn sử dụng trong đời thực"
-                binding.layoutSignupNameFirstname.isErrorEnabled = false
-                binding.layoutSignupNameLastname.isErrorEnabled = false
-                check = true
+            if (check_name_empty) {
+                move_error_edittext()
+                check_name_empty = false
             }
         }
 
         binding.btnSignupNameBack.setOnClickListener {
-            val dialog = dialog_cancel_signup(signup1Activity)
+            val dialog = dialog_stop_signup(signup1Activity)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
                 startActivity(Intent(signup1Activity, MainActivity::class.java))
@@ -172,7 +155,26 @@ class frag_signup2 : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToast {
     }
 
 
-    fun takelastname(name: String): String {
+    private fun move_error_edittext(){
+        binding.tvSignupName.setTextColor(resources.getColor(R.color.light_grey, null))
+        binding.tvSignupName.text = "Nhập tên bạn sử dụng trong đời thực"
+        binding.layoutSignupNameFirstname.isErrorEnabled = false
+        binding.layoutSignupNameLastname.isErrorEnabled = false
+    }
+
+    private fun set_error_edittext(){
+        binding.layoutSignupNameFirstname.isErrorEnabled = true
+        binding.layoutSignupNameFirstname.error = "ok"
+        binding.layoutSignupNameFirstname.errorIconDrawable = null
+
+        binding.layoutSignupNameLastname.isErrorEnabled = true
+        binding.layoutSignupNameLastname.error = "ok"
+        binding.layoutSignupNameLastname.errorIconDrawable = null
+
+        binding.tvSignupName.setTextColor(resources.getColor(R.color.error, null))
+    }
+
+    private fun takelastname(name: String): String {
         var index = 0
         var lastname = ""
         for (i in 0 until name.length) {
@@ -240,6 +242,8 @@ class frag_signup2 : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToast {
                 val name = user?.displayName.toString()
                 binding.edtSignupNameLastname.setText(takelastname(name))
                 binding.edtSignupNameFistname.setText(takefirstname(name))
+                Firebase.auth.signOut()
+                googleSignInClient.signOut()
                 break
             }
         }

@@ -13,7 +13,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import theintership.my.signin_signup.Signup1Activity
-import theintership.my.signin_signup.dialog_showlanguage
+import theintership.my.signin_signup.dialog.dialog_showlanguage
 
 
 class MainActivity : AppCompatActivity() {

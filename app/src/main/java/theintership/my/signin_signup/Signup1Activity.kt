@@ -9,10 +9,13 @@ import theintership.my.MainActivity
 import theintership.my.R
 import theintership.my.`interface`.IReplaceFrag
 import theintership.my.`interface`.IToast
+import theintership.my.signin_signup.dialog.dialog_stop_signup
+import theintership.my.signin_signup.fragment.frag_signup_name
 
 class Signup1Activity : AppCompatActivity(), IReplaceFrag, IToast {
 
-    var go_to_frag_signup3_1 = false
+    var go_to_frag_signup_age = false
+    var signup_with_google = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,11 +28,15 @@ class Signup1Activity : AppCompatActivity(), IReplaceFrag, IToast {
 
 
         btnGo.setOnClickListener {
-            replacefrag(tag = "frag_signup2", frag = frag_signup2(), fm = supportFragmentManager)
+            replacefrag(
+                tag = "frag_signup_name",
+                frag = frag_signup_name(),
+                fm = supportFragmentManager
+            )
         }
 
         btnShowDialog.setOnClickListener {
-            val dialog = dialog_cancel_signup(this)
+            val dialog = dialog_stop_signup(this)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
                 startActivity(Intent(this, MainActivity::class.java))
@@ -47,7 +54,7 @@ class Signup1Activity : AppCompatActivity(), IReplaceFrag, IToast {
     override fun onBackPressed() {
         val size = supportFragmentManager.backStackEntryCount
         if (size == 1) {
-            val dialog = dialog_cancel_signup(this)
+            val dialog = dialog_stop_signup(this)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
                 startActivity(Intent(this, MainActivity::class.java))
@@ -63,12 +70,16 @@ class Signup1Activity : AppCompatActivity(), IReplaceFrag, IToast {
         }
         val frag_last = supportFragmentManager.getBackStackEntryAt(size - 1)
         val frag_before_last = supportFragmentManager.getBackStackEntryAt(size - 2)
-        if (frag_last.name == "frag_signup3_1" && frag_before_last.name == "frag_signup3") {
+
+        //User want to rename so must pop 2 fragment
+        if (frag_last.name == "frag_signup_age" && frag_before_last.name == "frag_signup_birthday") {
             supportFragmentManager.popBackStack()
             supportFragmentManager.popBackStack()
             return
         }
-        if (frag_last.name == "frag_signup3_1" && frag_before_last.name != "frag_signup3") {
+
+        //User go to frag_signup_age from frag_signup_name so just need pop 1 fragment
+        if (frag_last.name == "frag_signup_age" && frag_before_last.name == "frag_signup_name") {
             supportFragmentManager.popBackStack()
             return
         }

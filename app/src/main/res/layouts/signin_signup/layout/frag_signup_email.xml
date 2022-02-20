@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/background_white"
     android:orientation="vertical"
-    android:tag="frag_signup_password">
+    android:tag="frag_signup_email">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +14,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/btn_signup_pasword_back"
+            android:id="@+id/btn_signup_email_back"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginStart="10dp"
@@ -28,7 +28,7 @@
             android:layout_marginStart="15dp"
             android:layout_weight="0.9"
             android:gravity="start"
-            android:text="Mật khẩu"
+            android:text="Địa chỉ email"
             android:textColor="@color/black"
             android:textSize="26sp"
             android:textStyle="normal" />
@@ -41,37 +41,37 @@
         android:layout_height="40dp"
         android:layout_marginTop="50dp"
         android:gravity="center"
-        android:text="Chọn mật khẩu"
+        android:text="Thêm email của bạn"
         android:textColor="#050505"
         android:textSize="26sp"
         android:textStyle="normal" />
 
     <TextView
-        android:id="@+id/tv_signup_password_info"
+        android:id="@+id/tv_signup_email_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:text="Tạo mật khẩu tối thiểu dài 6 ký tự. Đó phải là mật khẩu mà người khác không thể đoán được."
+        android:text="Thêm email giúp bạn giữ tài khoản của mình an toàn, tìm kiếm bạn bè và hơn thế nữa."
         android:textColor="#767676"
         android:textSize="16sp"
         android:textStyle="normal" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layout_edt_signup_password"
+        android:id="@+id/layout_edt_signup_email"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginTop="25dp"
-        android:hint="Mật khẩu"
+        android:hint="Địa chỉ email"
         app:boxStrokeColor="@color/light_blue"
         app:endIconMode="clear_text"
         app:errorEnabled="true"
         app:hintTextColor="@color/light_blue">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_signup_password"
+            android:id="@+id/edt_signup_email"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="20dp"
@@ -86,12 +86,10 @@
             android:textSize="20sp"
             android:textStyle="normal" />
 
-        <requestFocus />
-
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
-        android:id="@+id/btn_signup_password_go"
+        android:id="@+id/btn_signup_email_go"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginStart="20dp"
@@ -104,5 +102,16 @@
         android:textColor="#ecfcff"
         android:textSize="20sp"
         android:textStyle="bold" />
+
+   <TextView
+       android:id="@+id/btn_signup_email_pass"
+       android:textSize="14sp"
+       android:textStyle="bold"
+       android:textColor="@color/light_blue"
+       android:layout_marginTop="5dp"
+       android:gravity="center"
+       android:text="Bỏ qua"
+       android:layout_width="match_parent"
+       android:layout_height="30dp"/>
 
 </LinearLayout>

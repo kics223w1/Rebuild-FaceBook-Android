@@ -1,4 +1,4 @@
-package theintership.my.signin_signup
+package theintership.my.signin_signup.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,6 +13,8 @@ import theintership.my.R
 import theintership.my.`interface`.IReplaceFrag
 import theintership.my.`interface`.IToast
 import theintership.my.databinding.FragSignupSexBinding
+import theintership.my.signin_signup.Signup1Activity
+import theintership.my.signin_signup.dialog.dialog_stop_signup
 
 class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag {
 
@@ -28,8 +30,8 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
         _binding = FragSignupSexBinding.inflate(inflater, container, false)
         signup1Activity = activity as Signup1Activity
 
-        binding.btnSignup4Back.setOnClickListener {
-            val dialog = dialog_cancel_signup(signup1Activity)
+        binding.btnSignupSexBack.setOnClickListener {
+            val dialog = dialog_stop_signup(signup1Activity)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
                 startActivity(Intent(signup1Activity, MainActivity::class.java))
@@ -41,10 +43,10 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
             }
         }
 
-        binding.layoutFemale.setOnClickListener {
-            binding.radioSignup4Female.isChecked = true
-            binding.radioSignup4Male.isChecked = false
-            binding.radioSignup4Custom.isChecked = false
+        binding.layoutSignupSexFemale.setOnClickListener {
+            binding.radioSignupSexFemale.isChecked = true
+            binding.radioSignupSexMale.isChecked = false
+            binding.radioSignupSexCustom.isChecked = false
 
             //remove layout custom
             binding.tvCustom2.visibility = View.VISIBLE
@@ -54,10 +56,10 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
             binding.edtGenderCustom.visibility = View.GONE
         }
 
-        binding.layoutMale.setOnClickListener {
-            binding.radioSignup4Male.isChecked = true
-            binding.radioSignup4Female.isChecked = false
-            binding.radioSignup4Custom.isChecked = false
+        binding.layoutSignupSexMale.setOnClickListener {
+            binding.radioSignupSexMale.isChecked = true
+            binding.radioSignupSexFemale.isChecked = false
+            binding.radioSignupSexCustom.isChecked = false
 
             //remove layout custom
             binding.tvCustom2.visibility = View.VISIBLE
@@ -67,10 +69,10 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
             binding.edtGenderCustom.visibility = View.GONE
         }
 
-        binding.layoutCustomSex.setOnClickListener {
-            binding.radioSignup4Custom.isChecked = true
-            binding.radioSignup4Female.isChecked = false
-            binding.radioSignup4Male.isChecked = false
+        binding.layoutSignupSexCustom.setOnClickListener {
+            binding.radioSignupSexCustom.isChecked = true
+            binding.radioSignupSexFemale.isChecked = false
+            binding.radioSignupSexMale.isChecked = false
 
             //show layout custom
             binding.tvCustom2.visibility = View.GONE
@@ -92,6 +94,18 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
             )
         }
 
+        binding.btnSignupSexBack.setOnClickListener {
+            val dialog = dialog_stop_signup(signup1Activity)
+            dialog.show()
+            dialog.btn_cancel.setOnClickListener {
+                startActivity(Intent(signup1Activity, MainActivity::class.java))
+                signup1Activity.overridePendingTransition(
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+                )
+                dialog.dismiss()
+            }
+        }
 
         binding.tvGender.setText(
             createIndentedText(

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#ffffff"
-    android:tag="frag_signup3">
+    android:tag="frag_signup_birthday">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/btn_signup3_back"
+            android:id="@+id/btn_signup_birthday_back"
             android:background="@drawable/bg_circle_white"
             android:layout_width="0dp"
             android:layout_height="40dp"
@@ -52,7 +52,7 @@
         android:textStyle="normal" />
 
     <TextView
-        android:id="@+id/tv_signup3_info"
+        android:id="@+id/tv_signup_birthday_info"
         android:layout_marginTop="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
@@ -67,7 +67,7 @@
     <DatePicker
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
-        android:id="@+id/datePicker_signup3"
+        android:id="@+id/datePicker_signup_birthday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:calendarViewShown="false"
@@ -75,7 +75,7 @@
         android:spinnersShown="true" />
 
     <TextView
-        android:id="@+id/tv_signup3_showage"
+        android:id="@+id/tv_signup_birthday_showage"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_marginTop="15dp"
@@ -87,7 +87,7 @@
 
 
     <TextView
-        android:id="@+id/btn_signup3_go"
+        android:id="@+id/btn_signup_birthday_go"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginStart="20dp"
