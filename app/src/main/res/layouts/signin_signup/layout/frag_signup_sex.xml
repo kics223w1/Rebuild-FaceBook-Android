@@ -20,11 +20,11 @@
 
             <ImageView
                 android:id="@+id/btn_signup_sex_back"
-                android:background="@drawable/bg_circle_white"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="10dp"
                 android:layout_weight="0.1"
+                android:background="@drawable/bg_circle_white"
                 android:src="@drawable/back_arrow" />
 
             <TextView
@@ -169,15 +169,15 @@
         </LinearLayout>
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/layout_custom"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:background="@drawable/rectangle"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp"
-            android:orientation="horizontal">
+            android:background="@drawable/rectangle"
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/tv_layoutcustom"
@@ -191,59 +191,59 @@
                 android:textStyle="normal" />
 
             <ImageView
-                android:src="@drawable/arrow_dropdown"
-                android:layout_weight="0.1"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:src="@drawable/arrow_dropdown" />
 
 
         </LinearLayout>
 
         <EditText
-            android:visibility="gone"
             android:id="@+id/edt_gender_custom"
-            android:textSize="20sp"
-            android:textColor="@color/black"
-            android:textColorHint="#8c8d92"
-            android:maxLines="1"
-            android:textStyle="normal"
-            android:hint="Nhập giới tính của bạn (không bắt buộc)"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:hint="Nhập giới tính của bạn (không bắt buộc)"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textColorHint="#8c8d92"
+            android:textSize="20sp"
+            android:textStyle="normal"
+            android:visibility="gone" />
 
         <TextView
-            android:visibility="gone"
-            android:background="#f1f2f6"
             android:id="@+id/tv_gender"
-            android:gravity="center_vertical"
-            android:text="Nhập giới tính của bạn (không bắt buộc)"
-            android:textColor="#8c8d92"
-            android:maxLines="1"
-            android:textSize="18sp"
-            android:textStyle="normal"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp"
-            android:layout_marginStart="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"/>
+            android:background="#f1f2f6"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="Nhập giới tính của bạn (không bắt buộc)"
+            android:textColor="#8c8d92"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            android:visibility="gone" />
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/tv_custom1"
-            android:gravity="center_vertical"
-            android:text="Danh xưng của bạn hiển thị với tất cả mọi người."
-            android:textColor="#757577"
-            android:maxLines="1"
-            android:textSize="16sp"
-            android:textStyle="normal"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="2dp"
             android:layout_marginEnd="30dp"
-            android:layout_marginStart="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"/>
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:text="Danh xưng của bạn hiển thị với tất cả mọi người."
+            android:textColor="#757577"
+            android:textSize="16sp"
+            android:textStyle="normal"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_custom2"
@@ -269,18 +269,18 @@
 
 
         <TextView
-        android:id="@+id/btn_signup_sex_go"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="20dp"
-        android:background="@drawable/bg_8dp_all_lightblue_ripple"
-        android:gravity="center"
-        android:text="Tiếp"
-        android:textAllCaps="false"
-        android:textColor="#ecfcff"
-        android:textSize="20sp"
-        android:textStyle="bold"/>
+            android:id="@+id/btn_signup_sex_go"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/bg_8dp_all_lightblue_ripple"
+            android:gravity="center"
+            android:text="Tiếp"
+            android:textAllCaps="false"
+            android:textColor="#ecfcff"
+            android:textSize="20sp"
+            android:textStyle="bold" />
     </LinearLayout>
 </ScrollView>

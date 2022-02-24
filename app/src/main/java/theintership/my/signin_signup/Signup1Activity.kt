@@ -1,16 +1,20 @@
 package theintership.my.signin_signup
 
 import android.content.Intent
+import android.os.AsyncTask
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.loader.content.AsyncTaskLoader
 import theintership.my.MainActivity
 import theintership.my.R
 import theintership.my.`interface`.IReplaceFrag
 import theintership.my.`interface`.IToast
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.fragment.frag_signup_name
+import java.net.URL
+
 
 class Signup1Activity : AppCompatActivity(), IReplaceFrag, IToast {
 

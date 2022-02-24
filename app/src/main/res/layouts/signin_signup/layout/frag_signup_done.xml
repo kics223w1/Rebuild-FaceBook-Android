@@ -1,9 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background_white"
+    android:tag="frag_signup_done">
 
 
+    <LinearLayout
+        android:id="@+id/layout_1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/btn_signup_done_back"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:layout_weight="0.1"
+            android:background="@drawable/bg_circle_white"
+            android:src="@drawable/back_arrow" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_weight="0.9"
+            android:gravity="start"
+            android:text="Điều khoản và quyền riêng tư"
+            android:textColor="@color/black"
+            android:textSize="26sp"
+            android:textStyle="normal" />
 
 
-</LinearLayout>
+    </LinearLayout>
+
+
+    <View
+        android:id="@+id/layout_2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/layout_1"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/darker_gray" />
+
+    <TextView
+        android:id="@+id/layout_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_2"
+        android:layout_marginTop="25dp"
+        android:gravity="center"
+        android:text="Hoàn tất đăng ký"
+        android:textColor="@color/black"
+        android:textSize="26sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/layout_4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_3"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center"
+        android:text="Bằng cách nhấn vào Đăng ký, bạn đồng ý với Điều khoản, Chính sách dữ liệu và Chính sách cookie của chúng tôi. Bạn có thể nhận được thông báo của chúng tôi thông qua SMS và chọn không nhận bất cứ lúc nào. Thông tin từ danh bạ của bạn sẽ được tải lên Facebook liên tục để chúng tôi có thể gợi ý kết bạn, cung cấp, cải thiện quảng cáo cho bạn và người khác, cũng như mang đến dịch vụ tốt hơn."
+        android:textColor="#767676"
+        android:textSize="18sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/btn_signup_done_go"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/layout_4"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bg_8dp_all_lightblue_ripple"
+        android:gravity="center"
+        android:text="Đăng ký"
+        android:textAllCaps="false"
+        android:textColor="#ecfcff"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/btn_signup_done_go_2"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_below="@+id/btn_signup_done_go"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="Đăng ký mà không tải danh bạ của tôi lên"
+        android:textColor="#3d698c"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/layout_5"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="25dp"
+        android:gravity="center"
+        android:text="Thông tin liên hệ trong danh bạ của bạn, bao gồm tên, số điện thoại và biệt danh, sẽ được gửi đến Facebook để chúng tôi có thể gợi ý kết bạn, cung cấp, cải thiện quảng cáo cho bạn và người khác, cũng như mang đến dịch vụ tốt hơn. Bạn có thể tắt tính năng này trong phần Cài đặt, quản lý hoặc xóa bỏ thông tin liên hệ mình đã chia sẻ với Facebook."
+        android:textColor="#767676"
+        android:textSize="18sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/layout_5"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:text="Tìm hiểu thêm"
+        android:textColor="#3d698c"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

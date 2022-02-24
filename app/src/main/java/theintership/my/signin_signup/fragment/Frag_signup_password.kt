@@ -1,15 +1,19 @@
 package theintership.my.signin_signup.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
+import theintership.my.MainActivity
 import theintership.my.R
 import theintership.my.`interface`.IReplaceFrag
 import theintership.my.databinding.FragSignupPasswordBinding
 import theintership.my.signin_signup.Signup1Activity
+import theintership.my.signin_signup.dialog.dialog_stop_signup
 
 class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFrag {
 
@@ -24,8 +28,7 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFr
     ): View {
         _binding = FragSignupPasswordBinding.inflate(inflater, container, false)
         signup1Activity = activity as Signup1Activity
-        signup1Activity.getWindow()
-            .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
 
         binding.btnSignupPasswordGo.setOnClickListener {
             val password = binding.edtSignupPassword.text.toString()
@@ -48,7 +51,7 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFr
             goto_frag_signup_email()
         }
 
-        binding.btnSignupPasswordGo.setOnEditorActionListener { textView, i, keyEvent ->
+        binding.edtSignupPassword.setOnEditorActionListener { textView, i, keyEvent ->
             val password = binding.edtSignupPassword.text.toString()
             if (password.length < 6) {
                 val s = "Mật khẩu của bạn phải có tối thiểu 6 chữ cái, " +
@@ -70,6 +73,18 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFr
             true
         }
 
+        binding.btnSignupPaswordBack.setOnClickListener {
+            val dialog = dialog_stop_signup(signup1Activity)
+            dialog.show()
+            dialog.btn_cancel.setOnClickListener {
+                startActivity(Intent(signup1Activity, MainActivity::class.java))
+                signup1Activity.overridePendingTransition(
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+                )
+                dialog.dismiss()
+            }
+        }
 
         return binding.root
     }

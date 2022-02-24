@@ -36,6 +36,12 @@
 
     </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/darker_gray" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -107,7 +113,7 @@
        android:id="@+id/btn_signup_email_pass"
        android:textSize="14sp"
        android:textStyle="bold"
-       android:textColor="@color/light_blue"
+       android:textColor="#3d698c"
        android:layout_marginTop="5dp"
        android:gravity="center"
        android:text="Bỏ qua"

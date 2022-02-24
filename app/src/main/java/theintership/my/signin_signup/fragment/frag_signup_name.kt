@@ -2,11 +2,13 @@ package theintership.my.signin_signup.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
+import android.widget.BaseAdapter
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -25,13 +27,13 @@ import theintership.my.`interface`.IReplaceFrag
 import theintership.my.`interface`.IToast
 import theintership.my.databinding.FragSignupNameBinding
 import theintership.my.signin_signup.Signup1Activity
+import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 
 class Bat : IGetDataFromFirebase {
     override fun onSuccess(str: String) {
     }
 }
-
 
 class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToast {
 
@@ -41,6 +43,7 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
     private val RC_SIGN_IN = 1
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var signup1Activity: Signup1Activity
+    private lateinit var dialogLoading: dialog_loading
 
 
     override fun onCreateView(
@@ -52,6 +55,7 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
         signup1Activity = activity as Signup1Activity
         signup1Activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN or WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
         auth = Firebase.auth
+        dialogLoading = dialog_loading(signup1Activity)
         var check_name_empty = false
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
@@ -60,7 +64,8 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
 
         googleSignInClient = GoogleSignIn.getClient(signup1Activity, gso)
 
-        if (signup1Activity.signup_with_google){
+        if (signup1Activity.signup_with_google) {
+            dialogLoading.show()
             Firebase.auth.signOut()
             googleSignInClient.signOut()
             googleSignIn()
@@ -155,14 +160,14 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
     }
 
 
-    private fun move_error_edittext(){
+    private fun move_error_edittext() {
         binding.tvSignupName.setTextColor(resources.getColor(R.color.light_grey, null))
         binding.tvSignupName.text = "Nhập tên bạn sử dụng trong đời thực"
         binding.layoutSignupNameFirstname.isErrorEnabled = false
         binding.layoutSignupNameLastname.isErrorEnabled = false
     }
 
-    private fun set_error_edittext(){
+    private fun set_error_edittext() {
         binding.layoutSignupNameFirstname.isErrorEnabled = true
         binding.layoutSignupNameFirstname.error = "ok"
         binding.layoutSignupNameFirstname.errorIconDrawable = null
@@ -175,7 +180,7 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
     }
 
     private fun takelastname(name: String): String {
-        var index = 0
+        var index = -1
         var lastname = ""
         for (i in 0 until name.length) {
             if (name[i] == ' ') {
@@ -190,12 +195,15 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
 
 
     private fun takefirstname(name: String): String {
-        var index = 0
+        var index = -1
         var firstname = ""
         for (i in 0 until name.length) {
             if (name[i] == ' ') {
                 index = i
             }
+        }
+        if (index == -1) {
+            index = name.length
         }
         for (i in 0 until index) {
             firstname += name[i]
@@ -219,34 +227,39 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
                     firebaseAuthWithGoogle(account)
                 }
             } else {
+                dialogLoading.dismiss()
             }
+        } else {
+            dialogLoading.dismiss()
         }
     }
 
     private fun firebaseAuthWithGoogle(
         account: GoogleSignInAccount,
     ) {
-        var a = 1
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         try {
             CoroutineScope(Dispatchers.IO).launch {
                 auth.signInWithCredential(credential)
+                    .addOnCompleteListener(signup1Activity) { task ->
+                        if (task.isSuccessful) {
+                            if (Firebase.auth.currentUser != null) {
+                                val user = Firebase.auth.currentUser
+                                val name = user?.displayName.toString()
+                                binding.edtSignupNameLastname.setText(takelastname(name))
+                                binding.edtSignupNameFistname.setText(takefirstname(name))
+                                Firebase.auth.signOut()
+                                googleSignInClient.signOut()
+                                dialogLoading.dismiss()
+                            }
+                        } else {
+                            dialogLoading.dismiss()
+                            show("debug Log in fail", signup1Activity)
+                        }
+                    }
             }
         } catch (e: Exception) {
             show("Google login fail , pls try again", signup1Activity)
-            a = 2
-        }
-        while (Firebase.auth.currentUser != null || a == 1) {
-            if (Firebase.auth.currentUser != null) {
-                val user = Firebase.auth.currentUser
-                val name = user?.displayName.toString()
-                binding.edtSignupNameLastname.setText(takelastname(name))
-                binding.edtSignupNameFistname.setText(takefirstname(name))
-                Firebase.auth.signOut()
-                googleSignInClient.signOut()
-                break
-            }
         }
     }
-
 }

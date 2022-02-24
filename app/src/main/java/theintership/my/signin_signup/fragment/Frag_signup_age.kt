@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import theintership.my.MainActivity
 import theintership.my.R
@@ -61,6 +62,9 @@ class frag_signup_age : Fragment(R.layout.frag_signup_age), IReplaceFrag, IToast
 
         binding.edtSignupAge.setOnEditorActionListener { textView, i, KeyEvent ->
             val text_age = binding.edtSignupAge.text.toString()
+            if (i != EditorInfo.IME_ACTION_DONE){
+                false
+            }
             if (text_age == ""){
                 set_error_edittext()
                 false

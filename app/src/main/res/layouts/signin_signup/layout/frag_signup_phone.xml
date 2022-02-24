@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="@color/background_white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_white"
+    android:orientation="vertical"
     android:tag="frag_signup_phone">
 
     <LinearLayout
@@ -37,11 +37,19 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/layout2"
+
+    <View
         android:layout_below="@+id/layout1"
         android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/darker_gray" />
+
+    <TextView
+        android:id="@+id/layout2"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_below="@+id/layout1"
         android:layout_marginTop="50dp"
         android:gravity="center"
         android:text="Nhập số di động của bạn"
@@ -51,12 +59,12 @@
 
     <TextView
         android:id="@+id/tv_signup_phone_info"
-        android:layout_below="@+id/layout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/layout2"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
         android:gravity="center"
         android:text="Nhập số di động để liên hệ của bạn. Bạn có thể ẩn thông tin này trên trang cá nhân sau."
         android:textColor="#767676"
@@ -64,24 +72,24 @@
         android:textStyle="normal" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:layout_below="@+id/tv_signup_phone_info"
         android:id="@+id/layout_edt_signup_phone"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_below="@+id/tv_signup_phone_info"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
         android:hint="Số di động"
-        android:layout_centerHorizontal="true"
         app:boxStrokeColor="#e1582c"
-        app:hintTextColor="#e1582c"
         app:endIconMode="clear_text"
-        app:errorEnabled="true">
+        app:errorEnabled="true"
+        app:hintTextColor="#e1582c">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/edt_signup_phone"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:background="@color/white"
             android:gravity="start"
             android:imeOptions="actionDone"
@@ -91,7 +99,8 @@
             android:textCursorDrawable="@drawable/cursor_light_blue"
             android:textSize="20sp"
             android:textStyle="normal" />
-        <requestFocus/>
+
+        <requestFocus />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -114,15 +123,14 @@
 
     <TextView
         android:id="@+id/btn_signup_phone_email"
-        android:layout_alignParentBottom="true"
-        android:textColor="#2361b3"
-        android:gravity="center"
-        android:textSize="18sp"
-        android:textStyle="normal"
-        android:text="Đăng ký bằng địa chỉ email"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:text="Đăng ký bằng địa chỉ email"
+        android:textColor="#2361b3"
+        android:textSize="18sp"
+        android:textStyle="normal" />
 
 
 </RelativeLayout>

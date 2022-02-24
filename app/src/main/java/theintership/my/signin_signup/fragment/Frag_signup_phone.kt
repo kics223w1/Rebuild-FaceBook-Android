@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import theintership.my.MainActivity
 import theintership.my.R
@@ -37,23 +38,23 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone), IReplaceFrag {
                 return@setOnClickListener
             }
             move_error_edittext()
-            goto_frag_signup_email()
+            goto_frag_signup_password()
         }
 
-        binding.btnSignupPhoneGo.setOnEditorActionListener { textView, i, keyEvent ->
+        binding.edtSignupPhone.setOnEditorActionListener { textView, i, keyEvent ->
             val phone = binding.edtSignupPhone.text.toString()
-            if (phone.length <= 2) {
+            if (phone.length <= 2){
                 set_error_edittext()
                 false
             } else {
                 move_error_edittext()
-                goto_frag_signup_email()
+                goto_frag_signup_password()
                 true
             }
         }
 
         binding.btnSignupPhoneEmail.setOnClickListener {
-            goto_frag_signup_email()
+            goto_frag_signup_password()
         }
 
         binding.btnSignupPhoneBack.setOnClickListener {
@@ -84,10 +85,10 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone), IReplaceFrag {
         binding.tvSignupPhoneInfo.setTextColor(resources.getColor(R.color.light_grey, null))
     }
 
-    fun goto_frag_signup_email(){
+    fun goto_frag_signup_password(){
         replacefrag(
-            "frag_signup_email",
-            frag_signup_email(),
+            "frag_signup_password",
+            frag_signup_password(),
             signup1Activity.supportFragmentManager
         )
     }
