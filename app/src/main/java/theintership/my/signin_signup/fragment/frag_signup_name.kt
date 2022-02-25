@@ -65,6 +65,9 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
         googleSignInClient = GoogleSignIn.getClient(signup1Activity, gso)
 
         if (signup1Activity.signup_with_google) {
+            //With this condition ,google sign in just show one times
+            //If user return to this fragment from other fragment in signup
+            //google sign in will not show
             dialogLoading.show()
             Firebase.auth.signOut()
             googleSignInClient.signOut()

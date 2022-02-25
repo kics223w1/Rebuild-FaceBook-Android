@@ -8,12 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import theintership.my.MainActivity
 import theintership.my.R
 import theintership.my.`interface`.IReplaceFrag
 import theintership.my.`interface`.IToast
 import theintership.my.databinding.FragSignupSexBinding
 import theintership.my.signin_signup.Signup1Activity
+import theintership.my.signin_signup.dialog.dialog_bottom_sex
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 
 class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag {
@@ -81,12 +83,44 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
             binding.tvGender.visibility = View.VISIBLE
         }
 
+        binding.layoutCustom.setOnClickListener {
+            val dialog = dialog_bottom_sex(signup1Activity)
+            dialog.show()
+            dialog.layout_her.setOnClickListener {
+                binding.tvLayoutcustomInfo.text = "Cô ấy"
+                dialog.dismiss()
+            }
+            dialog.layout_him.setOnClickListener {
+                binding.tvLayoutcustomInfo.text = "Anh ấy"
+                dialog.dismiss()
+            }
+            dialog.layout_them.setOnClickListener {
+                binding.tvLayoutcustomInfo.text = "Họ"
+                dialog.dismiss()
+            }
+
+        }
+
         binding.tvGender.setOnClickListener {
             binding.edtGenderCustom.visibility = View.VISIBLE
             binding.tvGender.visibility = View.GONE
         }
 
         binding.btnSignupSexGo.setOnClickListener {
+            if (!check_select_sex()){
+                if (binding.radioSignupSexCustom.isChecked){
+                    binding.tvFragSignupSexInfo.text = "Vui lòng chọn danh xưng"
+                    binding.tvFragSignupSexInfo.setTextColor(resources.getColor(R.color.error , null))
+                    binding.tvLayoutcustomInfo.setTextColor(resources.getColor(R.color.error , null))
+                }else{
+                    binding.tvFragSignupSexInfo.text = "Vui lòng chọn giới tính của bạn"
+                    binding.tvFragSignupSexInfo.setTextColor(resources.getColor(R.color.error , null))
+                    binding.tvLayoutCustom.setTextColor(resources.getColor(R.color.error , null))
+                    binding.tvLayoutMale.setTextColor(resources.getColor(R.color.error , null))
+                    binding.tvLayoutFemale.setTextColor(resources.getColor(R.color.error , null))
+                }
+                return@setOnClickListener
+            }
             replacefrag(
                 "frag_signup_phone",
                 frag_signup_phone(),
@@ -114,7 +148,7 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
                 0
             )
         )
-        binding.tvLayoutcustom.setText(createIndentedText("Cô ấy", 20, 0))
+        binding.tvLayoutcustomInfo.setText(createIndentedText("Chọn danh xưng", 20, 0))
 
 
         return binding.root
@@ -133,6 +167,16 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
             0
         )
         return result
+    }
+
+    private fun check_select_sex() : Boolean{
+        if(binding.radioSignupSexFemale.isChecked) return true
+        if (binding.radioSignupSexMale.isChecked) return true
+        if (binding.radioSignupSexCustom.isChecked){
+            val text = binding.tvLayoutcustomInfo.text.toString()
+            if (text != "Chọn danh xưng") return true
+        }
+        return false
     }
 
 }

@@ -37,7 +37,6 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email), IToast, IReplace
         binding.btnSignupEmailGo.setOnClickListener {
             val email = binding.edtSignupEmail.text.toString()
             if (!check_email(email)){
-                show("Pls , type email with @gmail.com" , signup1activity)
                 return@setOnClickListener
             }
             goto_frag_done()
@@ -47,7 +46,6 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email), IToast, IReplace
             textview , i , keyevent ->
             val email = binding.edtSignupEmail.text.toString()
             if (!check_email(email)){
-                show("Pls , type email with @gmail.com" , signup1activity)
                 false
             }
             if (goto_frag_done()){
@@ -80,18 +78,18 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email), IToast, IReplace
     }
 
     private fun check_email(email : String) : Boolean{
-        if (email.contains("@gmail.com")){
-            return true
+        if (email == "") {
+            show("Vui lòng nhập email", signup1activity)
+            return false
+        }
+        if (!email.contains("@gmail.com")){
+            show("Pls , type email with @gmail.com" , signup1activity)
+            return false
         }
         return false
     }
 
     private fun goto_frag_done() : Boolean{
-        val email = binding.edtSignupEmail.text.toString()
-        if (email == "") {
-            show("Vui lòng nhập email", signup1activity)
-            return false
-        }
         replacefrag(
             "frag_signup_done",
             frag_signup_done(),

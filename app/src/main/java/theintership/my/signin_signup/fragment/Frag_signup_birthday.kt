@@ -42,6 +42,15 @@ class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday), IReplaceFr
 
 
         binding.btnSignupBirthdayGo.setOnClickListener {
+            if (age > 4) {
+                replacefrag(
+                    "frag_signup_sex",
+                    frag_signup_sex(),
+                    signup1Activity.supportFragmentManager
+                )
+                check_user_want_to_go_frag_age = false
+                return@setOnClickListener
+            }
             if (check_user_want_to_go_frag_age) {
                 replacefrag(
                     "frag_signup_age",
@@ -61,12 +70,6 @@ class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday), IReplaceFr
                 check_user_want_to_go_frag_age = true
                 return@setOnClickListener
             }
-
-            replacefrag(
-                tag = "frag_signup4",
-                frag = frag_signup_sex(),
-                fm = signup1Activity.supportFragmentManager
-            )
         }
 
         binding.btnSignupBirthdayBack.setOnClickListener {
