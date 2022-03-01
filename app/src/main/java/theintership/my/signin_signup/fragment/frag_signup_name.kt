@@ -218,13 +218,16 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
             // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
             if (requestCode == RC_SIGN_IN) {
                 val account = GoogleSignIn.getSignedInAccountFromIntent(data).result
+                println("debug vao request == rc")
                 account?.let {
                     firebaseAuthWithGoogle(account)
                 }
             } else {
+                println("debug vao request != rc")
                 dialogLoading.dismiss()
             }
         } else {
+            println("debug vao resultcode == 0")
             dialogLoading.dismiss()
         }
     }
