@@ -90,6 +90,7 @@
     <TextView
         android:id="@+id/btn_signup_done_go_2"
         android:layout_width="match_parent"
+        android:background="@drawable/bg_8dp_all_white"
         android:layout_height="30dp"
         android:layout_below="@+id/btn_signup_done_go"
         android:layout_marginTop="5dp"
@@ -117,6 +118,7 @@
 
     <TextView
         android:id="@+id/layout_5"
+        android:background="@drawable/bg_8dp_all_white"
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:layout_alignParentBottom="true"

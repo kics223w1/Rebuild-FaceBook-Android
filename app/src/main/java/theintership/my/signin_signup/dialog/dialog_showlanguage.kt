@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import theintership.my.R
-import theintership.my.model.language
+import theintership.my.model.Language
 import theintership.my.signin_signup.adapter_language
 
 class dialog_showlanguage(context: Context) : Dialog(context) , adapter_language.Interaction {
@@ -41,23 +41,23 @@ class dialog_showlanguage(context: Context) : Dialog(context) , adapter_language
 
     }
 
-    private fun initlist() : List<language>{
-        var list : MutableList<language> = mutableListOf()
-        list.add(language(1 , "Ngôn ngữ của thiết bị"))
-        list.add(language(2 , "Vietnamese"))
-        list.add(language(3 , "English"))
-        list.add(language(4 , "Korean"))
-        list.add(language(5 , "ThaiLand"))
-        list.add(language(6 , "Russian"))
-        list.add(language(7 , "Japanese"))
-        list.add(language(8 , "Germany"))
-        list.add(language(9 , "Indian"))
-        list.add(language(10 , "Chinese"))
-        list.add(language(11 , "Taiwan"))
+    private fun initlist() : List<Language>{
+        var list : MutableList<Language> = mutableListOf()
+        list.add(Language(1 , "Ngôn ngữ của thiết bị"))
+        list.add(Language(2 , "Vietnamese"))
+        list.add(Language(3 , "English"))
+        list.add(Language(4 , "Korean"))
+        list.add(Language(5 , "ThaiLand"))
+        list.add(Language(6 , "Russian"))
+        list.add(Language(7 , "Japanese"))
+        list.add(Language(8 , "Germany"))
+        list.add(Language(9 , "Indian"))
+        list.add(Language(10 , "Chinese"))
+        list.add(Language(11 , "Taiwan"))
         return list
     }
 
-    override fun onItemSelected(position: Int, item: language) {
+    override fun onItemSelected(position: Int, item: Language) {
         dismiss()
     }
 

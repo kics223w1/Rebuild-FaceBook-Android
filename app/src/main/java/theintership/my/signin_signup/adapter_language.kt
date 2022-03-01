@@ -7,20 +7,19 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
-import theintership.my.MainActivity
 import theintership.my.R
-import theintership.my.model.language
+import theintership.my.model.Language
 
 class adapter_language(private val interaction: Interaction? = null) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<language>() {
+    val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Language>() {
 
-        override fun areItemsTheSame(oldItem: language, newItem: language): Boolean {
+        override fun areItemsTheSame(oldItem: Language, newItem: Language): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: language, newItem: language): Boolean {
+        override fun areContentsTheSame(oldItem: Language, newItem: Language): Boolean {
             return oldItem == newItem
         }
 
@@ -51,7 +50,7 @@ class adapter_language(private val interaction: Interaction? = null) :
         return differ.currentList.size
     }
 
-    fun submitList(list: List<language>) {
+    fun submitList(list: List<Language>) {
         differ.submitList(list)
     }
 
@@ -64,7 +63,7 @@ class adapter_language(private val interaction: Interaction? = null) :
         lateinit var tv_name: TextView
         lateinit var btn_chose: TextView
 
-        fun bind(item: language) = with(itemView) {
+        fun bind(item: Language) = with(itemView) {
             btn_chose = itemView.findViewById(R.id.btn_itemlanguage_chose)
             tv_name = itemView.findViewById(R.id.tv_itemlanguage_name)
             tv_name.text = item.name
@@ -76,6 +75,6 @@ class adapter_language(private val interaction: Interaction? = null) :
     }
 
     interface Interaction {
-        fun onItemSelected(position: Int, item: language)
+        fun onItemSelected(position: Int, item: Language)
     }
 }

@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.BaseAdapter
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -29,6 +30,7 @@ import theintership.my.databinding.FragSignupNameBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.dialog.dialog_stop_signup
+import theintership.my.signin_signup.viewModel_Signin_Signup
 
 class Bat : IGetDataFromFirebase {
     override fun onSuccess(str: String) {
@@ -44,7 +46,7 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var signup1Activity: Signup1Activity
     private lateinit var dialogLoading: dialog_loading
-
+    private val viewModel_Signin_Signup: viewModel_Signin_Signup by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -78,6 +80,7 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
         binding.btnSignupNameGo.setOnClickListener {
             val firstname = binding.edtSignupNameFistname.text.toString()
             val lastname = binding.edtSignupNameLastname.text.toString()
+            val fullName = take_fullname_vietnamese(firstname , lastname)
             if (firstname == "" || lastname == "") {
                 check_name_empty = true
                 set_error_edittext()
@@ -92,38 +95,23 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
             }
 
             if (signup1Activity.go_to_frag_signup_age) {
-                replacefrag(
-                    tag = "frag_signup_age",
-                    frag = frag_signup_age(),
-                    fm = signup1Activity.supportFragmentManager
-                )
+                move_to_frag_age(fullName)
                 return@setOnClickListener
             }
 
-            replacefrag(
-                tag = "frag_signup_birthday",
-                frag = frag_signup_birthday(),
-                fm = signup1Activity.supportFragmentManager
-            )
+           move_to_frag_birthday(fullName)
 
         }
 
         binding.edtSignupNameLastname.setOnEditorActionListener { textView, i, keyEvent ->
             val firstname = binding.edtSignupNameFistname.text.toString()
             val lastname = binding.edtSignupNameLastname.text.toString()
+            val fullName = take_fullname_vietnamese(firstname , lastname)
             if (i == EditorInfo.IME_ACTION_DONE && firstname != "" && lastname != "") {
                 if (signup1Activity.go_to_frag_signup_age) {
-                    replacefrag(
-                        tag = "frag_signup_age",
-                        frag = frag_signup_age(),
-                        fm = signup1Activity.supportFragmentManager
-                    )
+                   move_to_frag_age(fullName)
                 } else {
-                    replacefrag(
-                        tag = "frag_signup_birthday",
-                        frag = frag_signup_birthday(),
-                        fm = signup1Activity.supportFragmentManager
-                    )
+                  move_to_frag_birthday(fullName)
                 }
                 true
             } else {
@@ -214,6 +202,10 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
         return firstname
     }
 
+    private fun take_fullname_vietnamese(firstName : String , lastName : String) : String{
+        return lastName + " " + firstName
+    }
+
 
     private fun googleSignIn() {
         val signInIntent = googleSignInClient.signInIntent
@@ -226,13 +218,16 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
             // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
             if (requestCode == RC_SIGN_IN) {
                 val account = GoogleSignIn.getSignedInAccountFromIntent(data).result
+                println("debug vao request == rc")
                 account?.let {
                     firebaseAuthWithGoogle(account)
                 }
             } else {
+                println("debug vao request != rc")
                 dialogLoading.dismiss()
             }
         } else {
+            println("debug vao resultcode == 0")
             dialogLoading.dismiss()
         }
     }
@@ -257,12 +252,30 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
                             }
                         } else {
                             dialogLoading.dismiss()
-                            show("debug Log in fail", signup1Activity)
+                            show("Kết nối firebase xảy ra vấn đề , hãy nhập họ và tên của bạn", signup1Activity)
                         }
                     }
             }
         } catch (e: Exception) {
-            show("Google login fail , pls try again", signup1Activity)
+            show("Kết nối firebase xảy ra vấn đề , hãy nhập họ và tên của bạn", signup1Activity)
         }
+    }
+
+    private fun move_to_frag_age(fullName : String){
+        replacefrag(
+            tag = "frag_signup_age",
+            frag = frag_signup_age(),
+            fm = signup1Activity.supportFragmentManager
+        )
+        viewModel_Signin_Signup.set_user_fullname(fullname = fullName)
+    }
+
+    private fun move_to_frag_birthday(fullName: String){
+        replacefrag(
+            tag = "frag_signup_birthday",
+            frag = frag_signup_birthday(),
+            fm = signup1Activity.supportFragmentManager
+        )
+        viewModel_Signin_Signup.set_user_fullname(fullname = fullName)
     }
 }

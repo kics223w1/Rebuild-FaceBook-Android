@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Admin/AndroidStudioProjects/the-intership/app/src/main/res/layouts/dialog/layout/dialog_stop_signup.xml" value="0.16576086956521738" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/the-intership/app/src/main/res/layouts/signin_signup/layout/frag_signup_creating_account.xml" value="0.1" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/the-intership/app/src/main/res/layouts/signin_signup/layout/frag_signup_signing_in.xml" value="0.1109375" />
       </map>

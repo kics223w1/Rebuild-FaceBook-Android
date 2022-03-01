@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import theintership.my.MainActivity
 import theintership.my.R
 import theintership.my.`interface`.IReplaceFrag
@@ -13,6 +14,7 @@ import theintership.my.`interface`.IToast
 import theintership.my.databinding.FragSignupBirthdayBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
+import theintership.my.signin_signup.viewModel_Signin_Signup
 import java.util.*
 
 class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday), IReplaceFrag, IToast {
@@ -20,6 +22,8 @@ class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday), IReplaceFr
     private var _binding: FragSignupBirthdayBinding? = null
     private val binding get() = _binding!!
     private lateinit var signup1Activity: Signup1Activity
+    private val viewModel_Signin_Signup: viewModel_Signin_Signup by activityViewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +35,7 @@ class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday), IReplaceFr
         var check_user_want_to_go_frag_age = false
         val today = Calendar.getInstance()
         var age = -1
+        var birthday = ""
 
         binding.datePickerSignupBirthday.maxDate = today.timeInMillis
         binding.datePickerSignupBirthday.init(
@@ -38,25 +43,18 @@ class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday), IReplaceFr
         ) { view, year, month, day ->
             age = today.get(Calendar.YEAR) - year
             binding.tvSignupBirthdayShowage.text = "${age} tuổi"
+            birthday = day.toString() + "/" + month.toString() + "/" + year.toString()
         }
 
 
         binding.btnSignupBirthdayGo.setOnClickListener {
             if (age > 4) {
-                replacefrag(
-                    "frag_signup_sex",
-                    frag_signup_sex(),
-                    signup1Activity.supportFragmentManager
-                )
+                move_to_frag_sex(age , birthday)
                 check_user_want_to_go_frag_age = false
                 return@setOnClickListener
             }
             if (check_user_want_to_go_frag_age) {
-                replacefrag(
-                    "frag_signup_age",
-                    frag_signup_age(),
-                    signup1Activity.supportFragmentManager
-                )
+                move_to_frag_age()
                 signup1Activity.go_to_frag_signup_age = true
                 check_user_want_to_go_frag_age = false
                 return@setOnClickListener
@@ -66,7 +64,9 @@ class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday), IReplaceFr
                 binding.tvSignupBirthdayInfo.text =
                     "Hình như bạn đã nhập sai thông tin. Hãy nhớ dùng ngày sinh nhật thật của mình nhé."
                 binding.tvSignupBirthdayInfo.setTextColor(resources.getColor(R.color.error, null))
-                if (age == -1) binding.tvSignupBirthdayShowage.text = "1 tuổi"
+                if (age == -1) {
+                    binding.tvSignupBirthdayShowage.text = "1 tuổi"
+                }
                 check_user_want_to_go_frag_age = true
                 return@setOnClickListener
             }
@@ -86,6 +86,24 @@ class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday), IReplaceFr
         }
 
         return binding.root
+    }
+
+    private fun move_to_frag_sex(age: Int , birthday : String) {
+        replacefrag(
+            "frag_signup_sex",
+            frag_signup_sex(),
+            signup1Activity.supportFragmentManager
+        )
+        viewModel_Signin_Signup.set_user_birthday(birthday = birthday)
+        viewModel_Signin_Signup.set_user_age(age)
+    }
+
+    private fun move_to_frag_age(){
+        replacefrag(
+            "frag_signup_age",
+            frag_signup_age(),
+            signup1Activity.supportFragmentManager
+        )
     }
 
 }
