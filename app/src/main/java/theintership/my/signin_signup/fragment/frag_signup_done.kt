@@ -41,31 +41,10 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done), IReplaceFrag, IToa
         binding.btnSignupDoneGo.setOnClickListener {
             val phone = viewmodelSigninSignup.User.phone.toString()
             val email = viewmodelSigninSignup.User.email.toString()
-            val ref_phone_and_email =database.child("phone and email").orderByKey().limitToLast(1)
-            ref_phone_and_email.addListenerForSingleValueEvent(object  : ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val list = snapshot.children
-                    var cnt = 0
-                    list.forEach {
-                        cnt++
-                        val mid = it.child("id").getValue().toString()
-                        val mphone = it.child("phone").getValue().toString()
-                        val memail = it.child("email").getValue().toString()
-                        println("debug mphone : $mphone")
-                        println("debug memail : $memail")
-                        println("debug mid: $mid")
-                        println("debug cnt: $cnt")
-                    }
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-
-            })
 
 
-            //check_phone_and_email(phone , email)
+
+            check_phone_and_email(phone , email)
         }
 
         binding.btnSignupDoneGo2.setOnClickListener {
@@ -95,8 +74,8 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done), IReplaceFrag, IToa
 
     private fun move_to_frag_create_account(){
         replacefrag(
-            "frag_signup_create_account",
-            frag_signup_create_account(),
+            "frag_signup_creating_account",
+            frag_signup_creating_account(),
             signup1activity.supportFragmentManager
         )
     }
@@ -111,13 +90,15 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done), IReplaceFrag, IToa
                 list.forEach {
                     val mphone = it.child("phone").getValue().toString()
                     val memail = it.child("email").getValue().toString()
-                    println("debug mphone : $mphone")
-                    println("debug memail : $memail")
                     if (mphone == phone){
                        viewmodelSigninSignup.set_user_phone("")
                     }
                     if (memail == email){
                         viewmodelSigninSignup.set_user_email("")
+                    }
+                    if (mphone == phone && memail == email){
+                        //User sign up type phone and email same with old user
+                        viewmodelSigninSignup.same_person = true
                     }
                 }
                 //Why this function must be here

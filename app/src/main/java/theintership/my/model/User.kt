@@ -10,6 +10,7 @@ data class User(
     var email : String? = null,
     var sex : String? = null ,
     var pronoun : String? = null,
+    var gender : String? = null,
     var age : Int,
     var birthday : String? = null
 ) {

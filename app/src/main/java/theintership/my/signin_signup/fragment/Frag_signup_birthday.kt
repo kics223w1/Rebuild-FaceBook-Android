@@ -35,6 +35,7 @@ class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday), IReplaceFr
         var check_user_want_to_go_frag_age = false
         val today = Calendar.getInstance()
         var age = -1
+        var birthday = ""
 
         binding.datePickerSignupBirthday.maxDate = today.timeInMillis
         binding.datePickerSignupBirthday.init(
@@ -42,12 +43,13 @@ class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday), IReplaceFr
         ) { view, year, month, day ->
             age = today.get(Calendar.YEAR) - year
             binding.tvSignupBirthdayShowage.text = "${age} tuổi"
+            birthday = day.toString() + "/" + month.toString() + "/" + year.toString()
         }
 
 
         binding.btnSignupBirthdayGo.setOnClickListener {
             if (age > 4) {
-                move_to_frag_sex(age)
+                move_to_frag_sex(age , birthday)
                 check_user_want_to_go_frag_age = false
                 return@setOnClickListener
             }
@@ -86,12 +88,13 @@ class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday), IReplaceFr
         return binding.root
     }
 
-    private fun move_to_frag_sex(age: Int) {
+    private fun move_to_frag_sex(age: Int , birthday : String) {
         replacefrag(
             "frag_signup_sex",
             frag_signup_sex(),
             signup1Activity.supportFragmentManager
         )
+        viewModel_Signin_Signup.set_user_birthday(birthday = birthday)
         viewModel_Signin_Signup.set_user_age(age)
     }
 

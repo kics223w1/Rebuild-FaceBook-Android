@@ -49,12 +49,15 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email), IToast, IReplace
             textview , i , keyevent ->
             val email = binding.edtSignupEmail.text.toString()
             if (!check_email(email)){
+                println("debug vao false trong editemail")
                 false
-            }
-            if (goto_frag_done(email)){
-                true
             }else{
-                false
+                if (goto_frag_done(email)){
+                    println("debug vao true edtemail")
+                    true
+                }else{
+                    false
+                }
             }
         }
 
@@ -85,8 +88,14 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email), IToast, IReplace
             show("Vui lòng nhập email", signup1activity)
             return false
         }
+        email.forEach {
+            if (it == ' '){
+                show("Email không thể có khoảng trắng" , signup1activity)
+                return false
+            }
+        }
         if (!email.contains("@gmail.com")){
-            show("Pls , type email with @gmail.com" , signup1activity)
+            showLong("Email phải là email định dạng @gmail.com\n ví dụ: huyhuy@gmail.com" , signup1activity)
             return false
         }
         return true

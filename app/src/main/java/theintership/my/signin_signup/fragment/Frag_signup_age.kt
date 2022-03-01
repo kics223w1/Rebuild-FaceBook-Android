@@ -18,6 +18,7 @@ import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_signup_age
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.viewModel_Signin_Signup
+import java.util.*
 
 
 class frag_signup_age : Fragment(R.layout.frag_signup_age), IReplaceFrag, IToast {
@@ -126,16 +127,25 @@ class frag_signup_age : Fragment(R.layout.frag_signup_age), IReplaceFrag, IToast
         binding.layoutEdtSignupAge.errorIconDrawable = null
     }
 
+    private fun set_birthday(age: Int): String {
+        val today = Calendar.getInstance()
+        var birthday =
+            "${today.get(Calendar.DAY_OF_MONTH)} ${today.get(Calendar.MONTH)} ${today.get(Calendar.YEAR) - age}"
+        return birthday
+    }
+
     private fun move_to_frag_sex(age: Int) {
         replacefrag(
             "frag_signup_sex",
             frag_signup_sex(),
             signup1Activity.supportFragmentManager
         )
+        val birthday = set_birthday(age)
+        viewModel_Signin_Signup.set_user_birthday(birthday)
         viewModel_Signin_Signup.set_user_age(age)
     }
 
-    private fun move_to_frag_birthday(){
+    private fun move_to_frag_birthday() {
         replacefrag(
             "frag_signup_birthday",
             frag_signup_birthday(),

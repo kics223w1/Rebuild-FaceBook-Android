@@ -125,7 +125,8 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
             }
             val sex = take_sex()
             val pronoun = take_pronoun()
-            move_to_frag_phone(sex , pronoun)
+            val gender = binding.edtGenderCustom.text.toString()
+            move_to_frag_phone(sex , pronoun , gender)
         }
 
         binding.btnSignupSexBack.setOnClickListener {
@@ -194,7 +195,7 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
         return ""
     }
 
-    private fun move_to_frag_phone(sex : String , pronoun : String){
+    private fun move_to_frag_phone(sex : String , pronoun : String , gender : String){
         replacefrag(
             "frag_signup_phone",
             frag_signup_phone(),
@@ -202,6 +203,7 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
         )
         viewModel_Signin_Signup.set_user_sex(sex)
         viewModel_Signin_Signup.set_user_pronoun(pronoun)
+        viewModel_Signin_Signup.set_user_gender(gender)
     }
 
 }
