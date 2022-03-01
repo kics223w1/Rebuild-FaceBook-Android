@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import theintership.my.MainActivity
 import theintership.my.R
@@ -13,7 +12,6 @@ import theintership.my.`interface`.IReplaceFrag
 import theintership.my.databinding.FragSignupDoneBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
-import kotlin.math.sign
 
 
 class frag_signup_done : Fragment(R.layout.frag_signup_done), IReplaceFrag {
@@ -33,7 +31,7 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done), IReplaceFrag {
         binding.btnSignupDoneGo.setOnClickListener {
             replacefrag(
                 "frag_signup_create_account",
-                frag_signup_create_account(),
+                frag_signup_creating_account(),
                 signup1activity.supportFragmentManager
             )
         }

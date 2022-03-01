@@ -46,7 +46,7 @@
 
     <ProgressBar
         android:visibility="gone"
-        android:id="@+id/progress_create_account"
+        android:id="@+id/progress_creating_account"
         android:layout_marginTop="120dp"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
@@ -55,7 +55,7 @@
 
     <TextView
         android:visibility="gone"
-        android:id="@+id/tv_frag_signup_create_account_info"
+        android:id="@+id/tv_frag_signup_creating_account_info"
         android:layout_marginTop="10dp"
         android:gravity="center"
         android:textSize="26sp"
@@ -66,7 +66,7 @@
         android:layout_height="40dp"/>
 
     <ImageView
-        android:id="@+id/icon_create_account_success"
+        android:id="@+id/icon_creating_account_success"
         android:layout_marginTop="140dp"
         android:layout_gravity="center"
         android:src="@drawable/icon_like"
