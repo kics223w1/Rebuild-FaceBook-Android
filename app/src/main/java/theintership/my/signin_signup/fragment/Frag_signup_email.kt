@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import theintership.my.MainActivity
 import theintership.my.R
 import theintership.my.`interface`.IReplaceFrag
@@ -14,6 +15,7 @@ import theintership.my.`interface`.IToast
 import theintership.my.databinding.FragSignupEmailBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
+import theintership.my.signin_signup.viewModel_Signin_Signup
 
 
 class frag_signup_email : Fragment(R.layout.frag_signup_email), IToast, IReplaceFrag {
@@ -21,6 +23,7 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email), IToast, IReplace
     private var _binding: FragSignupEmailBinding? = null
     private val binding get() = _binding!!
     private lateinit var signup1activity: Signup1Activity
+    private val viewModel_Signin_Signup: viewModel_Signin_Signup by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,7 +42,7 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email), IToast, IReplace
             if (!check_email(email)){
                 return@setOnClickListener
             }
-            goto_frag_done()
+            goto_frag_done(email)
         }
 
         binding.edtSignupEmail.setOnEditorActionListener{
@@ -48,7 +51,7 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email), IToast, IReplace
             if (!check_email(email)){
                 false
             }
-            if (goto_frag_done()){
+            if (goto_frag_done(email)){
                 true
             }else{
                 false
@@ -56,7 +59,7 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email), IToast, IReplace
         }
 
         binding.btnSignupEmailPass.setOnClickListener {
-            goto_frag_done()
+            goto_frag_done("")
         }
 
         binding.btnSignupEmailBack.setOnClickListener {
@@ -86,15 +89,16 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email), IToast, IReplace
             show("Pls , type email with @gmail.com" , signup1activity)
             return false
         }
-        return false
+        return true
     }
 
-    private fun goto_frag_done() : Boolean{
+    private fun goto_frag_done(email :String) : Boolean{
         replacefrag(
             "frag_signup_done",
             frag_signup_done(),
             signup1activity.supportFragmentManager
         )
+        viewModel_Signin_Signup.set_user_email(email = email)
         return true
     }
 }

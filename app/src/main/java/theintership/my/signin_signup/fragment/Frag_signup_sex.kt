@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import androidx.fragment.app.activityViewModels
 import theintership.my.MainActivity
 import theintership.my.R
 import theintership.my.`interface`.IReplaceFrag
@@ -17,12 +17,14 @@ import theintership.my.databinding.FragSignupSexBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_bottom_sex
 import theintership.my.signin_signup.dialog.dialog_stop_signup
+import theintership.my.signin_signup.viewModel_Signin_Signup
 
 class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag {
 
     private var _binding: FragSignupSexBinding? = null
     private val binding get() = _binding!!
     private lateinit var signup1Activity: Signup1Activity
+    private val viewModel_Signin_Signup : viewModel_Signin_Signup by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -121,11 +123,9 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
                 }
                 return@setOnClickListener
             }
-            replacefrag(
-                "frag_signup_phone",
-                frag_signup_phone(),
-                signup1Activity.supportFragmentManager
-            )
+            val sex = take_sex()
+            val pronoun = take_pronoun()
+            move_to_frag_phone(sex , pronoun)
         }
 
         binding.btnSignupSexBack.setOnClickListener {
@@ -177,6 +177,31 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
             if (text != "Chọn danh xưng") return true
         }
         return false
+    }
+
+    private fun take_sex() : String{
+        if (binding.radioSignupSexMale.isChecked) return "Male"
+        if (binding.radioSignupSexFemale.isChecked) return "Female"
+        if (binding.radioSignupSexCustom.isChecked) return "Custom"
+        return ""
+    }
+
+    private fun take_pronoun() : String{
+        if (binding.radioSignupSexCustom.isChecked){
+            val pronoun = binding.tvLayoutcustomInfo.text.toString()
+            return pronoun
+        }
+        return ""
+    }
+
+    private fun move_to_frag_phone(sex : String , pronoun : String){
+        replacefrag(
+            "frag_signup_phone",
+            frag_signup_phone(),
+            signup1Activity.supportFragmentManager
+        )
+        viewModel_Signin_Signup.set_user_sex(sex)
+        viewModel_Signin_Signup.set_user_pronoun(pronoun)
     }
 
 }

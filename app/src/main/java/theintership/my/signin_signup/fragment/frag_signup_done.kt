@@ -5,22 +5,29 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import com.google.firebase.database.*
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import theintership.my.MainActivity
 import theintership.my.R
 import theintership.my.`interface`.IReplaceFrag
+import theintership.my.`interface`.IToast
 import theintership.my.databinding.FragSignupDoneBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
-import kotlin.math.sign
+import theintership.my.signin_signup.viewModel_Signin_Signup
 
 
-class frag_signup_done : Fragment(R.layout.frag_signup_done), IReplaceFrag {
+class frag_signup_done : Fragment(R.layout.frag_signup_done), IReplaceFrag, IToast {
 
     private var _binding: FragSignupDoneBinding? = null
     private val binding get() = _binding!!
     private lateinit var signup1activity: Signup1Activity
+    private var database: DatabaseReference = Firebase.database.reference
+    private val viewmodelSigninSignup : viewModel_Signin_Signup by activityViewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,12 +37,41 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done), IReplaceFrag {
         _binding = FragSignupDoneBinding.inflate(inflater, container, false)
         signup1activity = activity as Signup1Activity
 
+
         binding.btnSignupDoneGo.setOnClickListener {
-            replacefrag(
-                "frag_signup_create_account",
-                frag_signup_create_account(),
-                signup1activity.supportFragmentManager
-            )
+            val phone = viewmodelSigninSignup.User.phone.toString()
+            val email = viewmodelSigninSignup.User.email.toString()
+            val ref_phone_and_email =database.child("phone and email").orderByKey().limitToLast(1)
+            ref_phone_and_email.addListenerForSingleValueEvent(object  : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val list = snapshot.children
+                    var cnt = 0
+                    list.forEach {
+                        cnt++
+                        val mid = it.child("id").getValue().toString()
+                        val mphone = it.child("phone").getValue().toString()
+                        val memail = it.child("email").getValue().toString()
+                        println("debug mphone : $mphone")
+                        println("debug memail : $memail")
+                        println("debug mid: $mid")
+                        println("debug cnt: $cnt")
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+
+
+            //check_phone_and_email(phone , email)
+        }
+
+        binding.btnSignupDoneGo2.setOnClickListener {
+            val phone = viewmodelSigninSignup.User.phone.toString()
+            val email = viewmodelSigninSignup.User.email.toString()
+            check_phone_and_email(phone , email)
         }
 
 
@@ -55,6 +91,46 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done), IReplaceFrag {
 
 
         return binding.root
+    }
+
+    private fun move_to_frag_create_account(){
+        replacefrag(
+            "frag_signup_create_account",
+            frag_signup_create_account(),
+            signup1activity.supportFragmentManager
+        )
+    }
+
+    private fun check_phone_and_email(phone : String , email : String){
+        //If user has same phone or email with old user
+        //I will set it to ""
+        val myref = database.child("phone and email")
+        val postListener = object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val list = snapshot.children
+                list.forEach {
+                    val mphone = it.child("phone").getValue().toString()
+                    val memail = it.child("email").getValue().toString()
+                    println("debug mphone : $mphone")
+                    println("debug memail : $memail")
+                    if (mphone == phone){
+                       viewmodelSigninSignup.set_user_phone("")
+                    }
+                    if (memail == email){
+                        viewmodelSigninSignup.set_user_email("")
+                    }
+                }
+                //Why this function must be here
+                //Because firebase function always the last thing program does
+                //So i must do what i want to do in firebase function
+                move_to_frag_create_account()
+            }
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        }
+        myref.addValueEventListener(postListener)
     }
 
 }

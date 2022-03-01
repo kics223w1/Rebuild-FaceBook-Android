@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import theintership.my.MainActivity
 import theintership.my.R
 import theintership.my.`interface`.IReplaceFrag
@@ -16,7 +17,7 @@ import theintership.my.databinding.FragSignupAgeBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_signup_age
 import theintership.my.signin_signup.dialog.dialog_stop_signup
-import kotlin.math.sign
+import theintership.my.signin_signup.viewModel_Signin_Signup
 
 
 class frag_signup_age : Fragment(R.layout.frag_signup_age), IReplaceFrag, IToast {
@@ -24,6 +25,8 @@ class frag_signup_age : Fragment(R.layout.frag_signup_age), IReplaceFrag, IToast
     private var _binding: FragSignupAgeBinding? = null
     private val binding get() = _binding!!
     private lateinit var signup1Activity: Signup1Activity
+    private val viewModel_Signin_Signup: viewModel_Signin_Signup by activityViewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,9 +40,9 @@ class frag_signup_age : Fragment(R.layout.frag_signup_age), IReplaceFrag, IToast
 
         binding.btnSignupAgeGo.setOnClickListener {
             val text_age = binding.edtSignupAge.text.toString()
-            if (text_age == ""){
-               set_error_edittext()
-               return@setOnClickListener
+            if (text_age == "") {
+                set_error_edittext()
+                return@setOnClickListener
             }
             val age = text_age.toInt()
             if (age >= 118) {
@@ -50,11 +53,7 @@ class frag_signup_age : Fragment(R.layout.frag_signup_age), IReplaceFrag, IToast
             val dialog = dialog_signup_age(signup1Activity, age)
             dialog.show()
             dialog.btn_go.setOnClickListener {
-                replacefrag(
-                    "frag_signup_sex",
-                    frag_signup_sex(),
-                    signup1Activity.supportFragmentManager
-                )
+                move_to_frag_sex(age)
                 signup1Activity.go_to_frag_signup_age = false
                 dialog.dismiss()
             }
@@ -62,47 +61,40 @@ class frag_signup_age : Fragment(R.layout.frag_signup_age), IReplaceFrag, IToast
 
         binding.edtSignupAge.setOnEditorActionListener { textView, i, KeyEvent ->
             val text_age = binding.edtSignupAge.text.toString()
-            if (i != EditorInfo.IME_ACTION_DONE){
+            if (i != EditorInfo.IME_ACTION_DONE) {
                 false
             }
-            if (text_age == ""){
+            if (text_age == "") {
                 set_error_edittext()
                 false
-            }else{
+            } else {
                 val age = text_age.toInt()
                 if (age >= 118) {
                     set_error_edittext()
                     false
-                }else{
+                } else {
                     val dialog = dialog_signup_age(signup1Activity, age)
                     dialog.show()
                     dialog.btn_go.setOnClickListener {
-                        replacefrag(
-                            "frag_signup_sex",
-                            frag_signup_sex(),
-                            signup1Activity.supportFragmentManager
-                        )
+                        move_to_frag_sex(age)
                         signup1Activity.go_to_frag_signup_age = false
                         dialog.dismiss()
                     }
                     true
                 }
             }
-       }
+        }
 
         binding.btnSignupAgePopback.setOnClickListener {
             val size = signup1Activity.supportFragmentManager.backStackEntryCount
-            val frag_after_fragAge = signup1Activity.supportFragmentManager.getBackStackEntryAt(size - 2)
+            val frag_after_fragAge =
+                signup1Activity.supportFragmentManager.getBackStackEntryAt(size - 2)
             //size always >= 2
 
             if (frag_after_fragAge.name == "frag_signup_name") {
                 //User go to frag_signup_age from frag_signup_name , so need to replacefrag
                 signup1Activity.supportFragmentManager.popBackStack()
-                replacefrag(
-                    "frag_signup_birthday",
-                    frag_signup_birthday(),
-                    signup1Activity.supportFragmentManager
-                )
+                move_to_frag_birthday()
                 signup1Activity.go_to_frag_signup_age = false
                 return@setOnClickListener
             }
@@ -127,11 +119,28 @@ class frag_signup_age : Fragment(R.layout.frag_signup_age), IReplaceFrag, IToast
         return binding.root
     }
 
-    fun set_error_edittext(){
+    fun set_error_edittext() {
         binding.tvSignupAgeInfoError.visibility = View.VISIBLE
         binding.layoutEdtSignupAge.isErrorEnabled = true
         binding.layoutEdtSignupAge.error = "ok"
         binding.layoutEdtSignupAge.errorIconDrawable = null
+    }
+
+    private fun move_to_frag_sex(age: Int) {
+        replacefrag(
+            "frag_signup_sex",
+            frag_signup_sex(),
+            signup1Activity.supportFragmentManager
+        )
+        viewModel_Signin_Signup.set_user_age(age)
+    }
+
+    private fun move_to_frag_birthday(){
+        replacefrag(
+            "frag_signup_birthday",
+            frag_signup_birthday(),
+            signup1Activity.supportFragmentManager
+        )
     }
 
 }
