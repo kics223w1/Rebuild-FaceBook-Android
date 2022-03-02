@@ -28,7 +28,7 @@
             android:layout_marginStart="15dp"
             android:layout_weight="0.9"
             android:gravity="start"
-            android:text="Điều khoản và quyền riêng tư"
+            android:text="Terms and Privacy"
             android:textColor="@color/black"
             android:textSize="26sp"
             android:textStyle="normal" />
@@ -52,7 +52,7 @@
         android:layout_below="@id/layout_2"
         android:layout_marginTop="25dp"
         android:gravity="center"
-        android:text="Hoàn tất đăng ký"
+        android:text="Finish signing up"
         android:textColor="@color/black"
         android:textSize="26sp"
         android:textStyle="normal" />
@@ -66,7 +66,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:text="Bằng cách nhấn vào Đăng ký, bạn đồng ý với Điều khoản, Chính sách dữ liệu và Chính sách cookie của chúng tôi. Bạn có thể nhận được thông báo của chúng tôi thông qua SMS và chọn không nhận bất cứ lúc nào. Thông tin từ danh bạ của bạn sẽ được tải lên Facebook liên tục để chúng tôi có thể gợi ý kết bạn, cung cấp, cải thiện quảng cáo cho bạn và người khác, cũng như mang đến dịch vụ tốt hơn."
+        android:text="By tapping Sign up, you agree to out Term, Data Policy and Cokkies Policy. You may receive SMS notifications from us and can opt out any time. Information from your address book will be continously uploaded to Facebook so we can suggest friends and provide and improve ads for you and others, and offer a better service."
         android:textColor="#767676"
         android:textSize="18sp"
         android:textStyle="normal" />
@@ -81,7 +81,7 @@
         android:layout_marginEnd="20dp"
         android:background="@drawable/bg_8dp_all_lightblue_ripple"
         android:gravity="center"
-        android:text="Đăng ký"
+        android:text="Sign up"
         android:textAllCaps="false"
         android:textColor="#ecfcff"
         android:textSize="20sp"
@@ -95,7 +95,7 @@
         android:layout_below="@+id/btn_signup_done_go"
         android:layout_marginTop="5dp"
         android:gravity="center"
-        android:text="Đăng ký mà không tải danh bạ của tôi lên"
+        android:text="Sign up without uploading my contacts"
         android:textColor="#3d698c"
         android:textSize="14sp"
         android:textStyle="bold" />
@@ -111,7 +111,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="25dp"
         android:gravity="center"
-        android:text="Thông tin liên hệ trong danh bạ của bạn, bao gồm tên, số điện thoại và biệt danh, sẽ được gửi đến Facebook để chúng tôi có thể gợi ý kết bạn, cung cấp, cải thiện quảng cáo cho bạn và người khác, cũng như mang đến dịch vụ tốt hơn. Bạn có thể tắt tính năng này trong phần Cài đặt, quản lý hoặc xóa bỏ thông tin liên hệ mình đã chia sẻ với Facebook."
+        android:text="Info about contacts in your address book, including names, phone numbers and nicknames, will be sent to Facebook so we can suggest friends and provide and improve ads for you and others , and offer a better service. You can turn this off in Settings and manage or delete contact info you share with Facebook."
         android:textColor="#767676"
         android:textSize="18sp"
         android:textStyle="normal" />
@@ -123,7 +123,7 @@
         android:layout_height="25dp"
         android:layout_alignParentBottom="true"
         android:gravity="center"
-        android:text="Tìm hiểu thêm"
+        android:text="Learn More."
         android:textColor="#3d698c"
         android:textSize="14sp"
         android:textStyle="bold" />

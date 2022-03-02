@@ -89,15 +89,15 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
             val dialog = dialog_bottom_sex(signup1Activity)
             dialog.show()
             dialog.layout_her.setOnClickListener {
-                binding.tvLayoutcustomInfo.text = "Cô ấy"
+                binding.tvLayoutcustomInfo.text = "She"
                 dialog.dismiss()
             }
             dialog.layout_him.setOnClickListener {
-                binding.tvLayoutcustomInfo.text = "Anh ấy"
+                binding.tvLayoutcustomInfo.text = "He"
                 dialog.dismiss()
             }
             dialog.layout_them.setOnClickListener {
-                binding.tvLayoutcustomInfo.text = "Họ"
+                binding.tvLayoutcustomInfo.text = "They"
                 dialog.dismiss()
             }
 
@@ -111,11 +111,11 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
         binding.btnSignupSexGo.setOnClickListener {
             if (!check_select_sex()){
                 if (binding.radioSignupSexCustom.isChecked){
-                    binding.tvFragSignupSexInfo.text = "Vui lòng chọn danh xưng"
+                    binding.tvFragSignupSexInfo.text = "Please select your pronoun"
                     binding.tvFragSignupSexInfo.setTextColor(resources.getColor(R.color.error , null))
                     binding.tvLayoutcustomInfo.setTextColor(resources.getColor(R.color.error , null))
                 }else{
-                    binding.tvFragSignupSexInfo.text = "Vui lòng chọn giới tính của bạn"
+                    binding.tvFragSignupSexInfo.text = "Please select your gender"
                     binding.tvFragSignupSexInfo.setTextColor(resources.getColor(R.color.error , null))
                     binding.tvLayoutCustom.setTextColor(resources.getColor(R.color.error , null))
                     binding.tvLayoutMale.setTextColor(resources.getColor(R.color.error , null))
@@ -144,12 +144,12 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
 
         binding.tvGender.setText(
             createIndentedText(
-                "Nhập giới tính của bạn (không bắt buộc)",
+                "Please enter your gender (optional)",
                 20,
                 0
             )
         )
-        binding.tvLayoutcustomInfo.setText(createIndentedText("Chọn danh xưng", 20, 0))
+        binding.tvLayoutcustomInfo.setText(createIndentedText("Select your pronoun", 20, 0))
 
 
         return binding.root
@@ -175,7 +175,7 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
         if (binding.radioSignupSexMale.isChecked) return true
         if (binding.radioSignupSexCustom.isChecked){
             val text = binding.tvLayoutcustomInfo.text.toString()
-            if (text != "Chọn danh xưng") return true
+            if (text != "Select your pronoun") return true
         }
         return false
     }

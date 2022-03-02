@@ -43,7 +43,7 @@ class dialog_showlanguage(context: Context) : Dialog(context) , adapter_language
 
     private fun initlist() : List<Language>{
         var list : MutableList<Language> = mutableListOf()
-        list.add(Language(1 , "Ngôn ngữ của thiết bị"))
+        list.add(Language(1 , "Language device"))
         list.add(Language(2 , "Vietnamese"))
         list.add(Language(3 , "English"))
         list.add(Language(4 , "Korean"))

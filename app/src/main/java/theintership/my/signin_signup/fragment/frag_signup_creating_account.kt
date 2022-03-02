@@ -17,6 +17,7 @@ import theintership.my.`interface`.IReplaceFrag
 import theintership.my.databinding.FragSignupCreatingAccountBinding
 import theintership.my.model.User
 import theintership.my.signin_signup.Signup1Activity
+import theintership.my.signin_signup.dialog.dialog_cannot_create_account
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.viewModel_Signin_Signup
 
@@ -39,15 +40,10 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
         val user = viewmodelSigninSignup.User
         val phone_user = user.phone
         val email_user = user.email
-        val same_person = viewmodelSigninSignup.same_person
+        val same_phone = viewmodelSigninSignup.same_phone
+        val same_email = viewmodelSigninSignup.same_email
 
-        if (phone_user == "" && email_user == "" && same_person) {
-
-        }
-
-        if (phone_user != "" && email_user != "") {
-            add_user_and_phone_email(user)
-        }
+        create_user(same_phone , same_email , user)
 
         binding.btnSignupCreatingAccountBack.setOnClickListener {
             val dialog = dialog_stop_signup(signup1activity)
@@ -123,6 +119,19 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
         })
     }
 
+    private fun create_user(same_phone : Boolean , same_email : Boolean , user : User){
+        val str = if (same_phone) "Phone" else "Email"
+        if (same_email && same_phone){
+            return
+        }
+        if (same_email || same_phone){
+            val dialog = dialog_cannot_create_account(signup1activity , str)
+            dialog.show()
+            return
+        }
+        add_user_and_phone_email(user)
+    }
+
 
     private fun move_to_frag_signing() {
         replacefrag(
@@ -131,5 +140,6 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
             signup1activity.supportFragmentManager
         )
     }
+
 
 }

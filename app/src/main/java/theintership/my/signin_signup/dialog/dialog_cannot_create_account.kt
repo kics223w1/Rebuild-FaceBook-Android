@@ -27,7 +27,7 @@ class dialog_cannot_create_account(context : Context , phone_or_email : String) 
         btn_stop = findViewById(R.id.btn_dialog_cannot_createAccount_stop)
         btn_find = findViewById(R.id.btn_dialog_cannot_createAccount_find)
 
-        tv_info.text = "$mphone_or_email đã được sử dụng. Có thể đó là tài khoản cũ của bạn."
+        tv_info.text = "Your $mphone_or_email has been used. It can be your old account."
 
     }
 
