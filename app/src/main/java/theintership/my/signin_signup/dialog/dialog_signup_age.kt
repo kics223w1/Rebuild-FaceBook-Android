@@ -31,7 +31,7 @@ class dialog_signup_age(context : Context , Age : Int) : Dialog(context) {
         val month = today.get(Calendar.MONTH).toString()
         val year = (today.get(Calendar.YEAR) - mAge).toString()
 
-        tv_info.text = "Bạn đang thiết lập sinh nhật của mình là $day tháng $month, $year"
+        tv_info.text = "Are you setting your birhday is $month/$day/$year"
 
 
         btn_cancel.setOnClickListener {

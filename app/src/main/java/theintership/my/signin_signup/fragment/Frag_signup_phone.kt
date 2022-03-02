@@ -37,7 +37,7 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone), IReplaceFrag , I
         binding.btnSignupPhoneGo.setOnClickListener {
             val phone = binding.edtSignupPhone.text.toString()
             if (phone.length < 10) {
-                show("Hãy nhập số điện thoại Việt Nam" , signup1Activity)
+                show("Please enter Vietnamese phone number" , signup1Activity)
                 set_error_edittext()
                 return@setOnClickListener
             }
@@ -48,7 +48,7 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone), IReplaceFrag , I
         binding.edtSignupPhone.setOnEditorActionListener { textView, i, keyEvent ->
             val phone = binding.edtSignupPhone.text.toString()
             if (phone.length < 10){
-                show("Hãy nhập số điện thoại Việt Nam" , signup1Activity)
+                show("Please enter Vietnamese phone number" , signup1Activity)
                 set_error_edittext()
                 false
             } else {
@@ -80,13 +80,13 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone), IReplaceFrag , I
 
     fun set_error_edittext() {
         binding.tvSignupPhoneInfo.text =
-            "Vui lòng nhập một số điện thoại hợp lệ hoặc dùng địa chỉ email của bạn."
+            "Please enter valid phone number or you can use your email"
         binding.tvSignupPhoneInfo.setTextColor(resources.getColor(R.color.error, null))
     }
 
     fun move_error_edittext() {
         binding.tvSignupPhoneInfo.text =
-            "Nhập số di động để liên hệ của bạn. Bạn có thể ẩn thông tin này trên trang cá nhân sau."
+            "Please enter your phone number. You can always make this private later"
         binding.tvSignupPhoneInfo.setTextColor(resources.getColor(R.color.light_grey, null))
     }
 
