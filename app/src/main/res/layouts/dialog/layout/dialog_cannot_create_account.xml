@@ -22,7 +22,7 @@
         android:textStyle="normal"
         android:textSize="20sp"
         android:textColor="@color/black"
-        android:text="Chúng tôi có thể giúp bạn tìm lại tài khoản đó"
+        android:text="We can help you to find your old account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -39,7 +39,7 @@
             android:background="@drawable/bg_8dp_all_white"
             android:layout_gravity="start"
             android:textColor="#3d698c"
-            android:text="Tìm lại tài khoản"
+            android:text="Find account"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"/>
 
@@ -51,7 +51,7 @@
             android:textStyle="normal"
             android:layout_gravity="end"
             android:textSize="18sp"
-            android:text="Dừng tạo tài khoản"
+            android:text="Stop creating account"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"/>
 

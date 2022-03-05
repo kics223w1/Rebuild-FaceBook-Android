@@ -8,26 +8,37 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import theintership.my.MainActivity
 import theintership.my.R
 import theintership.my.`interface`.IReplaceFrag
+import theintership.my.`interface`.IToast
 import theintership.my.databinding.FragSignupCreatingAccountBinding
 import theintership.my.model.User
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.viewModel_Signin_Signup
+import java.util.concurrent.ThreadPoolExecutor
 
 
-class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_account), IReplaceFrag {
+class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_account), IReplaceFrag,
+    IToast {
 
     private var _binding: FragSignupCreatingAccountBinding? = null
     private val binding get() = _binding!!
     private lateinit var signup1activity: Signup1Activity
     private val viewmodelSigninSignup: viewModel_Signin_Signup by activityViewModels()
-    private var database: DatabaseReference = Firebase.database.reference
+    private val auth: FirebaseAuth = Firebase.auth
+
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -99,28 +110,29 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
         }, 5000)
     }
 
+    private fun add_user_and_phone_email(muser: User) {
+        val email = muser.email.toString()
+        val password = viewmodelSigninSignup.password
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(signup1activity) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    val user = auth.currentUser
+                    show_icon_success_and_move()
 
-    private fun add_user_and_phone_email(user: User) {
-        val ref_user = database.child("User")
-        val ref_phone_and_email = database.child("phone and email").orderByKey().limitToLast(1)
-        ref_phone_and_email.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val last_ele = snapshot.children
-                var mindex = "0"
-                last_ele.forEach {
-                    mindex = it.child("id").getValue().toString()
+//                    CoroutineScope(Dispatchers.IO).launch {
+//                        ref_user.child(email_ref).setValue(muser)
+//                        ref_phone_and_email.child(email_ref).setValue(muser)
+//                    }
+
+                    //The above function will make this fragment go to onPause and
+                    //that will reset the view so the function show_icon_success_move will repeat two times ,
+                    // so we must implement the above function in frag_signing
+                } else {
+                    // If sign in fails, display a message to the user.
+                    show("Create user fail", signup1activity)
                 }
-                var index = mindex.toInt() + 1
-                println("debug user trong add $user")
-                ref_user.child(index.toString()).setValue(user)
-                show_icon_success_and_move()
             }
-
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
-
-        })
     }
 
 

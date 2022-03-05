@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="start"
-        android:text="Bạn có muốn dừng tạo tài khoản không?"
+        android:text="Do you want to stop creating your account ?"
         android:textColor="#050505"
         android:textSize="22sp"
         android:textStyle="normal" />
@@ -21,7 +21,7 @@
         android:layout_height="60dp"
         android:gravity="start"
         android:maxLines="2"
-        android:text="Nếu dừng bây giờ, bạn sẽ mất toàn bộ tiến trình cho đến nay."
+        android:text="If stop now, you'll lose any process you have made."
         android:textColor="#767676"
         android:textSize="20sp"
         android:textStyle="normal" />
@@ -36,7 +36,7 @@
         android:layout_marginEnd="10dp"
         android:background="@drawable/bg_rectangle_white"
         android:gravity="end"
-        android:text="Tiếp tục tạo tài khoản"
+        android:text="Continue creting account     "
         android:textColor="#050505"
         android:textSize="18sp"
         android:textStyle="normal" />
@@ -50,7 +50,7 @@
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:gravity="end"
-        android:text="Dừng tạo tài khoản"
+        android:text="Stop creating account     "
         android:textColor="#557eb4"
         android:textSize="18sp"
         android:textStyle="normal" />

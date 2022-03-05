@@ -8,18 +8,21 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import theintership.my.MainActivity
 import theintership.my.R
 import theintership.my.`interface`.IReplaceFrag
 import theintership.my.databinding.FragSignupPasswordBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
+import theintership.my.signin_signup.viewModel_Signin_Signup
 
 class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFrag {
 
     private var _binding: FragSignupPasswordBinding? = null
     private val binding get() = _binding!!
     private lateinit var signup1Activity: Signup1Activity
+    private val viewmodelSigninSignup : viewModel_Signin_Signup by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,7 +51,7 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFr
             }
 
             move_error_edittext()
-            goto_frag_signup_email()
+            goto_frag_signup_email(password)
         }
 
         binding.edtSignupPassword.setOnEditorActionListener { textView, i, keyEvent ->
@@ -69,7 +72,7 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFr
             }
 
             move_error_edittext()
-            goto_frag_signup_email()
+            goto_frag_signup_email(password)
             true
         }
 
@@ -106,12 +109,13 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFr
         binding.tvSignupPasswordInfo.setTextColor(resources.getColor(R.color.error, null))
     }
 
-    fun goto_frag_signup_email(){
+    fun goto_frag_signup_email(password: String){
         replacefrag(
             "frag_signup_email",
             frag_signup_email(),
             signup1Activity.supportFragmentManager
         )
+        viewmodelSigninSignup.password = password
     }
 
     fun move_error_edittext(){
