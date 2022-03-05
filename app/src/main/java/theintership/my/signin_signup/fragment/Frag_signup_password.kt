@@ -22,7 +22,7 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFr
     private var _binding: FragSignupPasswordBinding? = null
     private val binding get() = _binding!!
     private lateinit var signup1Activity: Signup1Activity
-    private val viewmodelSigninSignup : viewModel_Signin_Signup by activityViewModels()
+    private val viewmodelSigninSignup: viewModel_Signin_Signup by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,14 +35,14 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFr
 
         binding.btnSignupPasswordGo.setOnClickListener {
             val password = binding.edtSignupPassword.text.toString()
-            if (password.length < 6) {
+            if (!valid_password(password)) {
                 val s = "Your password must has at least 6 characters " +
-                        "number or symbol (! and %%)."
+                        "number or symbol (! and %)."
                 set_error_edittext(s)
                 return@setOnClickListener
             }
 
-            if (is_same(password)) {
+            if (is_same_password(password)) {
                 val s = "Please chose a more secure password. " +
                         "It should be longer than 6 characters " +
                         "unique to you, and difficult to other to guess."
@@ -56,24 +56,22 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFr
 
         binding.edtSignupPassword.setOnEditorActionListener { textView, i, keyEvent ->
             val password = binding.edtSignupPassword.text.toString()
-            if (password.length < 6) {
+            if (!valid_password(password)) {
                 val s = "Your password must has at least 6 characters " +
-                        "number or symbol (! and %%)."
+                        "number or symbol (! and %)."
                 set_error_edittext(s)
                 false
-            }
-
-            if (is_same(password)) {
-                val s = "Please chose a more secure password. " +
+            } else if (is_same_password(password)) {
+                val s = "Please chose a mode secure password. " +
                         "It should be longer than 6 characters " +
                         "unique to you, and difficult to other to guess."
                 set_error_edittext(s)
                 false
+            } else {
+                move_error_edittext()
+                goto_frag_signup_email(password)
+                true
             }
-
-            move_error_edittext()
-            goto_frag_signup_email(password)
-            true
         }
 
         binding.btnSignupPaswordBack.setOnClickListener {
@@ -92,7 +90,22 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFr
         return binding.root
     }
 
-    fun is_same(password: String): Boolean {
+    fun valid_password(password: String): Boolean {
+        if (password.length < 6){
+            return false
+        }
+        for (i in 0 until password.length) {
+            if (password[i] in 'a'..'z' || password[i] in 'A'..'Z'
+                || password[i] == '!' || password[i] == '%') {
+                continue
+            } else {
+                return false
+            }
+        }
+        return true
+    }
+
+    fun is_same_password(password: String): Boolean {
         for (i in 1 until password.length) {
             if (password[i] != password[i - 1]) {
                 return false
@@ -109,7 +122,7 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFr
         binding.tvSignupPasswordInfo.setTextColor(resources.getColor(R.color.error, null))
     }
 
-    fun goto_frag_signup_email(password: String){
+    fun goto_frag_signup_email(password: String) {
         replacefrag(
             "frag_signup_email",
             frag_signup_email(),
@@ -118,7 +131,7 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFr
         viewmodelSigninSignup.password = password
     }
 
-    fun move_error_edittext(){
+    fun move_error_edittext() {
         binding.tvSignupPasswordInfo.text =
             "Your password must has at least 6 characters. " +
                     "It should be something other couldn't guess."

@@ -112,6 +112,7 @@ class Signup1Activity : AppCompatActivity(), IReplaceFrag, IToast {
 
         if (frag_last.name == "frag_signup_creating_account" || frag_last.name == "frag_signing_account") {
             //Don't let user pop back when program is creating account or signing account
+                show("Can't back when creating account" , this)
             return
         }
 

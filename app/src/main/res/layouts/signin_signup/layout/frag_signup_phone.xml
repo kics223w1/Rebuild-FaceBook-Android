@@ -121,16 +121,7 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/btn_signup_phone_email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:text="Sign up with email"
-        android:textColor="#2361b3"
-        android:textSize="18sp"
-        android:textStyle="normal" />
+
 
 
 </RelativeLayout>

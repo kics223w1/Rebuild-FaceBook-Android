@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import theintership.my.MainActivity
 import theintership.my.R
+import theintership.my.`interface`.ICheckWifi
 import theintership.my.`interface`.IReplaceFrag
 import theintership.my.`interface`.IToast
 import theintership.my.databinding.FragSignupEmailBinding
@@ -18,7 +19,7 @@ import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.viewModel_Signin_Signup
 
 
-class frag_signup_email : Fragment(R.layout.frag_signup_email), IToast, IReplaceFrag {
+class frag_signup_email : Fragment(R.layout.frag_signup_email), IToast, IReplaceFrag, ICheckWifi {
 
     private var _binding: FragSignupEmailBinding? = null
     private val binding get() = _binding!!
@@ -39,28 +40,23 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email), IToast, IReplace
 
         binding.btnSignupEmailGo.setOnClickListener {
             val email = binding.edtSignupEmail.text.toString()
-            if (!check_email(email)){
+            if (!check_email(email)) {
                 return@setOnClickListener
             }
             goto_frag_done(email)
         }
 
-        binding.edtSignupEmail.setOnEditorActionListener{
-            textview , i , keyevent ->
+        binding.edtSignupEmail.setOnEditorActionListener { textview, i, keyevent ->
             val email = binding.edtSignupEmail.text.toString()
-            if (!check_email(email)){
+            if (!check_email(email)) {
                 false
-            }else{
-                if (goto_frag_done(email)){
+            } else {
+                if (goto_frag_done(email)) {
                     true
-                }else{
+                } else {
                     false
                 }
             }
-        }
-
-        binding.btnSignupEmailPass.setOnClickListener {
-            goto_frag_done("")
         }
 
         binding.btnSignupEmailBack.setOnClickListener {
@@ -81,25 +77,35 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email), IToast, IReplace
         return binding.root
     }
 
-    private fun check_email(email : String) : Boolean{
+    private fun check_email(email: String): Boolean {
         if (email == "") {
-            show("Enter email please", signup1activity)
+            set_error_text_view("Enter email please")
             return false
         }
-        email.forEach {
-            if (it == ' '){
-                show("Email can not contain space" , signup1activity)
+        if (!email.contains("@gmail.com")){
+            set_error_text_view("Email must be the format @gmail.com\n Example: huyhuy@gmail.com")
+            return false
+        }
+        //if email has @gmail.com so it length is >= 10
+        //Make sure email.length >= 10 for continuing
+        val check_fomat = email.subSequence(email.length - 10, email.length)
+        if (check_fomat != "@gmail.com") {
+            set_error_text_view("Email must be the format @gmail.com\n Example: huyhuy@gmail.com")
+            return false
+        }
+        for (i in  0 until email.length){
+            val it = email[i]
+            if (it == '@') break
+            if (it !in 'a' .. 'z' && it !in 'A' .. 'Z') {
+                set_error_text_view("Email can not contain $it or space , just contain characters")
                 return false
             }
         }
-        if (!email.contains("@gmail.com")){
-            showLong("Email must be the format @gmail.com\n Example: huyhuy@gmail.com" , signup1activity)
-            return false
-        }
+        move_error_text_view()
         return true
     }
 
-    private fun goto_frag_done(email :String) : Boolean{
+    private fun goto_frag_done(email: String): Boolean {
         replacefrag(
             "frag_signup_done",
             frag_signup_done(),
@@ -107,5 +113,16 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email), IToast, IReplace
         )
         viewModel_Signin_Signup.set_user_email(email = email)
         return true
+    }
+
+
+    private fun set_error_text_view(str: String) {
+        binding.tvSignupEmailInfo.text = str
+        binding.tvSignupEmailInfo.setTextColor(resources.getColor(R.color.error, null))
+    }
+
+    private fun move_error_text_view(){
+        binding.tvSignupEmailInfo.text = "Adding an email to keep your account secure, find friends and more"
+        binding.tvSignupEmailInfo.setTextColor(resources.getColor(R.color.light_grey, null))
     }
 }

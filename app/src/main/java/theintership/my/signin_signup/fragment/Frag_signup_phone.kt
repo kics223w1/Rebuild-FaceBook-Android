@@ -58,9 +58,7 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone), IReplaceFrag , I
             }
         }
 
-        binding.btnSignupPhoneEmail.setOnClickListener {
-            goto_frag_signup_password("")
-        }
+
 
         binding.btnSignupPhoneBack.setOnClickListener {
             val dialog = dialog_stop_signup(signup1Activity)

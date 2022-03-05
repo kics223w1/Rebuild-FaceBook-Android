@@ -23,6 +23,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import theintership.my.MainActivity
 import theintership.my.R
+import theintership.my.`interface`.ICheckWifi
 import theintership.my.`interface`.IGetDataFromFirebase
 import theintership.my.`interface`.IReplaceFrag
 import theintership.my.`interface`.IToast
@@ -37,7 +38,7 @@ class Bat : IGetDataFromFirebase {
     }
 }
 
-class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToast {
+class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToast , ICheckWifi  {
 
     private var _binding: FragSignupNameBinding? = null
     private val binding get() = _binding!!
@@ -245,7 +246,13 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
                                 binding.edtSignupNameFistname.setText(takefirstname(name))
                                 Firebase.auth.signOut()
                                 googleSignInClient.signOut()
-                                dialogLoading.dismiss()
+                                user?.delete()?.addOnCompleteListener{ task2 ->
+                                    if (task2.isSuccessful){
+                                        dialogLoading.dismiss()
+                                    }else{
+                                        dialogLoading.dismiss()
+                                    }
+                                }
                             }
                         } else {
                             dialogLoading.dismiss()

@@ -109,16 +109,4 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-   <TextView
-       android:id="@+id/btn_signup_email_pass"
-       android:background="@drawable/bg_8dp_all_white"
-       android:textSize="14sp"
-       android:textStyle="bold"
-       android:textColor="#3d698c"
-       android:layout_marginTop="5dp"
-       android:gravity="center"
-       android:text="Skip"
-       android:layout_width="match_parent"
-       android:layout_height="30dp"/>
-
 </LinearLayout>
