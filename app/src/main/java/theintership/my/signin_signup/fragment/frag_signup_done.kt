@@ -81,8 +81,6 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done), IReplaceFrag, IToa
     }
 
     private fun check_phone_and_email(phone : String , email : String){
-        //If user has same phone or email with old user
-        //I will set it to ""
         val myref = database.child("phone and email")
         val postListener = object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -91,14 +89,10 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done), IReplaceFrag, IToa
                     val mphone = it.child("phone").getValue().toString()
                     val memail = it.child("email").getValue().toString()
                     if (mphone == phone){
-                       viewmodelSigninSignup.set_user_phone("")
+                        viewmodelSigninSignup.same_phone = true
                     }
                     if (memail == email){
-                        viewmodelSigninSignup.set_user_email("")
-                    }
-                    if (mphone == phone && memail == email){
-                        //User sign up type phone and email same with old user
-                        viewmodelSigninSignup.same_person = true
+                        viewmodelSigninSignup.same_email = true
                     }
                 }
                 //Why this function must be here

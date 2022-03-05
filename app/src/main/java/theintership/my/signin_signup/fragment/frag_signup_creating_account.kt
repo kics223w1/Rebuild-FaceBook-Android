@@ -23,6 +23,7 @@ import theintership.my.`interface`.IToast
 import theintership.my.databinding.FragSignupCreatingAccountBinding
 import theintership.my.model.User
 import theintership.my.signin_signup.Signup1Activity
+import theintership.my.signin_signup.dialog.dialog_cannot_create_account
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.viewModel_Signin_Signup
 import java.util.concurrent.ThreadPoolExecutor
@@ -38,8 +39,6 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
     private val auth: FirebaseAuth = Firebase.auth
 
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,20 +46,28 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
     ): View {
         _binding = FragSignupCreatingAccountBinding.inflate(inflater, container, false)
         signup1activity = activity as Signup1Activity
-        val user = viewmodelSigninSignup.User
-        val phone_user = user.phone
-        val email_user = user.email
-        val same_person = viewmodelSigninSignup.same_person
+        val same_phone = viewmodelSigninSignup.same_phone
+        val same_email = viewmodelSigninSignup.same_email
+        val email_user = viewmodelSigninSignup.User.email.toString()
+        val password_user = viewmodelSigninSignup.password
 
-        if (phone_user == "" && email_user == "" && same_person) {
+        check_can_create_user(
+            same_email = same_email,
+            same_phone = same_phone,
+            email_user = email_user,
+            password_user = password_user
+        )
 
-        }
-
-        if (phone_user != "" && email_user != "") {
-            add_user_and_phone_email(user)
-        }
-
-        binding.btnSignupCreatingAccountBack.setOnClickListener {
+        binding.btnSignupCreatingAccountBackAndDelete.setOnClickListener {
+            if (binding.btnSignupCreatingAccountBack.visibility == View.VISIBLE) {
+                //user has same email and same phone , so just let user go back to sign in
+                startActivity(Intent(signup1activity, MainActivity::class.java))
+                signup1activity.overridePendingTransition(
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+                )
+                return@setOnClickListener
+            }
             val dialog = dialog_stop_signup(signup1activity)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
@@ -71,6 +78,15 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
                 )
                 dialog.dismiss()
             }
+        }
+
+
+        binding.btnSignupCreatingAccountBack.setOnClickListener {
+            startActivity(Intent(signup1activity, MainActivity::class.java))
+            signup1activity.overridePendingTransition(
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            )
         }
 
 
@@ -110,9 +126,7 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
         }, 5000)
     }
 
-    private fun add_user_and_phone_email(muser: User) {
-        val email = muser.email.toString()
-        val password = viewmodelSigninSignup.password
+    private fun create_auth_user_firebase(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(signup1activity) { task ->
                 if (task.isSuccessful) {
@@ -125,14 +139,39 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
 //                        ref_phone_and_email.child(email_ref).setValue(muser)
 //                    }
 
-                    //The above function will make this fragment go to onPause and
+                    //The above comment function will make this fragment go to onPause and
                     //that will reset the view so the function show_icon_success_move will repeat two times ,
-                    // so we must implement the above function in frag_signing
+                    // so we must implement that function in frag_signing
                 } else {
-                    // If sign in fails, display a message to the user.
                     show("Create user fail", signup1activity)
                 }
             }
+    }
+
+    private fun check_can_create_user(
+        same_phone: Boolean,
+        same_email: Boolean,
+        email_user: String,
+        password_user: String
+    ) {
+        if (same_email && same_phone) {
+            //Force user to sign up again because they have same email and phone with another user
+            binding.progressCreatingAccount.visibility = View.GONE
+            binding.tvFragSignupCreatingAccountInfo.visibility = View.GONE
+            binding.tvSignupCreatingAccountInfoStop.visibility = View.VISIBLE
+            binding.btnSignupCreatingAccountBack.visibility = View.VISIBLE
+            return
+        }
+        if (same_email || same_phone) {
+            //Find account for user
+            val str = if (same_phone) "Phone" else "Email"
+            val dialog = dialog_cannot_create_account(signup1activity, str)
+            dialog.show()
+            return
+        }
+
+        create_auth_user_firebase(email_user, password_user)
+
     }
 
 
@@ -143,5 +182,6 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
             signup1activity.supportFragmentManager
         )
     }
+
 
 }

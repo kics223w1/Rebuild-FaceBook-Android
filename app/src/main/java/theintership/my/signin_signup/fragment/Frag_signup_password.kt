@@ -36,16 +36,16 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFr
         binding.btnSignupPasswordGo.setOnClickListener {
             val password = binding.edtSignupPassword.text.toString()
             if (password.length < 6) {
-                val s = "Mật khẩu của bạn phải có tối thiểu 6 chữ cái, " +
-                        "số và biểu tượng (như ! và %%)."
+                val s = "Your password must has at least 6 characters " +
+                        "number or symbol (! and %%)."
                 set_error_edittext(s)
                 return@setOnClickListener
             }
 
             if (is_same(password)) {
-                val s = "Vui lòng chọn một mật khẩu an toàn hơn. " +
-                        "Mật khẩu phải dài hơn 6 ký tự, " +
-                        "chỉ riêng bạn biết và người khác khó có thể đoán được."
+                val s = "Please chose a more secure password. " +
+                        "It should be longer than 6 characters " +
+                        "unique to you, and difficult to other to guess."
                 set_error_edittext(s)
                 return@setOnClickListener
             }
@@ -57,16 +57,16 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFr
         binding.edtSignupPassword.setOnEditorActionListener { textView, i, keyEvent ->
             val password = binding.edtSignupPassword.text.toString()
             if (password.length < 6) {
-                val s = "Mật khẩu của bạn phải có tối thiểu 6 chữ cái, " +
-                        "số và biểu tượng (như ! và %%)."
+                val s = "Your password must has at least 6 characters " +
+                        "number or symbol (! and %%)."
                 set_error_edittext(s)
                 false
             }
 
             if (is_same(password)) {
-                val s = "Vui lòng chọn một mật khẩu an toàn hơn. " +
-                        "Mật khẩu phải dài hơn 6 ký tự, " +
-                        "chỉ riêng bạn biết và người khác khó có thể đoán được."
+                val s = "Please chose a more secure password. " +
+                        "It should be longer than 6 characters " +
+                        "unique to you, and difficult to other to guess."
                 set_error_edittext(s)
                 false
             }
@@ -120,8 +120,8 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFr
 
     fun move_error_edittext(){
         binding.tvSignupPasswordInfo.text =
-            "Tạo mật khẩu tối thiểu dài 6 ký tự. " +
-                    "Đó phải là mật khẩu mà người khác không thể đoán được."
+            "Your password must has at least 6 characters. " +
+                    "It should be something other couldn't guess."
         binding.tvSignupPasswordInfo.setTextColor(resources.getColor(R.color.light_blue, null))
     }
 

@@ -29,7 +29,7 @@
             android:layout_marginStart="15dp"
             android:layout_weight="0.9"
             android:gravity="start"
-            android:text="Số di động"
+            android:text="Phone number"
             android:textColor="@color/black"
             android:textSize="26sp"
             android:textStyle="normal" />
@@ -52,7 +52,7 @@
         android:layout_below="@+id/layout1"
         android:layout_marginTop="50dp"
         android:gravity="center"
-        android:text="Nhập số di động của bạn"
+        android:text="Enter your phone number"
         android:textColor="#050505"
         android:textSize="26sp"
         android:textStyle="normal" />
@@ -66,7 +66,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:text="Nhập số di động để liên hệ của bạn. Bạn có thể ẩn thông tin này trên trang cá nhân sau."
+        android:text="Enter your phone number. You can always make this private later"
         android:textColor="#767676"
         android:textSize="16sp"
         android:textStyle="normal" />
@@ -78,7 +78,7 @@
         android:layout_below="@+id/tv_signup_phone_info"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
-        android:hint="Số di động"
+        android:hint="Phone number"
         app:boxStrokeColor="#e1582c"
         app:endIconMode="clear_text"
         app:errorEnabled="true"
@@ -115,7 +115,7 @@
         android:layout_marginEnd="20dp"
         android:background="@drawable/bg_8dp_all_lightblue_ripple"
         android:gravity="center"
-        android:text="Tiếp"
+        android:text="Next"
         android:textAllCaps="false"
         android:textColor="#ecfcff"
         android:textSize="20sp"
@@ -127,7 +127,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="center"
-        android:text="Đăng ký bằng địa chỉ email"
+        android:text="Sign up with email"
         android:textColor="#2361b3"
         android:textSize="18sp"
         android:textStyle="normal" />
