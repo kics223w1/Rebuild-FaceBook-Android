@@ -42,7 +42,7 @@ class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday), IReplaceFr
             today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH)
         ) { view, year, month, day ->
             age = today.get(Calendar.YEAR) - year
-            binding.tvSignupBirthdayShowage.text = "${age} tuổi"
+            binding.tvSignupBirthdayShowage.text = "${age} years old"
             birthday = day.toString() + "/" + month.toString() + "/" + year.toString()
         }
 
@@ -62,10 +62,10 @@ class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday), IReplaceFr
 
             if (age <= 4) {
                 binding.tvSignupBirthdayInfo.text =
-                    "Hình như bạn đã nhập sai thông tin. Hãy nhớ dùng ngày sinh nhật thật của mình nhé."
+                    "It look like you entered the wrong info. Please be sure to user your real birthday"
                 binding.tvSignupBirthdayInfo.setTextColor(resources.getColor(R.color.error, null))
                 if (age == -1) {
-                    binding.tvSignupBirthdayShowage.text = "1 tuổi"
+                    binding.tvSignupBirthdayShowage.text = "One years old"
                 }
                 check_user_want_to_go_frag_age = true
                 return@setOnClickListener

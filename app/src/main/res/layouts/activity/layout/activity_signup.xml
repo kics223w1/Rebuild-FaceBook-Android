@@ -29,7 +29,7 @@
             android:layout_marginStart="15dp"
             android:layout_weight="0.9"
             android:gravity="start"
-            android:text="Tạo tài khoản"
+            android:text="Create account"
             android:textColor="@color/black"
             android:textSize="26sp"
             android:textStyle="normal" />
@@ -59,7 +59,7 @@
         android:layout_below="@+id/layout_top2"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="Tham gia Facebook"
+        android:text="Join facebook"
         android:textColor="#050505"
         android:textSize="26sp"
         android:textStyle="normal" />
@@ -73,7 +73,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:text="Chúng tôi sẽ giúp bạn tạo tài khoản mới sau vài bước dễ dàng"
+        android:text="We'll help you create account in a few simple steps"
         android:textColor="#767676"
         android:textSize="22sp"
         android:textStyle="normal" />
@@ -89,7 +89,7 @@
         android:layout_marginEnd="20dp"
         android:background="@drawable/bg_8dp_all_lightblue_ripple"
         android:gravity="center"
-        android:text="Tiếp"
+        android:text="Next"
         android:textAllCaps="false"
         android:textColor="#ecfcff"
         android:textSize="20sp"
@@ -102,7 +102,7 @@
         android:layout_alignParentBottom="true"
         android:textSize="18sp"
         android:textStyle="normal"
-        android:text="Bạn đã có tài khoản ư?"
+        android:text="Already have account ?"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </RelativeLayout>

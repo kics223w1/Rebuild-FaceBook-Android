@@ -23,6 +23,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import theintership.my.MainActivity
 import theintership.my.R
+import theintership.my.`interface`.ICheckWifi
 import theintership.my.`interface`.IGetDataFromFirebase
 import theintership.my.`interface`.IReplaceFrag
 import theintership.my.`interface`.IToast
@@ -37,7 +38,7 @@ class Bat : IGetDataFromFirebase {
     }
 }
 
-class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToast {
+class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToast , ICheckWifi  {
 
     private var _binding: FragSignupNameBinding? = null
     private val binding get() = _binding!!
@@ -86,11 +87,11 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
                 set_error_edittext()
 
                 if (firstname == "" && lastname == "")
-                    binding.tvSignupName.text = "Vui lòng nhập họ và tên của bạn"
+                    binding.tvSignupName.text = "Please enter your first and last name"
                 if (firstname == "" && lastname != "")
-                    binding.tvSignupName.text = "Vui lòng nhập tên của bạn"
+                    binding.tvSignupName.text = "Please enter your firstname"
                 if (firstname != "" && lastname == "")
-                    binding.tvSignupName.text = "Vui lòng nhập họ của bạn"
+                    binding.tvSignupName.text = "Please enter your lastname"
                 return@setOnClickListener
             }
 
@@ -153,7 +154,7 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
 
     private fun move_error_edittext() {
         binding.tvSignupName.setTextColor(resources.getColor(R.color.light_grey, null))
-        binding.tvSignupName.text = "Nhập tên bạn sử dụng trong đời thực"
+        binding.tvSignupName.text = "Please type your real name use in life"
         binding.layoutSignupNameFirstname.isErrorEnabled = false
         binding.layoutSignupNameLastname.isErrorEnabled = false
     }
@@ -218,16 +219,13 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
             // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
             if (requestCode == RC_SIGN_IN) {
                 val account = GoogleSignIn.getSignedInAccountFromIntent(data).result
-                println("debug vao request == rc")
                 account?.let {
                     firebaseAuthWithGoogle(account)
                 }
             } else {
-                println("debug vao request != rc")
                 dialogLoading.dismiss()
             }
         } else {
-            println("debug vao resultcode == 0")
             dialogLoading.dismiss()
         }
     }
@@ -248,16 +246,22 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
                                 binding.edtSignupNameFistname.setText(takefirstname(name))
                                 Firebase.auth.signOut()
                                 googleSignInClient.signOut()
-                                dialogLoading.dismiss()
+                                user?.delete()?.addOnCompleteListener{ task2 ->
+                                    if (task2.isSuccessful){
+                                        dialogLoading.dismiss()
+                                    }else{
+                                        dialogLoading.dismiss()
+                                    }
+                                }
                             }
                         } else {
                             dialogLoading.dismiss()
-                            show("Kết nối firebase xảy ra vấn đề , hãy nhập họ và tên của bạn", signup1Activity)
+                            show("Connect firebase has problem. Please enter your first and last name", signup1Activity)
                         }
                     }
             }
         } catch (e: Exception) {
-            show("Kết nối firebase xảy ra vấn đề , hãy nhập họ và tên của bạn", signup1Activity)
+            show("Connect firebase has problem. Please enter your first and last name", signup1Activity)
         }
     }
 

@@ -19,7 +19,7 @@
             android:layout_marginStart="15dp"
             android:layout_weight="0.9"
             android:gravity="start"
-            android:text="Đang đăng nhập"
+            android:text="Signing account..."
             android:textColor="@color/black"
             android:textSize="26sp"
             android:textStyle="normal" />
@@ -45,7 +45,7 @@
         android:gravity="center"
         android:textColor="@color/light_blue"
         android:textStyle="normal"
-        android:text="Đang đăng nhập"
+        android:text="Signing account..."
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

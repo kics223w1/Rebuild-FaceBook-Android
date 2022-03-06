@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="Chọn danh xưng"
+            android:text="Chose pronoun"
             android:textColor="@color/black"
             android:textSize="26sp" />
 
@@ -46,7 +46,7 @@
             android:layout_height="30dp"
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
-            android:text="Cô ấy"
+            android:text="She"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
@@ -55,7 +55,7 @@
             android:layout_height="30dp"
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
-            android:text="Chúc cô ấy sinh nhật vui vẻ"
+            android:text="Wish her a happy birthday!"
             android:textColor="#767676"
             android:textSize="16sp" />
 
@@ -74,7 +74,7 @@
             android:layout_height="30dp"
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
-            android:text="Anh ấy"
+            android:text="He"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
@@ -83,7 +83,7 @@
             android:layout_height="30dp"
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
-            android:text="Chúc anh ấy sinh nhật vui vẻ"
+            android:text="Wish him a happy birthday!"
             android:textColor="#767676"
             android:textSize="16sp" />
 
@@ -103,7 +103,7 @@
             android:layout_height="30dp"
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
-            android:text="Họ"
+            android:text="They"
             android:textColor="@color/black"
             android:textSize="18sp" />
 
@@ -112,7 +112,7 @@
             android:layout_height="30dp"
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
-            android:text="Chúc họ sinh nhật vui vẻ"
+            android:text="Wish them a happy birthday"
             android:textColor="#767676"
             android:textSize="16sp" />
 

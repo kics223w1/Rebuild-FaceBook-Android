@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="400dp"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:text="Do you want to delete an account you just created"
+        android:textColor="#050505"
+        android:textSize="22sp"
+        android:textStyle="normal" />
+
+
+    <FrameLayout
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <TextView
+            android:id="@+id/btn_dialog_delete_account_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/bg_rectangle_white"
+            android:gravity="center"
+            android:text="Delete account"
+            android:textColor="#050505"
+            android:textSize="20sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/btn_dialog_delete_account_keep"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@drawable/bg_rectangle_white"
+            android:gravity="center"
+            android:layout_marginEnd="10dp"
+            android:text="Keep account"
+            android:textColor="#557eb4"
+            android:textSize="20sp"
+            android:textStyle="normal" />
+
+
+    </FrameLayout>
+
+
+
+
+
+</LinearLayout>

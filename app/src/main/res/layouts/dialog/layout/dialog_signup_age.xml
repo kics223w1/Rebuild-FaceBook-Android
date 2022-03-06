@@ -18,7 +18,7 @@
        android:layout_marginTop="20dp"
        android:gravity="start"
        android:textSize="20sp"
-       android:text="Không ai khác nhìn thấy ngày sinh của bạn. Về sau bạn có thể thay đổi cài đặt ngay trên trang cá nhân của mình."
+       android:text="No one else see your birthday. You can change it on your profile later."
        android:layout_width="match_parent"
        android:layout_height="wrap_content"/>
     
@@ -38,7 +38,7 @@
             android:layout_height="match_parent"
             android:layout_marginRight="50dp"
             android:gravity="center_vertical"
-            android:text="HỦY"
+            android:text="DISMISS"
             android:textColor="#646466"
             android:textSize="22sp" />
 
@@ -46,7 +46,7 @@
             android:gravity="center_vertical"
             android:textColor="@color/light_blue"
             android:id="@+id/btn_dialog_signup_age_go"
-            android:text="OK"
+            android:text="NEXT"
             android:textSize="22sp"
             android:layout_gravity="end"
             android:layout_width="wrap_content"

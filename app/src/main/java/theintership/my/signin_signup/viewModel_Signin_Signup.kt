@@ -5,8 +5,10 @@ import theintership.my.model.User
 
 class viewModel_Signin_Signup : ViewModel() {
 
-    var User: User = User(1, "", "", "", "", "", "", 1, "")
-    var same_person = false
+    var User: User = User(email = "", fullname = "",phone =  "", sex ="", pronoun = "", gender = "", age = 1 ,birthday = "")
+    var password = ""
+    var same_phone = false
+    var same_email = false
 
     fun set_user_fullname(fullname: String) {
         User.fullname = fullname
