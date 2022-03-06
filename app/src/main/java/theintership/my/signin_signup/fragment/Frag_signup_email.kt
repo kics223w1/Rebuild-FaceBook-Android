@@ -93,9 +93,8 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email), IToast, IReplace
             set_error_text_view("Email must be the format @gmail.com\n Example: huyhuy@gmail.com")
             return false
         }
-        for (i in  0 until email.length){
+        for (i in  0 until email.length - 10){
             val it = email[i]
-            if (it == '@') break
             if (it !in 'a' .. 'z' && it !in 'A' .. 'Z') {
                 set_error_text_view("Email can not contain $it or space , just contain characters")
                 return false

@@ -58,7 +58,7 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFr
             val password = binding.edtSignupPassword.text.toString()
             if (!valid_password(password)) {
                 val s = "Your password must has at least 6 characters " +
-                        "number or symbol (! and %)."
+                        "number or symbol (like ! and % ) or space."
                 set_error_edittext(s)
                 false
             } else if (is_same_password(password)) {
@@ -96,7 +96,7 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFr
         }
         for (i in 0 until password.length) {
             if (password[i] in 'a'..'z' || password[i] in 'A'..'Z'
-                || password[i] == '!' || password[i] == '%') {
+                || password[i] == '!' || password[i] == '%' || password[i] == ' ') {
                 continue
             } else {
                 return false
