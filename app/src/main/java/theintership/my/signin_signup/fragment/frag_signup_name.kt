@@ -224,9 +224,11 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
                 }
             } else {
                 dialogLoading.dismiss()
+                showLong("one thing went wrong , but don't worry. Just enter your first and last name" , signup1Activity)
             }
         } else {
             dialogLoading.dismiss()
+            showLong("one thing went wrong , but don't worry. Just enter your first and last name" , signup1Activity)
         }
     }
 
@@ -261,6 +263,7 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
                     }
             }
         } catch (e: Exception) {
+            dialogLoading.dismiss()
             show("Connect firebase has problem. Please enter your first and last name", signup1Activity)
         }
     }
