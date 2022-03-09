@@ -145,13 +145,13 @@
 
 
         <TextView
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
             android:id="@+id/btn_signin_go"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_below="@id/layout_two"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
             android:background="@drawable/bg_8dp_all_lightblue_ripple"
             android:gravity="center"
             android:text="Sign in"

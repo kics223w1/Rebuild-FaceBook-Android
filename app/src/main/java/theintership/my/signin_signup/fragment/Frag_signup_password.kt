@@ -51,7 +51,7 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFr
             }
 
             move_error_edittext()
-            goto_frag_signup_email(password)
+            goto_frag_signup_done(password)
         }
 
         binding.edtSignupPassword.setOnEditorActionListener { textView, i, keyEvent ->
@@ -69,7 +69,7 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFr
                 false
             } else {
                 move_error_edittext()
-                goto_frag_signup_email(password)
+                goto_frag_signup_done(password)
                 true
             }
         }
@@ -95,7 +95,7 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFr
             return false
         }
         for (i in 0 until password.length) {
-            if (password[i] in 'a'..'z' || password[i] in 'A'..'Z'
+            if (password[i] in 'a'..'z' || password[i] in 'A'..'Z' || password[i] in '0'..'9'
                 || password[i] == '!' || password[i] == '%' || password[i] == ' ') {
                 continue
             } else {
@@ -122,13 +122,13 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFr
         binding.tvSignupPasswordInfo.setTextColor(resources.getColor(R.color.error, null))
     }
 
-    fun goto_frag_signup_email(password: String) {
+    fun goto_frag_signup_done(password: String) {
         replacefrag(
-            "frag_signup_email",
-            frag_signup_email(),
+            "frag_signup_done",
+            frag_signup_done(),
             signup1Activity.supportFragmentManager
         )
-        viewmodelSigninSignup.password = password
+        viewmodelSigninSignup.password_user = password
     }
 
     fun move_error_edittext() {

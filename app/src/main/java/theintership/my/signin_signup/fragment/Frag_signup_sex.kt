@@ -9,8 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import theintership.my.MainActivity
 import theintership.my.R
+import theintership.my.`interface`.ICheckWifi
 import theintership.my.`interface`.IReplaceFrag
 import theintership.my.`interface`.IToast
 import theintership.my.databinding.FragSignupSexBinding
@@ -19,12 +26,13 @@ import theintership.my.signin_signup.dialog.dialog_bottom_sex
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.viewModel_Signin_Signup
 
-class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag {
+class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag, ICheckWifi {
 
     private var _binding: FragSignupSexBinding? = null
     private val binding get() = _binding!!
     private lateinit var signup1Activity: Signup1Activity
-    private val viewModel_Signin_Signup : viewModel_Signin_Signup by activityViewModels()
+    private val viewModel_Signin_Signup: viewModel_Signin_Signup by activityViewModels()
+    private var database: DatabaseReference = Firebase.database.reference
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -109,24 +117,34 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
         }
 
         binding.btnSignupSexGo.setOnClickListener {
-            if (!check_select_sex()){
-                if (binding.radioSignupSexCustom.isChecked){
+            if (!check_select_sex()) {
+                if (binding.radioSignupSexCustom.isChecked) {
                     binding.tvFragSignupSexInfo.text = "Please select your pronoun"
-                    binding.tvFragSignupSexInfo.setTextColor(resources.getColor(R.color.error , null))
-                    binding.tvLayoutcustomInfo.setTextColor(resources.getColor(R.color.error , null))
-                }else{
+                    binding.tvFragSignupSexInfo.setTextColor(
+                        resources.getColor(
+                            R.color.error,
+                            null
+                        )
+                    )
+                    binding.tvLayoutcustomInfo.setTextColor(resources.getColor(R.color.error, null))
+                } else {
                     binding.tvFragSignupSexInfo.text = "Please select your gender"
-                    binding.tvFragSignupSexInfo.setTextColor(resources.getColor(R.color.error , null))
-                    binding.tvLayoutCustom.setTextColor(resources.getColor(R.color.error , null))
-                    binding.tvLayoutMale.setTextColor(resources.getColor(R.color.error , null))
-                    binding.tvLayoutFemale.setTextColor(resources.getColor(R.color.error , null))
+                    binding.tvFragSignupSexInfo.setTextColor(
+                        resources.getColor(
+                            R.color.error,
+                            null
+                        )
+                    )
+                    binding.tvLayoutCustom.setTextColor(resources.getColor(R.color.error, null))
+                    binding.tvLayoutMale.setTextColor(resources.getColor(R.color.error, null))
+                    binding.tvLayoutFemale.setTextColor(resources.getColor(R.color.error, null))
                 }
                 return@setOnClickListener
             }
             val sex = take_sex()
             val pronoun = take_pronoun()
             val gender = binding.edtGenderCustom.text.toString()
-            move_to_frag_phone(sex , pronoun , gender)
+            move_to_frag_phone(sex, pronoun, gender)
         }
 
         binding.btnSignupSexBack.setOnClickListener {
@@ -170,40 +188,41 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex), IToast, IReplaceFrag
         return result
     }
 
-    private fun check_select_sex() : Boolean{
-        if(binding.radioSignupSexFemale.isChecked) return true
+    private fun check_select_sex(): Boolean {
+        if (binding.radioSignupSexFemale.isChecked) return true
         if (binding.radioSignupSexMale.isChecked) return true
-        if (binding.radioSignupSexCustom.isChecked){
+        if (binding.radioSignupSexCustom.isChecked) {
             val text = binding.tvLayoutcustomInfo.text.toString()
             if (text != "Select your pronoun") return true
         }
         return false
     }
 
-    private fun take_sex() : String{
+    private fun take_sex(): String {
         if (binding.radioSignupSexMale.isChecked) return "Male"
         if (binding.radioSignupSexFemale.isChecked) return "Female"
         if (binding.radioSignupSexCustom.isChecked) return "Custom"
         return ""
     }
 
-    private fun take_pronoun() : String{
-        if (binding.radioSignupSexCustom.isChecked){
+    private fun take_pronoun(): String {
+        if (binding.radioSignupSexCustom.isChecked) {
             val pronoun = binding.tvLayoutcustomInfo.text.toString()
             return pronoun
         }
         return ""
     }
 
-    private fun move_to_frag_phone(sex : String , pronoun : String , gender : String){
+    private fun move_to_frag_phone(sex: String, pronoun: String, gender: String) {
+        viewModel_Signin_Signup.set_user_info_sex(sex)
+        viewModel_Signin_Signup.set_user_info_pronoun(pronoun)
+        viewModel_Signin_Signup.set_user_info_gender(gender)
+
         replacefrag(
             "frag_signup_phone",
             frag_signup_phone(),
             signup1Activity.supportFragmentManager
         )
-        viewModel_Signin_Signup.set_user_sex(sex)
-        viewModel_Signin_Signup.set_user_pronoun(pronoun)
-        viewModel_Signin_Signup.set_user_gender(gender)
     }
 
 }

@@ -36,9 +36,13 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone), IReplaceFrag , I
 
         binding.btnSignupPhoneGo.setOnClickListener {
             val phone = binding.edtSignupPhone.text.toString()
-            if (phone.length < 10) {
-                show("Please enter Vietnamese phone number" , signup1Activity)
-                set_error_edittext()
+            if (phone.length < 6) {
+                set_error_edittext("Please enter valid phone number , like VietNamese phone number or you can use email address.")
+                return@setOnClickListener
+            }
+            val list_phone_number = viewModel_Signin_Signup.list_phone_number
+            if (list_phone_number.contains(phone)){
+                set_error_edittext("Phone number already use by another user")
                 return@setOnClickListener
             }
             move_error_edittext()
@@ -47,15 +51,22 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone), IReplaceFrag , I
 
         binding.edtSignupPhone.setOnEditorActionListener { textView, i, keyEvent ->
             val phone = binding.edtSignupPhone.text.toString()
-            if (phone.length < 10){
-                show("Please enter Vietnamese phone number" , signup1Activity)
-                set_error_edittext()
+            val list_phone_number = viewModel_Signin_Signup.list_phone_number
+            if (phone.length < 6){
+                set_error_edittext("Please enter valid phone number , like VietNamese phone number or you can use email address.")
+                false
+            }else if(list_phone_number.contains(phone)){
+                set_error_edittext("Phone number already use by another user")
                 false
             } else {
                 move_error_edittext()
                 goto_frag_signup_password(phone)
                 true
             }
+        }
+
+        binding.btnSignupPhoneEmailAddress.setOnClickListener {
+            goto_frag_signup_password("")
         }
 
 
@@ -76,9 +87,9 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone), IReplaceFrag , I
         return binding.root
     }
 
-    fun set_error_edittext() {
+    fun set_error_edittext(str : String) {
         binding.tvSignupPhoneInfo.text =
-            "Please enter valid phone number or you can use your email"
+            ""
         binding.tvSignupPhoneInfo.setTextColor(resources.getColor(R.color.error, null))
     }
 
@@ -90,10 +101,10 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone), IReplaceFrag , I
 
     fun goto_frag_signup_password(phone : String){
         replacefrag(
-            "frag_signup_password",
-            frag_signup_password(),
+            "frag_signup_email",
+            frag_signup_email(),
             signup1Activity.supportFragmentManager
         )
-        viewModel_Signin_Signup.set_user_phone(phone)
+        viewModel_Signin_Signup.set_user_info_phone(phone)
     }
 }

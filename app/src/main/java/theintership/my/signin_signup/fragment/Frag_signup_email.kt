@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import theintership.my.MainActivity
 import theintership.my.R
 import theintership.my.`interface`.ICheckWifi
@@ -24,6 +27,7 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email), IToast, IReplace
     private var _binding: FragSignupEmailBinding? = null
     private val binding get() = _binding!!
     private lateinit var signup1activity: Signup1Activity
+    private var database: DatabaseReference = Firebase.database.reference
     private val viewModel_Signin_Signup: viewModel_Signin_Signup by activityViewModels()
 
     override fun onCreateView(
@@ -43,7 +47,7 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email), IToast, IReplace
             if (!check_email(email)) {
                 return@setOnClickListener
             }
-            goto_frag_done(email)
+            goto_frag_account(email)
         }
 
         binding.edtSignupEmail.setOnEditorActionListener { textview, i, keyevent ->
@@ -51,12 +55,16 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email), IToast, IReplace
             if (!check_email(email)) {
                 false
             } else {
-                if (goto_frag_done(email)) {
+                if (goto_frag_account(email)) {
                     true
                 } else {
                     false
                 }
             }
+        }
+
+        binding.btnSignupEmailPhoneNumber.setOnClickListener {
+            signup1activity.supportFragmentManager.popBackStack()
         }
 
         binding.btnSignupEmailBack.setOnClickListener {
@@ -100,17 +108,22 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email), IToast, IReplace
                 return false
             }
         }
+        val list_email_address = viewModel_Signin_Signup.list_email_address
+        if (list_email_address.contains(email)){
+            set_error_text_view("Email address already use by another user")
+            return false
+        }
         move_error_text_view()
         return true
     }
 
-    private fun goto_frag_done(email: String): Boolean {
+    private fun goto_frag_account(email: String): Boolean {
         replacefrag(
-            "frag_signup_done",
-            frag_signup_done(),
+            "frag_signup_account",
+            frag_signup_account(),
             signup1activity.supportFragmentManager
         )
-        viewModel_Signin_Signup.set_user_email(email = email)
+        viewModel_Signin_Signup.set_user_info_email(email = email)
         return true
     }
 

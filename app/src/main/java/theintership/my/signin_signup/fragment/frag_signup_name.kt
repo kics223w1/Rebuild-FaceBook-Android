@@ -81,7 +81,6 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
         binding.btnSignupNameGo.setOnClickListener {
             val firstname = binding.edtSignupNameFistname.text.toString()
             val lastname = binding.edtSignupNameLastname.text.toString()
-            val fullName = take_fullname_vietnamese(firstname , lastname)
             if (firstname == "" || lastname == "") {
                 check_name_empty = true
                 set_error_edittext()
@@ -96,23 +95,22 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
             }
 
             if (signup1Activity.go_to_frag_signup_age) {
-                move_to_frag_age(fullName)
+                move_to_frag_age(firstname , lastname)
                 return@setOnClickListener
             }
 
-           move_to_frag_birthday(fullName)
+           move_to_frag_birthday(firstname , lastname)
 
         }
 
         binding.edtSignupNameLastname.setOnEditorActionListener { textView, i, keyEvent ->
             val firstname = binding.edtSignupNameFistname.text.toString()
             val lastname = binding.edtSignupNameLastname.text.toString()
-            val fullName = take_fullname_vietnamese(firstname , lastname)
             if (i == EditorInfo.IME_ACTION_DONE && firstname != "" && lastname != "") {
                 if (signup1Activity.go_to_frag_signup_age) {
-                   move_to_frag_age(fullName)
+                   move_to_frag_age(firstname , lastname)
                 } else {
-                  move_to_frag_birthday(fullName)
+                  move_to_frag_birthday(firstname , lastname)
                 }
                 true
             } else {
@@ -223,9 +221,11 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
                     firebaseAuthWithGoogle(account)
                 }
             } else {
+                showLong("Don't worry , just one thing went wrong. Just enter your name" , signup1Activity)
                 dialogLoading.dismiss()
             }
         } else {
+            showLong("Don't worry , just one thing went wrong. Just enter your name" , signup1Activity)
             dialogLoading.dismiss()
         }
     }
@@ -261,25 +261,32 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
                     }
             }
         } catch (e: Exception) {
+            dialogLoading.dismiss()
             show("Connect firebase has problem. Please enter your first and last name", signup1Activity)
         }
     }
 
-    private fun move_to_frag_age(fullName : String){
+    private fun move_to_frag_age(firstName: String , lastName: String){
         replacefrag(
             tag = "frag_signup_age",
             frag = frag_signup_age(),
             fm = signup1Activity.supportFragmentManager
         )
-        viewModel_Signin_Signup.set_user_fullname(fullname = fullName)
+        val fullName = take_fullname_vietnamese(firstName , lastName)
+        viewModel_Signin_Signup.set_user_info_fullname(fullname = fullName)
+        viewModel_Signin_Signup.set_user_info_firstname(firstname = firstName)
+        viewModel_Signin_Signup.set_user_info_lastname(lastname = lastName)
     }
 
-    private fun move_to_frag_birthday(fullName: String){
+    private fun move_to_frag_birthday(firstName: String , lastName: String){
         replacefrag(
             tag = "frag_signup_birthday",
             frag = frag_signup_birthday(),
             fm = signup1Activity.supportFragmentManager
         )
-        viewModel_Signin_Signup.set_user_fullname(fullname = fullName)
+        val fullName = take_fullname_vietnamese(firstName , lastName)
+        viewModel_Signin_Signup.set_user_info_fullname(fullname = fullName)
+        viewModel_Signin_Signup.set_user_info_firstname(firstname = firstName)
+        viewModel_Signin_Signup.set_user_info_lastname(lastname = lastName)
     }
 }

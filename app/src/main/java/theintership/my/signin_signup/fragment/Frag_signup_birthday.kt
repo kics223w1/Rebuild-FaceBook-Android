@@ -94,8 +94,8 @@ class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday), IReplaceFr
             frag_signup_sex(),
             signup1Activity.supportFragmentManager
         )
-        viewModel_Signin_Signup.set_user_birthday(birthday = birthday)
-        viewModel_Signin_Signup.set_user_age(age)
+        viewModel_Signin_Signup.set_user_info_birthday(birthday = birthday)
+        viewModel_Signin_Signup.set_user_info_age(age)
     }
 
     private fun move_to_frag_age(){

@@ -12,6 +12,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import theintership.my.model.Phone_and_Email_Account
+import theintership.my.model.user_info
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_showlanguage
 
@@ -36,6 +41,12 @@ class MainActivity : AppCompatActivity() {
             val dialog = dialog_showlanguage(this)
             dialog.show()
         }
+
+       btn_signin.setOnClickListener {
+           var database: DatabaseReference = Firebase.database.reference
+           val ref = database.child("user")
+           ref.setValue("1")
+       }
 
         edt_signin_password.doAfterTextChanged {
             val password = edt_signin_password.text

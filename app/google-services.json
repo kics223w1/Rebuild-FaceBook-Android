@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "17704033104",
+    "firebase_url": "https://the-intership-default-rtdb.firebaseio.com",
     "project_id": "the-intership",
     "storage_bucket": "the-intership.appspot.com"
   },
@@ -19,6 +20,14 @@
           "android_info": {
             "package_name": "theintership.my",
             "certificate_hash": "2035b4644c852426e75041bf7a27ba421ac96332"
+          }
+        },
+        {
+          "client_id": "17704033104-rue0e3fcjdga015o8rf9s1u37gv2ong3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "theintership.my",
+            "certificate_hash": "52e5380020300b2a17f6898643ffe9bafebb4abc"
           }
         },
         {

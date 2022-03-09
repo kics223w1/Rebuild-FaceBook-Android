@@ -141,8 +141,8 @@ class frag_signup_age : Fragment(R.layout.frag_signup_age), IReplaceFrag, IToast
             signup1Activity.supportFragmentManager
         )
         val birthday = set_birthday(age)
-        viewModel_Signin_Signup.set_user_birthday(birthday)
-        viewModel_Signin_Signup.set_user_age(age)
+        viewModel_Signin_Signup.set_user_info_birthday(birthday)
+        viewModel_Signin_Signup.set_user_info_age(age)
     }
 
     private fun move_to_frag_birthday() {
