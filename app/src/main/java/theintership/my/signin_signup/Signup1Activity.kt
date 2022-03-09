@@ -116,12 +116,6 @@ class Signup1Activity : AppCompatActivity(), IReplaceFrag, IToast , ICheckWifi {
 
         }
         myref.addValueEventListener(postListener)
-        dialogLoading.dismiss()
-        replacefrag(
-            tag = "frag_signup_name",
-            frag = frag_signup_name(),
-            fm = supportFragmentManager
-        )
     }
 
 

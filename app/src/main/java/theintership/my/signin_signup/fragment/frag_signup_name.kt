@@ -221,12 +221,12 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
                     firebaseAuthWithGoogle(account)
                 }
             } else {
-                showLong("Don't worry , just one thing went wrong. Just enter your name" , signup1Activity)
                 dialogLoading.dismiss()
+                showLong("Don't worry , just one thing went wrong. Just enter your name" , signup1Activity)
             }
         } else {
-            showLong("Don't worry , just one thing went wrong. Just enter your name" , signup1Activity)
             dialogLoading.dismiss()
+            showLong("Don't worry , just one thing went wrong. Just enter your name" , signup1Activity)
         }
     }
 
