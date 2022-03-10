@@ -1,6 +1,7 @@
 package theintership.my
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
@@ -12,6 +13,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+import theintership.my.model.Phone_and_Email_Account
+import theintership.my.model.user_info
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_showlanguage
 
@@ -32,10 +38,23 @@ class MainActivity : AppCompatActivity() {
         val btn_signin = findViewById<TextView>(R.id.btn_signin_go)
         val btn_showlanguage = findViewById<TextView>(R.id.btn_signin_showlanguage)
 
+        val sharedPref = getSharedPreferences(
+            getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+
+        val check_user_save_password = sharedPref.getBoolean("User save password" , false)
+        println("debug check user save password : $check_user_save_password")
+
+
         btn_showlanguage.setOnClickListener {
             val dialog = dialog_showlanguage(this)
             dialog.show()
         }
+
+       btn_signin.setOnClickListener {
+           var database: DatabaseReference = Firebase.database.reference
+           val ref = database.child("user")
+           ref.setValue("1")
+       }
 
         edt_signin_password.doAfterTextChanged {
             val password = edt_signin_password.text

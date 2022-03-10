@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import theintership.my.MainActivity
+import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.R
 import theintership.my.`interface`.IReplaceFrag
 import theintership.my.`interface`.IToast
@@ -17,7 +18,7 @@ import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.viewModel_Signin_Signup
 import java.util.*
 
-class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday), IReplaceFrag, IToast {
+class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday) {
 
     private var _binding: FragSignupBirthdayBinding? = null
     private val binding get() = _binding!!
@@ -94,8 +95,8 @@ class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday), IReplaceFr
             frag_signup_sex(),
             signup1Activity.supportFragmentManager
         )
-        viewModel_Signin_Signup.set_user_birthday(birthday = birthday)
-        viewModel_Signin_Signup.set_user_age(age)
+        viewModel_Signin_Signup.set_user_info_birthday(birthday = birthday)
+        viewModel_Signin_Signup.set_user_info_age(age)
     }
 
     private fun move_to_frag_age(){

@@ -5,29 +5,36 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.loader.content.AsyncTaskLoader
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import theintership.my.MainActivity
 import theintership.my.R
+import theintership.my.`interface`.ICheckWifi
 import theintership.my.`interface`.IReplaceFrag
 import theintership.my.`interface`.IToast
 import theintership.my.signin_signup.dialog.dialog_delete_account
+import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.fragment.frag_signup_creating_account
 import theintership.my.signin_signup.fragment.frag_signup_name
+import theintership.my.signin_signup.fragment.frag_signup_phone
 import java.net.URL
 
 
-class Signup1Activity : AppCompatActivity(), IReplaceFrag, IToast {
+class Signup1Activity : AppCompatActivity(), IReplaceFrag, IToast , ICheckWifi {
 
     var go_to_frag_signup_age = false
     var signup_with_google = true
-    var check_create_user_once_time = true
+    private val viewModel_Signin_Signup : viewModel_Signin_Signup by viewModels()
     private var database: DatabaseReference = Firebase.database.reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,11 +48,7 @@ class Signup1Activity : AppCompatActivity(), IReplaceFrag, IToast {
 
 
         btnGo.setOnClickListener {
-            replacefrag(
-                tag = "frag_signup_name",
-                frag = frag_signup_name(),
-                fm = supportFragmentManager
-            )
+            move_to_frag_name()
         }
 
         btnShowDialog.setOnClickListener {
@@ -64,16 +67,62 @@ class Signup1Activity : AppCompatActivity(), IReplaceFrag, IToast {
         }
     }
 
-    private fun get_email_for_ref(email: String): String {
-        var ans = ""
-        for (i in 0 until email.length) {
-            if (email[i] == '@') {
-                break
-            }
-            ans += email[i]
+    private fun move_to_frag_name(){
+        val dialogLoading = dialog_loading(this)
+        dialogLoading.show()
+        if (!isWifi(this)){
+            showLong("Please connect wifi to continue" , this)
+            dialogLoading.dismiss()
+            return
         }
-        return ans
+        //Set up list account and phone number and email address , then move to frag_signup_phone
+        val myref = database.child("phone and email and account")
+        val postListener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val list = snapshot.children
+                list.forEach {
+                    val mphone = it.child("phone").getValue().toString()
+                    val memail = it.child("email").getValue().toString()
+                    val maccount = it.child("account").getValue().toString()
+                    val id = it.child("id").getValue().toString()
+                    if(mphone != ""){
+                        viewModel_Signin_Signup.list_phone_number.add(mphone)
+                    }
+                    if (memail != ""){
+                        viewModel_Signin_Signup.list_email_address.add(memail)
+                    }
+                    if (maccount != ""){
+                        viewModel_Signin_Signup.list_account.add(maccount)
+                    }
+                    if (id != ""){
+                        viewModel_Signin_Signup.index_of_last_ele_phone_email_account = id.toInt()
+                    }
+                }
+                dialogLoading.dismiss()
+                //Why this function must be here
+                //Because firebase function always the last thing program does
+                //So i must do what i want to do in firebase function
+                replacefrag(
+                    tag = "frag_signup_name",
+                    frag = frag_signup_name(),
+                    fm = supportFragmentManager
+                )
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                dialogLoading.dismiss()
+                replacefrag(
+                    tag = "frag_signup_name",
+                    frag = frag_signup_name(),
+                    fm = supportFragmentManager
+                )
+            }
+
+        }
+        myref.addValueEventListener(postListener)
     }
+
+
 
     override fun onBackPressed() {
         val size = supportFragmentManager.backStackEntryCount

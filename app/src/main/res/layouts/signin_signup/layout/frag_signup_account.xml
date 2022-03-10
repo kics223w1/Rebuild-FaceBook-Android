@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_white"
     android:orientation="vertical"
-    android:tag="frag_signup_phone">
+    android:tag="frag_signup_account">
 
     <LinearLayout
-        android:id="@+id/layout1"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/btn_signup_phone_back"
+            android:id="@+id/btn_signup_account_back"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginStart="10dp"
@@ -29,7 +28,7 @@
             android:layout_marginStart="15dp"
             android:layout_weight="0.9"
             android:gravity="start"
-            android:text="Phone number"
+            android:text="Account"
             android:textColor="@color/black"
             android:textSize="26sp"
             android:textStyle="normal" />
@@ -39,53 +38,47 @@
 
 
     <View
-        android:layout_below="@+id/layout1"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="10dp"
         android:background="@android:color/darker_gray" />
 
     <TextView
-        android:id="@+id/layout2"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_below="@+id/layout1"
         android:layout_marginTop="50dp"
         android:gravity="center"
-        android:text="Enter your phone number"
+        android:text="Chose a account"
         android:textColor="#050505"
         android:textSize="26sp"
         android:textStyle="normal" />
 
     <TextView
-        android:id="@+id/tv_signup_phone_info"
+        android:id="@+id/tv_signup_account_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout2"
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:text="Enter your phone number. You can always make this private later"
+        android:text="Create account with at least 6 characters. It should be something others couldn't guess."
         android:textColor="#767676"
         android:textSize="16sp"
         android:textStyle="normal" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layout_edt_signup_phone"
+        android:id="@+id/layout_edt_signup_account"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_below="@+id/tv_signup_phone_info"
-        android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
-        android:hint="Phone number"
-        app:boxStrokeColor="#e1582c"
+        android:hint="Account"
+        app:boxStrokeColor="@color/light_blue"
         app:endIconMode="clear_text"
         app:errorEnabled="true"
-        app:hintTextColor="#e1582c">
+        app:hintTextColor="@color/light_blue">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_signup_phone"
+            android:id="@+id/edt_signup_account"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="20dp"
@@ -93,7 +86,7 @@
             android:background="@color/white"
             android:gravity="start"
             android:imeOptions="actionDone"
-            android:inputType="number"
+            android:inputType="text"
             android:maxLines="1"
             android:textColor="@color/black"
             android:textCursorDrawable="@drawable/cursor_light_blue"
@@ -104,9 +97,7 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-
     <FrameLayout
-        android:layout_below="@id/layout_edt_signup_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -117,14 +108,14 @@
 
         <ProgressBar
             android:visibility="gone"
-            android:id="@+id/btn_signup_phone_go_process"
+            android:id="@+id/btn_signup_account_go_process"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center" />
 
 
         <TextView
-            android:id="@+id/btn_signup_phone_go"
+            android:id="@+id/btn_signup_account_go"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center"
@@ -135,18 +126,4 @@
             android:textStyle="bold" />
 
     </FrameLayout>
-
-    <TextView
-        android:id="@+id/btn_signup_phone_email_address"
-        android:textColor="@color/light_blue"
-        android:textSize="18sp"
-        android:gravity="center"
-        android:layout_alignParentBottom="true"
-        android:text="Use email address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-
-
-
-</RelativeLayout>
+</LinearLayout>

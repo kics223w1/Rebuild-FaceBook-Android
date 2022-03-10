@@ -12,4 +12,5 @@
     
     <color name="error">#c74d66</color>
     <color name="light_grey">#767676</color>
+    <color name="background_grey">#e1e8e5</color>
 </resources>

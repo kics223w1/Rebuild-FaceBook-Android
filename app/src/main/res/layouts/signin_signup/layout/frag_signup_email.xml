@@ -94,19 +94,47 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/btn_signup_email_go"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/bg_8dp_all_lightblue_ripple"
+        android:background="@drawable/bg_8dp_all_lightblue_ripple">
+
+
+        <ProgressBar
+            android:visibility="gone"
+            android:id="@+id/btn_signup_email_go_process"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" />
+
+
+        <TextView
+            android:id="@+id/btn_signup_email_go"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="Next"
+            android:textAllCaps="false"
+            android:textColor="#ecfcff"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/btn_signup_email_phone_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="Next"
-        android:textAllCaps="false"
-        android:textColor="#ecfcff"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:text="Use phone number"
+        android:textColor="@color/light_blue"
+        android:textSize="18sp" />
+
 
 </LinearLayout>
