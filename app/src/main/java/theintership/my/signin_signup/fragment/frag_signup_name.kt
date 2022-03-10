@@ -22,6 +22,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import theintership.my.MainActivity
+import theintership.my.MyMethod.Companion.replacefrag
+import theintership.my.MyMethod.Companion.showToastLong
+import theintership.my.MyMethod.Companion.showToastShort
 import theintership.my.R
 import theintership.my.`interface`.ICheckWifi
 import theintership.my.`interface`.IGetDataFromFirebase
@@ -38,7 +41,7 @@ class Bat : IGetDataFromFirebase {
     }
 }
 
-class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToast , ICheckWifi  {
+class frag_signup_name : Fragment(R.layout.frag_signup_name)  {
 
     private var _binding: FragSignupNameBinding? = null
     private val binding get() = _binding!!
@@ -222,11 +225,13 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
                 }
             } else {
                 dialogLoading.dismiss()
-                showLong("Don't worry , just one thing went wrong. Just enter your name" , signup1Activity)
+                val s = "Don't worry , just one thing went wrong. Just enter your name"
+                s.showToastLong(signup1Activity)
             }
         } else {
             dialogLoading.dismiss()
-            showLong("Don't worry , just one thing went wrong. Just enter your name" , signup1Activity)
+            val s = "Don't worry , just one thing went wrong. Just enter your name"
+            s.showToastLong(signup1Activity)
         }
     }
 
@@ -235,7 +240,8 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
     ) {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         try {
-            CoroutineScope(Dispatchers.IO).launch {
+             CoroutineScope(Dispatchers.IO).launch {
+                 //This coroutine will be cancel when user move to next fragment
                 auth.signInWithCredential(credential)
                     .addOnCompleteListener(signup1Activity) { task ->
                         if (task.isSuccessful) {
@@ -256,13 +262,15 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
                             }
                         } else {
                             dialogLoading.dismiss()
-                            show("Connect firebase has problem. Please enter your first and last name", signup1Activity)
+                            val s = "Connect firebase has problem. Please enter your first and last name"
+                            s.showToastLong(signup1Activity)
                         }
                     }
             }
         } catch (e: Exception) {
             dialogLoading.dismiss()
-            show("Connect firebase has problem. Please enter your first and last name", signup1Activity)
+            val  s = "Connect firebase has problem. Please enter your first and last name"
+            s.showToastLong(signup1Activity)
         }
     }
 
@@ -279,6 +287,8 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name), IReplaceFrag, IToa
     }
 
     private fun move_to_frag_birthday(firstName: String , lastName: String){
+        val list_email = viewModel_Signin_Signup.list_email_address.toMutableList()
+        println("debug list email: $list_email")
         replacefrag(
             tag = "frag_signup_birthday",
             frag = frag_signup_birthday(),

@@ -10,9 +10,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import theintership.my.MainActivity
+import theintership.my.MyMethod.Companion.isWifi
+import theintership.my.MyMethod.Companion.replacefrag
+import theintership.my.MyMethod.Companion.showToastLong
 import theintership.my.R
+import theintership.my.`interface`.ICheckWifi
 import theintership.my.`interface`.IReplaceFrag
 import theintership.my.`interface`.IToast
 import theintership.my.databinding.FragSignupCreatingAccountBinding
@@ -21,15 +30,14 @@ import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.viewModel_Signin_Signup
 
 
-class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_account), IReplaceFrag,
-    IToast {
+class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_account) {
 
     private var _binding: FragSignupCreatingAccountBinding? = null
     private val binding get() = _binding!!
-    private val signup1activity: Signup1Activity = activity as Signup1Activity
+    private lateinit var signup1activity: Signup1Activity
+    private lateinit var database: DatabaseReference
     private val viewmodelSigninSignup: viewModel_Signin_Signup by activityViewModels()
     private val auth: FirebaseAuth = Firebase.auth
-    val dialog_stop_signup = dialog_stop_signup(signup1activity)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,35 +45,18 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
         savedInstanceState: Bundle?
     ): View {
         _binding = FragSignupCreatingAccountBinding.inflate(inflater, container, false)
+        signup1activity = activity as Signup1Activity
+        database = Firebase.database.reference
         val email_user = viewmodelSigninSignup.user_info.email.toString()
         val password_user = viewmodelSigninSignup.password_user
-
 
         create_auth_user_firebase(email_user, password_user)
 
 
         binding.btnSignupCreatingAccountBackAndDelete.setOnClickListener {
-            dialog_stop_signup.show()
-            dialog_stop_signup.btn_cancel.setOnClickListener {
-                startActivity(Intent(signup1activity, MainActivity::class.java))
-                signup1activity.overridePendingTransition(
-                    R.anim.slide_in_left,
-                    R.anim.slide_out_right
-                )
-                dialog_stop_signup.dismiss()
-            }
+            val s = "Can't back when creating account"
+            s.showToastLong(signup1activity)
         }
-
-
-        binding.btnSignupCreatingAccountBack.setOnClickListener {
-            startActivity(Intent(signup1activity, MainActivity::class.java))
-            signup1activity.overridePendingTransition(
-                R.anim.slide_in_left,
-                R.anim.slide_out_right
-            )
-        }
-
-
 
         return binding.root
     }
@@ -107,13 +98,25 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
             .addOnCompleteListener(signup1activity) { task ->
                 if (task.isSuccessful) {
                     val user = auth.currentUser
-                    //Dismiss dialog if user click in button back and delete
-                    dialog_stop_signup.dismiss()
                     show_icon_success_and_move()
-               } else {
-                    show("Create user fail", signup1activity)
+                } else {
+                    error_network()
                 }
             }
+    }
+
+    private fun error_network() {
+        if (!isWifi(signup1activity)) {
+            val s = "Connect wifi is disrupted , pls connect wifi."
+            s.showToastLong(signup1activity)
+        } else {
+            val s =
+                "Some thing with our sever went wrong . Sorry for the error . Pls sign up again."
+            s.showToastLong(signup1activity)
+            //Delete user_info and phone_email_account in firebase realtime database
+            //After delete user can sign up again with same infomation
+            delete_user_info_and_phoneEmailAccount_and_move_frag()
+        }
     }
 
     private fun move_to_frag_signing() {
@@ -125,4 +128,39 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
     }
 
 
+    private fun delete_user_info_and_phoneEmailAccount_and_move_frag() {
+        var delete_user = false
+        var delete_phone_email_account = false
+
+        //Deletet user_info
+        val account_ref = viewmodelSigninSignup.account_user
+        val ref_user = database.child("User").child(account_ref).child("user info")
+        ref_user.removeValue().addOnCompleteListener(signup1activity) { task ->
+            if (task.isSuccessful) {
+                delete_user = true
+                if (delete_user && delete_phone_email_account) {
+                    move_to_frag_signing()
+                }
+            }
+        }
+        // Delete phone and email and account
+        val ref_phoneEmailAccount = database.child("phone and email and account")
+        var id = viewmodelSigninSignup.index_of_last_ele_phone_email_account
+        if (id != -1) {
+            ref_phoneEmailAccount.child(id.toString()).removeValue()
+                .addOnCompleteListener(signup1activity) { task ->
+                    if (task.isSuccessful) {
+                        delete_phone_email_account = true
+                        if (delete_user && delete_phone_email_account) {
+                            move_to_frag_signing()
+                        }
+                    }
+                }
+        } else {
+            delete_phone_email_account = true
+            if (delete_user && delete_phone_email_account) {
+                move_to_frag_signing()
+            }
+        }
+    }
 }

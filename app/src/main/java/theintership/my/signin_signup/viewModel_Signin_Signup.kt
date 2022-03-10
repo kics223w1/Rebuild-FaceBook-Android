@@ -1,6 +1,7 @@
 package theintership.my.signin_signup
 
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.Job
 import theintership.my.model.user_info
 
 class viewModel_Signin_Signup : ViewModel() {
@@ -21,6 +22,7 @@ class viewModel_Signin_Signup : ViewModel() {
     )
     var account_user = ""
     var password_user = ""
+    var index_of_last_ele_phone_email_account = -1
     var list_account = mutableListOf<String>()
     var list_phone_number = mutableListOf<String>()
     var list_email_address = mutableListOf<String>()

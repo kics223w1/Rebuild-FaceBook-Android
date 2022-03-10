@@ -1,5 +1,6 @@
 package theintership.my.signin_signup.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,17 +12,21 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import theintership.my.MyMethod.Companion.isWifi
+import theintership.my.MyMethod.Companion.replacefrag
+import theintership.my.MyMethod.Companion.showToastLong
 import theintership.my.R
 import theintership.my.`interface`.ICheckWifi
 import theintership.my.`interface`.IReplaceFrag
 import theintership.my.`interface`.IToast
 import theintership.my.databinding.FragSigningBinding
 import theintership.my.signin_signup.Signup1Activity
+import theintership.my.signin_signup.dialog.dialog_log_in_with_1_click
+import theintership.my.signin_signup.dialog.dialog_show_account_and_password
 import theintership.my.signin_signup.viewModel_Signin_Signup
 
 
-class frag_signing : Fragment(R.layout.frag_signing), IReplaceFrag, IToast,
-    ICheckWifi {
+class frag_signing : Fragment(R.layout.frag_signing){
 
     private var _binding: FragSigningBinding? = null
     private val binding get() = _binding!!
@@ -39,20 +44,27 @@ class frag_signing : Fragment(R.layout.frag_signing), IReplaceFrag, IToast,
         _binding = FragSigningBinding.inflate(inflater, container, false)
         signup1activity = activity as Signup1Activity
         database = Firebase.database.reference
-        val ref_user = database.child("User")
-        val user = viewmodelSigninSignup.user_info
-        val account_ref = viewmodelSigninSignup.account_user
 
-        //Add user to ref on firebase realtime database
-        ref_user.child(account_ref).setValue(user).addOnCompleteListener(signup1activity) { task ->
-            if (task.isSuccessful) {
-                val account = viewmodelSigninSignup.account_user
-                val password = viewmodelSigninSignup.password_user
-                signin_user_and_move_frag(account = account, password = password)
+        val account = viewmodelSigninSignup.account_user
+        val password = viewmodelSigninSignup.password_user
+        val dialogLogInWith1Click = dialog_log_in_with_1_click(signup1activity)
+
+        dialogLogInWith1Click.show()
+        dialogLogInWith1Click.btn_save.setOnClickListener {
+            val sharedPref = activity?.getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE
+            )
+            if (sharedPref != null) {
+                with(sharedPref.edit()) {
+                    putBoolean("User save password", true)
+                    apply()
+                }
             }
+            dialogLogInWith1Click.dismiss()
+            open_dialog_show_account_and_password(account = account, password = password)
         }
 
-
+        signin_user_and_move_frag(account = account, password = password)
 
         return binding.root
     }
@@ -66,17 +78,25 @@ class frag_signing : Fragment(R.layout.frag_signing), IReplaceFrag, IToast,
         )
     }
 
+    private fun open_dialog_show_account_and_password(account: String, password: String) {
+        val dialogshowAccountPassword = dialog_show_account_and_password(signup1activity)
+        dialogshowAccountPassword.show()
+        dialogshowAccountPassword.tv_account.text = viewmodelSigninSignup.account_user
+        dialogshowAccountPassword.tv_password.text = viewmodelSigninSignup.password_user
+        dialogshowAccountPassword.btn_go.setOnClickListener {
+            signin_user_and_move_frag(account = account, password = password)
+            dialogshowAccountPassword.dismiss()
+        }
+    }
+
     private fun error_network() {
-        if (isWifi(signup1activity)) {
-            showLong(
-                "Connect wifi is disrupted , pls connect wifi and sign in again",
-                signup1activity
-            )
+        if (!isWifi(signup1activity)) {
+            val s = "Connect wifi is disrupted , pls connect wifi and sign in again trong signing"
+            s.showToastLong(signup1activity)
+
         } else {
-            showLong(
-                "Some thing with our sever went wrong . Sorry for the error . Pls sign in again",
-                signup1activity
-            )
+            val s = "Some thing with our sever went wrong . Sorry for the error . Pls sign in again trong signing"
+            s.showToastLong(signup1activity)
         }
     }
 

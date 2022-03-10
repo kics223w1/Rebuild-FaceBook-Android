@@ -10,6 +10,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import theintership.my.MainActivity
+import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.R
 import theintership.my.`interface`.IReplaceFrag
 import theintership.my.databinding.FragSignupPasswordBinding
@@ -17,7 +18,7 @@ import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.viewModel_Signin_Signup
 
-class frag_signup_password : Fragment(R.layout.frag_signup_password), IReplaceFrag {
+class frag_signup_password : Fragment(R.layout.frag_signup_password) {
 
     private var _binding: FragSignupPasswordBinding? = null
     private val binding get() = _binding!!

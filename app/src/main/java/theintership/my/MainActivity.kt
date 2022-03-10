@@ -1,6 +1,7 @@
 package theintership.my
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
@@ -36,6 +37,13 @@ class MainActivity : AppCompatActivity() {
         val icon_password_see = findViewById<ImageView>(R.id.password_see)
         val btn_signin = findViewById<TextView>(R.id.btn_signin_go)
         val btn_showlanguage = findViewById<TextView>(R.id.btn_signin_showlanguage)
+
+        val sharedPref = getSharedPreferences(
+            getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+
+        val check_user_save_password = sharedPref.getBoolean("User save password" , false)
+        println("debug check user save password : $check_user_save_password")
+
 
         btn_showlanguage.setOnClickListener {
             val dialog = dialog_showlanguage(this)

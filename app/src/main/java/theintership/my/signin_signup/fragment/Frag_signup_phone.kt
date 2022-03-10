@@ -9,6 +9,7 @@ import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import theintership.my.MainActivity
+import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.R
 import theintership.my.`interface`.IReplaceFrag
 import theintership.my.`interface`.IToast
@@ -17,7 +18,7 @@ import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.viewModel_Signin_Signup
 
-class frag_signup_phone : Fragment(R.layout.frag_signup_phone), IReplaceFrag , IToast {
+class frag_signup_phone : Fragment(R.layout.frag_signup_phone) {
 
     private var _binding: FragSignupPhoneBinding? = null
     private val binding get() = _binding!!

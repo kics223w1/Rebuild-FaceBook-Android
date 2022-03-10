@@ -11,6 +11,9 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import theintership.my.MainActivity
+import theintership.my.MyMethod.Companion.isWifi
+import theintership.my.MyMethod.Companion.replacefrag
+import theintership.my.MyMethod.Companion.showToastLong
 import theintership.my.R
 import theintership.my.`interface`.ICheckWifi
 import theintership.my.`interface`.IReplaceFrag
@@ -24,7 +27,7 @@ import java.util.*
 import kotlin.math.sign
 
 
-class frag_signup_done : Fragment(R.layout.frag_signup_done), IReplaceFrag, IToast, ICheckWifi {
+class frag_signup_done : Fragment(R.layout.frag_signup_done){
 
     private var _binding: FragSignupDoneBinding? = null
     private val binding get() = _binding!!
@@ -77,72 +80,86 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done), IReplaceFrag, IToa
         )
     }
 
-    private fun add_phone_email_account_to_firebase_realtime_database_and_move_frag_create_account() {
-        if (!isWifi(signup1activity)) {
-            showLong("Please connect wifi to continue", signup1activity)
-            return
-        }
-        var today = Calendar.getInstance().toString()
-        viewmodelSigninSignup.set_user_info_create_at(today)
-        println("debug vao add phone ne")
-        var id = 1
-        val ref_phone_email_account = database.child("phone and email and account")
-        ref_phone_email_account.orderByKey().limitToLast(1)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    val element = snapshot.children
-                    element.forEach {
-                        //Take the last id
-                        val mid = it.child("id").getValue().toString()
-                        id += mid.toInt()
-                    }
-                    add_phone_email_account_to_firebase_and_move(id = id)
-                }
+    private fun set_today(): String {
+        var mtoday = Calendar.getInstance()
+        var today = ""
+        today += (mtoday.get(Calendar.MONTH) + 1).toString()
+        today += "/"
+        today += mtoday.get(Calendar.DAY_OF_MONTH).toString()
+        today += "/"
+        today += mtoday.get(Calendar.YEAR).toString()
 
-
-                override fun onCancelled(error: DatabaseError) {
-                    if (!isWifi(signup1activity)) {
-                        showLong("Please connect wifi to continue", signup1activity)
-                    } else {
-                        show(
-                            "One thing went wrong , but don't worry just continue",
-                            signup1activity
-                        )
-                        move_to_frag_create_account()
-                    }
-                }
-
-            })
-
-        //Just come here when ref_phone_email_account hasn't init on firebase realtime database
-        add_phone_email_account_to_firebase_and_move(id = id)
+        return today
     }
 
-    private fun add_phone_email_account_to_firebase_and_move(id :Int) {
+    private fun add_phone_email_account_to_firebase_realtime_database_and_move_frag_create_account() {
+        if (!isWifi(signup1activity)) {
+            val s = "Please connect wifi to continue"
+            s.showToastLong(signup1activity)
+            return
+        }
+        val today = set_today()
+        println("debug today $today")
+        viewmodelSigninSignup.set_user_info_create_at(today)
+        var id = 1
+        if (viewmodelSigninSignup.index_of_last_ele_phone_email_account != -1) {
+            id = viewmodelSigninSignup.index_of_last_ele_phone_email_account + 1
+            viewmodelSigninSignup.index_of_last_ele_phone_email_account = id // Update index
+        }
+
+        var add_user = false
+        var add_phone_email_account = false
+
+        //Add user to ref on firebase realtime database
+        val ref_user = database.child("User")
+        val user = viewmodelSigninSignup.user_info
+        val account_ref = viewmodelSigninSignup.account_user
+        ref_user.child(account_ref).child("user info").setValue(user)
+            .addOnCompleteListener(signup1activity) { task ->
+                if (task.isSuccessful) {
+                    add_user = true
+                    if (add_user && add_phone_email_account) {
+                        move_to_frag_create_account()
+                    }
+                } else {
+                    error_networking_and_move_frag()
+                }
+            }
+
+        //Add data of phone and email and account on fireabase database
         val ref_phone_email_account = database.child("phone and email and account")
         val email = viewmodelSigninSignup.user_info.email
         val phone = viewmodelSigninSignup.user_info.phone
+        val account = viewmodelSigninSignup.account_user
         val phoneAndEmailAccount =
-            Phone_and_Email_Account(id = id, email = email, phone = phone)
+            Phone_and_Email_Account(
+                id = id,
+                email = email,
+                phone = phone,
+                account = account
+            )
         ref_phone_email_account.child(id.toString()).setValue(phoneAndEmailAccount)
             .addOnCompleteListener(signup1activity) { task ->
                 if (task.isSuccessful) {
-                    println("debug vao move ne $id")
-                    move_to_frag_create_account()
-                } else {
-                    if (!isWifi(signup1activity)) {
-                        showLong("Please connect wifi to continue", signup1activity)
-                    } else {
-                        show(
-                            "One thing went wrong , but don't worry just continue",
-                            signup1activity
-                        )
+                    add_phone_email_account = true
+                    if (add_user && add_phone_email_account) {
                         move_to_frag_create_account()
                     }
+                } else {
+                    error_networking_and_move_frag()
                 }
             }
-        println("debug qua khuc move roi")
     }
 
+    private fun error_networking_and_move_frag() {
+        if (!isWifi(signup1activity)) {
+            val s = "Please connect wifi to continue"
+            s.showToastLong(signup1activity)
+        } else {
+            val s  = "One thing went wrong , but don't worry just continue"
+            s.showToastLong(signup1activity)
+            move_to_frag_create_account()
+        }
+    }
 
 }

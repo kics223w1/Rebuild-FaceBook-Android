@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.firebase.database.DatabaseReference
 import theintership.my.MainActivity
+import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.R
 import theintership.my.`interface`.IReplaceFrag
 import theintership.my.databinding.FragSignupAccountBinding
@@ -17,7 +18,7 @@ import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.viewModel_Signin_Signup
 
-class frag_signup_account : Fragment(R.layout.frag_signup_account), IReplaceFrag {
+class frag_signup_account : Fragment(R.layout.frag_signup_account) {
 
 
     private var _binding: FragSignupAccountBinding? = null
@@ -107,6 +108,8 @@ class frag_signup_account : Fragment(R.layout.frag_signup_account), IReplaceFrag
             }
         }
         val list_account = viewmodelSigninSignup.list_account
+        println("debug list: $list_account")
+        println("debug account: $account")
         if (list_account.contains(account)){
             set_error_text_view("Account already use by another user")
             return false

@@ -5,6 +5,7 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.loader.content.AsyncTaskLoader
@@ -33,8 +34,7 @@ class Signup1Activity : AppCompatActivity(), IReplaceFrag, IToast , ICheckWifi {
 
     var go_to_frag_signup_age = false
     var signup_with_google = true
-    var check_create_user_once_time = true
-    private val viewModel_Signin_Signup = viewModel_Signin_Signup()
+    private val viewModel_Signin_Signup : viewModel_Signin_Signup by viewModels()
     private var database: DatabaseReference = Firebase.database.reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,6 +84,7 @@ class Signup1Activity : AppCompatActivity(), IReplaceFrag, IToast , ICheckWifi {
                     val mphone = it.child("phone").getValue().toString()
                     val memail = it.child("email").getValue().toString()
                     val maccount = it.child("account").getValue().toString()
+                    val id = it.child("id").getValue().toString()
                     if(mphone != ""){
                         viewModel_Signin_Signup.list_phone_number.add(mphone)
                     }
@@ -92,6 +93,9 @@ class Signup1Activity : AppCompatActivity(), IReplaceFrag, IToast , ICheckWifi {
                     }
                     if (maccount != ""){
                         viewModel_Signin_Signup.list_account.add(maccount)
+                    }
+                    if (id != ""){
+                        viewModel_Signin_Signup.index_of_last_ele_phone_email_account = id.toInt()
                     }
                 }
                 dialogLoading.dismiss()
