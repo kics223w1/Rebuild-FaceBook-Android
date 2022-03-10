@@ -12,8 +12,6 @@ import androidx.fragment.app.activityViewModels
 import theintership.my.MainActivity
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.R
-import theintership.my.`interface`.IReplaceFrag
-import theintership.my.`interface`.IToast
 import theintership.my.databinding.FragSignupAgeBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_signup_age

@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import theintership.my.R
-import theintership.my.databinding.FragAuthencationAccountBinding
+import theintership.my.databinding.FragAuthPhoneNumberAccountBinding
 import theintership.my.signin_signup.Signup1Activity
 
 
-class frag_authencation_account : Fragment(R.layout.frag_authencation_account) {
+class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_account) {
 
-    private var _binding: FragAuthencationAccountBinding? = null
+    private var _binding: FragAuthPhoneNumberAccountBinding? = null
     private val binding get() = _binding!!
     private lateinit var signup1activity: Signup1Activity
 
@@ -22,7 +22,7 @@ class frag_authencation_account : Fragment(R.layout.frag_authencation_account) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragAuthencationAccountBinding.inflate(inflater, container, false)
+        _binding = FragAuthPhoneNumberAccountBinding.inflate(inflater, container, false)
         signup1activity = activity as Signup1Activity
 
 

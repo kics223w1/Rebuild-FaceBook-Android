@@ -11,8 +11,6 @@ import androidx.fragment.app.activityViewModels
 import theintership.my.MainActivity
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.R
-import theintership.my.`interface`.IReplaceFrag
-import theintership.my.`interface`.IToast
 import theintership.my.databinding.FragSignupPhoneBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
@@ -89,8 +87,7 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone) {
     }
 
     fun set_error_edittext(str : String) {
-        binding.tvSignupPhoneInfo.text =
-            ""
+        binding.tvSignupPhoneInfo.text = str
         binding.tvSignupPhoneInfo.setTextColor(resources.getColor(R.color.error, null))
     }
 

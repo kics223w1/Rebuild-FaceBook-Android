@@ -1,7 +1,6 @@
 package theintership.my.signin_signup
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.Job
 import theintership.my.model.user_info
 
 class viewModel_Signin_Signup : ViewModel() {

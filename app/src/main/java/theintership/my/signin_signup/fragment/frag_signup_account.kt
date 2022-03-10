@@ -11,9 +11,7 @@ import com.google.firebase.database.DatabaseReference
 import theintership.my.MainActivity
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.R
-import theintership.my.`interface`.IReplaceFrag
 import theintership.my.databinding.FragSignupAccountBinding
-import theintership.my.databinding.FragSignupPasswordBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.viewModel_Signin_Signup

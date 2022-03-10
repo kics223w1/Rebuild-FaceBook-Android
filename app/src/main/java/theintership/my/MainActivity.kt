@@ -16,8 +16,6 @@ import androidx.core.widget.doAfterTextChanged
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import theintership.my.model.Phone_and_Email_Account
-import theintership.my.model.user_info
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_showlanguage
 

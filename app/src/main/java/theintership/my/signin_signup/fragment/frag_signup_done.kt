@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.google.firebase.database.*
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import theintership.my.MainActivity
@@ -15,16 +15,12 @@ import theintership.my.MyMethod.Companion.isWifi
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.MyMethod.Companion.showToastLong
 import theintership.my.R
-import theintership.my.`interface`.ICheckWifi
-import theintership.my.`interface`.IReplaceFrag
-import theintership.my.`interface`.IToast
 import theintership.my.databinding.FragSignupDoneBinding
 import theintership.my.model.Phone_and_Email_Account
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.viewModel_Signin_Signup
 import java.util.*
-import kotlin.math.sign
 
 
 class frag_signup_done : Fragment(R.layout.frag_signup_done){

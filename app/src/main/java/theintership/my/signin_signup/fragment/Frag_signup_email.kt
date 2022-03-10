@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.firebase.database.DatabaseReference
@@ -14,9 +13,6 @@ import com.google.firebase.ktx.Firebase
 import theintership.my.MainActivity
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.R
-import theintership.my.`interface`.ICheckWifi
-import theintership.my.`interface`.IReplaceFrag
-import theintership.my.`interface`.IToast
 import theintership.my.databinding.FragSignupEmailBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup

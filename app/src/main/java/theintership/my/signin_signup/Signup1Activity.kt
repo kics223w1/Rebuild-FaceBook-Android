@@ -1,15 +1,11 @@
 package theintership.my.signin_signup
 
 import android.content.Intent
-import android.os.AsyncTask
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.activityViewModels
-import androidx.loader.content.AsyncTaskLoader
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -17,20 +13,16 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import theintership.my.MainActivity
+import theintership.my.MyMethod.Companion.isWifi
+import theintership.my.MyMethod.Companion.replacefrag
+import theintership.my.MyMethod.Companion.showToastLong
 import theintership.my.R
-import theintership.my.`interface`.ICheckWifi
-import theintership.my.`interface`.IReplaceFrag
-import theintership.my.`interface`.IToast
-import theintership.my.signin_signup.dialog.dialog_delete_account
 import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.dialog.dialog_stop_signup
-import theintership.my.signin_signup.fragment.frag_signup_creating_account
 import theintership.my.signin_signup.fragment.frag_signup_name
-import theintership.my.signin_signup.fragment.frag_signup_phone
-import java.net.URL
 
 
-class Signup1Activity : AppCompatActivity(), IReplaceFrag, IToast , ICheckWifi {
+class Signup1Activity : AppCompatActivity() {
 
     var go_to_frag_signup_age = false
     var signup_with_google = true
@@ -71,7 +63,8 @@ class Signup1Activity : AppCompatActivity(), IReplaceFrag, IToast , ICheckWifi {
         val dialogLoading = dialog_loading(this)
         dialogLoading.show()
         if (!isWifi(this)){
-            showLong("Please connect wifi to continue" , this)
+            val s = "Please connect wifi to continue"
+            s.showToastLong(this)
             dialogLoading.dismiss()
             return
         }
@@ -161,7 +154,8 @@ class Signup1Activity : AppCompatActivity(), IReplaceFrag, IToast , ICheckWifi {
 
         if (frag_last.name == "frag_signup_creating_account" || frag_last.name == "frag_signing_account") {
             //Don't let user pop back when program is creating account or signing account
-                show("Can't back when creating account" , this)
+                val s = "Can't back when creating account"
+                s.showToastLong(this)
             return
         }
 

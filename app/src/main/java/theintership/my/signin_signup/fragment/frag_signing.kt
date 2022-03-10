@@ -16,9 +16,6 @@ import theintership.my.MyMethod.Companion.isWifi
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.MyMethod.Companion.showToastLong
 import theintership.my.R
-import theintership.my.`interface`.ICheckWifi
-import theintership.my.`interface`.IReplaceFrag
-import theintership.my.`interface`.IToast
 import theintership.my.databinding.FragSigningBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_log_in_with_1_click
@@ -33,7 +30,7 @@ class frag_signing : Fragment(R.layout.frag_signing){
     private lateinit var signup1activity: Signup1Activity
     private lateinit var database: DatabaseReference
     private val viewmodelSigninSignup: viewModel_Signin_Signup by activityViewModels()
-    private val auth: FirebaseAuth = Firebase.auth
+    private lateinit var auth: FirebaseAuth
 
 
     override fun onCreateView(
@@ -44,6 +41,7 @@ class frag_signing : Fragment(R.layout.frag_signing){
         _binding = FragSigningBinding.inflate(inflater, container, false)
         signup1activity = activity as Signup1Activity
         database = Firebase.database.reference
+        auth = Firebase.auth
 
         val account = viewmodelSigninSignup.account_user
         val password = viewmodelSigninSignup.password_user
@@ -56,6 +54,7 @@ class frag_signing : Fragment(R.layout.frag_signing){
             )
             if (sharedPref != null) {
                 with(sharedPref.edit()) {
+                    //Checking for show sign in view when user open app
                     putBoolean("User save password", true)
                     apply()
                 }
@@ -64,7 +63,6 @@ class frag_signing : Fragment(R.layout.frag_signing){
             open_dialog_show_account_and_password(account = account, password = password)
         }
 
-        signin_user_and_move_frag(account = account, password = password)
 
         return binding.root
     }
@@ -72,8 +70,8 @@ class frag_signing : Fragment(R.layout.frag_signing){
 
     private fun move_to_frag_authencation_account() {
         replacefrag(
-            "frag_authencation_account",
-            frag_authencation_account(),
+            "frag_auth_phone_number_account",
+            frag_auth_phone_number_account(),
             signup1activity.supportFragmentManager
         )
     }
@@ -103,7 +101,7 @@ class frag_signing : Fragment(R.layout.frag_signing){
     private fun signin_user_and_move_frag(account: String, password: String) {
         val email = account + "@gmail.com"
         auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(signup1activity) { task ->
+            .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     val user = auth.currentUser

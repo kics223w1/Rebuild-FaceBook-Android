@@ -2,13 +2,11 @@ package theintership.my.signin_signup.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
-import android.widget.BaseAdapter
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -24,22 +22,13 @@ import kotlinx.coroutines.*
 import theintership.my.MainActivity
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.MyMethod.Companion.showToastLong
-import theintership.my.MyMethod.Companion.showToastShort
 import theintership.my.R
-import theintership.my.`interface`.ICheckWifi
-import theintership.my.`interface`.IGetDataFromFirebase
-import theintership.my.`interface`.IReplaceFrag
-import theintership.my.`interface`.IToast
 import theintership.my.databinding.FragSignupNameBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.viewModel_Signin_Signup
 
-class Bat : IGetDataFromFirebase {
-    override fun onSuccess(str: String) {
-    }
-}
 
 class frag_signup_name : Fragment(R.layout.frag_signup_name)  {
 

@@ -1,6 +1,5 @@
 package theintership.my.signin_signup.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -10,23 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import theintership.my.MainActivity
 import theintership.my.MyMethod.Companion.isWifi
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.MyMethod.Companion.showToastLong
 import theintership.my.R
-import theintership.my.`interface`.ICheckWifi
-import theintership.my.`interface`.IReplaceFrag
-import theintership.my.`interface`.IToast
 import theintership.my.databinding.FragSignupCreatingAccountBinding
 import theintership.my.signin_signup.Signup1Activity
-import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.viewModel_Signin_Signup
 
 
@@ -47,10 +38,10 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
         _binding = FragSignupCreatingAccountBinding.inflate(inflater, container, false)
         signup1activity = activity as Signup1Activity
         database = Firebase.database.reference
-        val email_user = viewmodelSigninSignup.user_info.email.toString()
+        val account_user = viewmodelSigninSignup.account_user.toString()
         val password_user = viewmodelSigninSignup.password_user
 
-        create_auth_user_firebase(email_user, password_user)
+        create_auth_user_firebase(account_user, password_user)
 
 
         binding.btnSignupCreatingAccountBackAndDelete.setOnClickListener {
@@ -93,7 +84,8 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
         }, 5000)
     }
 
-    private fun create_auth_user_firebase(email: String, password: String) {
+    private fun create_auth_user_firebase(account: String, password: String) {
+        val email = account + "@gmail.com"
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(signup1activity) { task ->
                 if (task.isSuccessful) {
