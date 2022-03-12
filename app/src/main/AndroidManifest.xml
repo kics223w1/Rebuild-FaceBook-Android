@@ -23,6 +23,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".signin_signup.Signup1Activity" android:windowSoftInputMode="adjustResize"/>
+            android:name=".signin_signup.Signup1Activity"/>
     </application>
 </manifest>

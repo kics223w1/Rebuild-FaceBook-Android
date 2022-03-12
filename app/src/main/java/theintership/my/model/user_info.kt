@@ -15,7 +15,8 @@ data class user_info(
     var last_login : String? = null,
     var gender : String? = null,
     var age : Int,
-    var birthday : String? = null
+    var birthday : String? = null,
+    var country_code : String? = null
 ) {
 
 }

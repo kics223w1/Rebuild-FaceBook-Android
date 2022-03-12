@@ -42,5 +42,6 @@ class MyMethod {
             fm.beginTransaction().addToBackStack(tag).replace(R.id.layout_Signup1Activity, frag)
                 .commit()
         }
+
     }
 }

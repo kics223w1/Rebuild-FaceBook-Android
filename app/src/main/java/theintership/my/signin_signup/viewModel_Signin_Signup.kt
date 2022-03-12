@@ -17,7 +17,8 @@ class viewModel_Signin_Signup : ViewModel() {
         create_at = "",
         last_login = "",
         lastname = "",
-        firstname = ""
+        firstname = "",
+        country_code = "84"
     )
     var account_user = ""
     var password_user = ""
@@ -72,5 +73,9 @@ class viewModel_Signin_Signup : ViewModel() {
 
     fun set_user_info_gender(gender: String) {
         user_info.gender = gender
+    }
+
+    fun set_user_info_country_code(country_code : String){
+        user_info.country_code = country_code
     }
 }

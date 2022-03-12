@@ -36,7 +36,7 @@
 
     <TextView
         android:layout_marginTop="25dp"
-        android:text="Enter a code that we just send you"
+        android:text="Enter a code that we just sent you"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
@@ -86,7 +86,7 @@
             android:background="@color/white"
             android:gravity="start"
             android:imeOptions="actionDone"
-            android:inputType="text"
+            android:inputType="number"
             android:maxLines="1"
             android:textColor="@color/black"
             android:textCursorDrawable="@drawable/cursor_light_blue"
@@ -131,6 +131,8 @@
 
     
     <LinearLayout
+        android:id="@+id/btn_auth_phone_number_send_again"
+        android:background="@drawable/bg_rectangle_white"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="20dp"
@@ -158,6 +160,8 @@
 
 
     <LinearLayout
+        android:id="@+id/btn_auth_phone_number_change_phone_number"
+        android:background="@drawable/bg_rectangle_white"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="20dp"
@@ -184,6 +188,8 @@
 
 
     <LinearLayout
+        android:id="@+id/btn_auth_phone_number_confirm_by_email"
+        android:background="@drawable/bg_rectangle_white"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="20dp"

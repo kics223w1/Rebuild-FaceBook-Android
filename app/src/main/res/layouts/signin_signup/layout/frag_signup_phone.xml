@@ -39,9 +39,9 @@
 
 
     <View
-        android:layout_below="@+id/layout1"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_below="@+id/layout1"
         android:layout_marginTop="10dp"
         android:background="@android:color/darker_gray" />
 
@@ -92,7 +92,7 @@
             android:layout_marginEnd="20dp"
             android:background="@color/white"
             android:gravity="start"
-            android:imeOptions="actionDone"
+            android:imeOptions="actionNext"
             android:inputType="number"
             android:maxLines="1"
             android:textColor="@color/black"
@@ -105,48 +105,81 @@
     </com.google.android.material.textfield.TextInputLayout>
 
 
-    <FrameLayout
-        android:layout_below="@id/layout_edt_signup_phone"
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_edt_signup_country_code"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/layout_edt_signup_phone"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp"
+        android:hint="Your country code"
+        app:boxStrokeColor="#e1582c"
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
+        app:hintTextColor="#e1582c">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edt_signup_country_code"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/white"
+            android:gravity="start"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textCursorDrawable="@drawable/cursor_light_blue"
+            android:textSize="20sp"
+            android:textStyle="normal" />
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <TextView
+        android:id="@+id/tv_signup_phone_info_country_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_edt_signup_country_code"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center_vertical|start"
+        android:text="If you don't enter country code. We wiill assign it the VietNamese code"
+        android:textColor="@color/light_grey"
+        android:textSize="18sp" />
+
+
+
+    <TextView
+        android:id="@+id/btn_signup_phone_go"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/tv_signup_phone_info_country_code"
         android:layout_marginStart="20dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/bg_8dp_all_lightblue_ripple">
-
-
-        <ProgressBar
-            android:visibility="gone"
-            android:id="@+id/btn_signup_phone_go_process"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center" />
-
-
-        <TextView
-            android:id="@+id/btn_signup_phone_go"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:gravity="center"
-            android:text="Next"
-            android:textAllCaps="false"
-            android:textColor="#ecfcff"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-    </FrameLayout>
+        android:background="@drawable/bg_8dp_all_lightblue_ripple"
+        android:gravity="center"
+        android:text="Next"
+        android:textAllCaps="false"
+        android:textColor="#ecfcff"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/btn_signup_phone_email_address"
-        android:textColor="@color/light_blue"
-        android:textSize="18sp"
-        android:gravity="center"
-        android:layout_alignParentBottom="true"
-        android:text="Use email address"
+        android:layout_below="@+id/btn_signup_phone_go"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Use email address"
+        android:textColor="@color/light_blue"
+        android:textSize="18sp" />
 
 
 </RelativeLayout>

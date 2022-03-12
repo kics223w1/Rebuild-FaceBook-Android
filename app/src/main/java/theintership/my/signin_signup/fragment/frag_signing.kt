@@ -7,7 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthOptions
+import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
@@ -21,9 +25,11 @@ import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_log_in_with_1_click
 import theintership.my.signin_signup.dialog.dialog_show_account_and_password
 import theintership.my.signin_signup.viewModel_Signin_Signup
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 
-class frag_signing : Fragment(R.layout.frag_signing){
+class frag_signing : Fragment(R.layout.frag_signing) {
 
     private var _binding: FragSigningBinding? = null
     private val binding get() = _binding!!
@@ -69,11 +75,20 @@ class frag_signing : Fragment(R.layout.frag_signing){
 
 
     private fun move_to_frag_authencation_account() {
-        replacefrag(
-            "frag_auth_phone_number_account",
-            frag_auth_phone_number_account(),
-            signup1activity.supportFragmentManager
-        )
+        //User just need verify one of two ( phone number or email address )
+        if (viewmodelSigninSignup.user_info.phone != "") {
+            replacefrag(
+                "frag_auth_phone_number_account",
+                frag_auth_phone_number_account(),
+                signup1activity.supportFragmentManager
+            )
+        } else {
+            replacefrag(
+                "frag_auth_email_address_account",
+                frag_auth_email_address_account(),
+                signup1activity.supportFragmentManager
+            )
+        }
     }
 
     private fun open_dialog_show_account_and_password(account: String, password: String) {
@@ -93,9 +108,22 @@ class frag_signing : Fragment(R.layout.frag_signing){
             s.showToastLong(signup1activity)
 
         } else {
-            val s = "Some thing with our sever went wrong . Sorry for the error . Pls sign in again trong signing"
+            val s =
+                "Some thing with our sever went wrong . Sorry for the error . Pls sign in again trong signing"
             s.showToastLong(signup1activity)
         }
+    }
+
+    private fun set_today(): String {
+        var mtoday = Calendar.getInstance()
+        var today = ""
+        today += (mtoday.get(Calendar.MONTH) + 1).toString()
+        today += "/"
+        today += mtoday.get(Calendar.DAY_OF_MONTH).toString()
+        today += "/"
+        today += mtoday.get(Calendar.YEAR).toString()
+
+        return today
     }
 
     private fun signin_user_and_move_frag(account: String, password: String) {
@@ -104,8 +132,23 @@ class frag_signing : Fragment(R.layout.frag_signing){
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
-                    val user = auth.currentUser
-                    move_to_frag_authencation_account()
+                    val account_ref = viewmodelSigninSignup.account_user
+                    val today = set_today()
+                    val ref_last_login = database
+                        .child("User")
+                        .child(account_ref)
+                        .child("user info")
+                        .child("last login")
+
+                    ref_last_login.setValue(today).addOnCompleteListener(signup1activity) { task2 ->
+                        if (task2.isSuccessful) {
+                            move_to_frag_authencation_account()
+                        }else{
+                            //Some thing wrong , it might be lost internet.
+                                // But just keep move frag . We can update later
+                            move_to_frag_authencation_account()
+                        }
+                    }
                 } else {
                     error_network()
                 }
