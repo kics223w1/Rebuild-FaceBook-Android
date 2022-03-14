@@ -20,16 +20,15 @@ import theintership.my.R
 import theintership.my.databinding.FragSignupPhoneBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
-import theintership.my.signin_signup.viewModel_Signin_Signup
+import theintership.my.signin_signup.shareViewModel
 
 class frag_signup_phone : Fragment(R.layout.frag_signup_phone) {
 
     private var _binding: FragSignupPhoneBinding? = null
     private val binding get() = _binding!!
     private lateinit var signup1Activity: Signup1Activity
-    private val viewModel_Signin_Signup: viewModel_Signin_Signup by activityViewModels()
+    private val shareViewModel: shareViewModel by activityViewModels()
     private lateinit var database: DatabaseReference
-    private var user_change_phone_number_when_verify = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,42 +40,58 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone) {
         database = Firebase.database.reference
         //signup1Activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         signup1Activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        user_change_phone_number_when_verify = check_user_change_phone_when_verify()
+        val user_change_phone_when_authencation = shareViewModel.is_user_change_phone_when_authencation
+
+
+        if (user_change_phone_when_authencation) {
+            //Chang some UI to make user easy to understand
+            binding.btnSignupPhoneEmailAddress.visibility = View.GONE
+            binding.tvSignupPhoneInfo.text = "Please enter new phone number you want to change."
+        }
 
 
         binding.btnSignupPhoneGo.setOnClickListener {
             val phone = binding.edtSignupPhone.text.toString()
             val country_code = binding.edtSignupCountryCode.text.toString()
-
+            hide_soft_key_board(signup1Activity, binding.btnSignupPhoneGo)
             if (!validd_phone_number_and_country_code(phone = phone, country_code = country_code)) {
                 return@setOnClickListener
             }
 
             move_error_edittext()
-            hide_soft_key_board(signup1Activity , binding.btnSignupPhoneGo)
-            if (user_change_phone_number_when_verify) {
+            if (user_change_phone_when_authencation) {
                 go_to_frag_auth_phone_number_account(
                     phone_number = phone,
                     country_code = country_code
                 )
-            }else{
-                goto_frag_signup_email(phone = phone , country_code = country_code)
+            } else {
+                goto_frag_signup_email(
+                    phone = phone,
+                    country_code = country_code
+                )
             }
         }
 
         binding.edtSignupCountryCode.setOnEditorActionListener { textView, i, keyEvent ->
             val phone = binding.edtSignupPhone.text.toString()
             val country_code = binding.edtSignupCountryCode.text.toString()
-            if (validd_phone_number_and_country_code(phone = phone , country_code = country_code)){
+            hide_soft_key_board(signup1Activity, binding.edtSignupCountryCode)
+            if (validd_phone_number_and_country_code(phone = phone, country_code = country_code)) {
                 move_error_edittext()
-                if (user_change_phone_number_when_verify){
-                    go_to_frag_auth_phone_number_account(phone_number = phone , country_code = country_code)
+                if (user_change_phone_when_authencation) {
+                    go_to_frag_auth_phone_number_account(
+                        phone_number = phone,
+                        country_code = country_code
+                    )
                     true
-                }else{
-                    goto_frag_signup_email(phone = phone , country_code = country_code)
+                } else {
+                    goto_frag_signup_email(
+                        phone = phone,
+                        country_code = country_code
+                    )
                     true
                 }
-            }else{
+            } else {
                 false
             }
 
@@ -84,13 +99,22 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone) {
         }
 
         binding.btnSignupPhoneEmailAddress.setOnClickListener {
-            hide_soft_key_board(signup1Activity , binding.btnSignupPhoneEmailAddress)
-            goto_frag_signup_email("", "")
+            goto_frag_signup_email(
+                phone = "",
+                country_code = ""
+            )
         }
 
 
 
         binding.btnSignupPhoneBack.setOnClickListener {
+            hide_soft_key_board(signup1Activity, binding.btnSignupPhoneBack)
+            if (user_change_phone_when_authencation){
+                shareViewModel.is_user_change_phone_when_authencation = false
+                signup1Activity.supportFragmentManager.popBackStack()
+                return@setOnClickListener
+            }
+
             val dialog = dialog_stop_signup(signup1Activity)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
@@ -139,9 +163,9 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone) {
             frag_signup_email(),
             signup1Activity.supportFragmentManager
         )
-        viewModel_Signin_Signup.set_user_info_phone(phone)
+        shareViewModel.set_user_info_phone(phone)
         if (country_code != "") {
-            viewModel_Signin_Signup.user_info.country_code = country_code
+            shareViewModel.user_info.country_code = country_code
         }
     }
 
@@ -154,7 +178,7 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone) {
             set_error_edittext("Please just enter valid country code\\n Please enter number in country code and don't enter '+' or charaters.")
             return false
         }
-        val list_phone_number = viewModel_Signin_Signup.list_phone_number
+        val list_phone_number = shareViewModel.list_phone_number
         if (list_phone_number.contains(phone)) {
             set_error_edittext("Phone number already use by another user")
             return false
@@ -162,12 +186,22 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone) {
         return true
     }
 
-    fun go_to_frag_auth_phone_number_account(phone_number: String, country_code: String) {
-        viewModel_Signin_Signup.set_user_info_phone(phone_number)
-        viewModel_Signin_Signup.set_user_info_country_code(country_code)
+    fun go_to_frag_auth_phone_number_account(
+        phone_number: String,
+        country_code: String
+    ) {
+        val old_phone_number = shareViewModel.user_info.phone
+        shareViewModel.set_user_info_phone(phone_number)
+        shareViewModel.set_user_info_country_code(country_code)
+        shareViewModel.is_user_change_phone_when_authencation = false
 
+        //Add new phone number to list and delete the old phone number
+        //And set new phone number in user info
+        shareViewModel.list_phone_number.add(phone_number)
+        shareViewModel.list_phone_number.remove(old_phone_number)
+        shareViewModel.set_user_info_phone(phone_number)
 
-        val account_ref = viewModel_Signin_Signup.account_user
+        val account_ref = shareViewModel.account_user
 
         val ref_user_info_phone_number = database
             .child("User")
@@ -179,13 +213,33 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone) {
             .child(account_ref)
             .child("country_code")
 
+        val ref_phone_and_email_and_account = database
+            .child("phone and email and account")
+            .child(shareViewModel.index_of_last_ele_phone_email_account.toString())
+            .child("phone")
+
         var done_phone = false
         var done_country_code = false
+        var done_phone_email_account = false
+
+        ref_phone_and_email_and_account.setValue(phone_number)
+            .addOnCompleteListener(signup1Activity) { task ->
+                if (task.isSuccessful) {
+                    done_phone_email_account = true
+                    if (done_phone && done_country_code && done_phone_email_account) {
+                        //We must make sure that our database is updated and then popBackStack
+                        signup1Activity.supportFragmentManager.popBackStack()
+                    }
+                } else {
+                    error_networking_and_move_frag()
+                }
+            }
+
         ref_user_info_phone_number.setValue(phone_number)
             .addOnCompleteListener(signup1Activity) { task ->
                 if (task.isSuccessful) {
                     done_phone = true
-                    if (done_phone && done_country_code) {
+                    if (done_phone && done_country_code && done_phone_email_account) {
                         //We must make sure that our database is updated and then popBackStack
                         signup1Activity.supportFragmentManager.popBackStack()
                     }
@@ -200,7 +254,7 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone) {
                 .addOnCompleteListener(signup1Activity) { task ->
                     if (task.isSuccessful) {
                         done_country_code = true
-                        if (done_phone && done_country_code) {
+                        if (done_phone && done_country_code && done_phone_email_account) {
                             //We must make sure that our database is updated and then popBackStack
                             signup1Activity.supportFragmentManager.popBackStack()
                         }
@@ -210,19 +264,9 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone) {
                 }
         } else {
             done_country_code = true
-            if (done_phone && done_country_code) {
+            if (done_phone && done_country_code && done_phone_email_account) {
                 signup1Activity.supportFragmentManager.popBackStack()
             }
-        }
-    }
-
-    private fun check_user_change_phone_when_verify(): Boolean {
-        val fm = signup1Activity.supportFragmentManager
-        val size = fm.backStackEntryCount
-        if (fm.getBackStackEntryAt(size - 2).name == "frag_signup_phone") {
-            return true
-        } else {
-            return false
         }
     }
 

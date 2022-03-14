@@ -26,7 +26,7 @@ class Signup1Activity : AppCompatActivity() {
 
     var go_to_frag_signup_age = false
     var signup_with_google = true
-    private val viewModel_Signin_Signup : viewModel_Signin_Signup by viewModels()
+    private val shareViewModel : shareViewModel by viewModels()
     private var database: DatabaseReference = Firebase.database.reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -79,16 +79,16 @@ class Signup1Activity : AppCompatActivity() {
                     val maccount = it.child("account").getValue().toString()
                     val id = it.child("id").getValue().toString()
                     if(mphone != ""){
-                        viewModel_Signin_Signup.list_phone_number.add(mphone)
+                        shareViewModel.list_phone_number.add(mphone)
                     }
                     if (memail != ""){
-                        viewModel_Signin_Signup.list_email_address.add(memail)
+                        shareViewModel.list_email_address.add(memail)
                     }
                     if (maccount != ""){
-                        viewModel_Signin_Signup.list_account.add(maccount)
+                        shareViewModel.list_account.add(maccount)
                     }
                     if (id != ""){
-                        viewModel_Signin_Signup.index_of_last_ele_phone_email_account = id.toInt()
+                        shareViewModel.index_of_last_ele_phone_email_account = id.toInt()
                     }
                 }
                 dialogLoading.dismiss()

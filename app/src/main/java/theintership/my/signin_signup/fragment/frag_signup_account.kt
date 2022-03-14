@@ -9,12 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.firebase.database.DatabaseReference
 import theintership.my.MainActivity
+import theintership.my.MyMethod.Companion.hide_soft_key_board
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.R
 import theintership.my.databinding.FragSignupAccountBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
-import theintership.my.signin_signup.viewModel_Signin_Signup
+import theintership.my.signin_signup.shareViewModel
+import kotlin.math.sign
 
 class frag_signup_account : Fragment(R.layout.frag_signup_account) {
 
@@ -22,8 +24,7 @@ class frag_signup_account : Fragment(R.layout.frag_signup_account) {
     private var _binding: FragSignupAccountBinding? = null
     private val binding get() = _binding!!
     private lateinit var signup1Activity: Signup1Activity
-    private val viewmodelSigninSignup: viewModel_Signin_Signup by activityViewModels()
-    private lateinit var database: DatabaseReference
+    private val viewmodel: shareViewModel by activityViewModels()
 
 
     override fun onCreateView(
@@ -37,6 +38,7 @@ class frag_signup_account : Fragment(R.layout.frag_signup_account) {
 
         binding.btnSignupAccountGo.setOnClickListener {
             val account = binding.edtSignupAccount.text.toString()
+            hide_soft_key_board(signup1Activity , binding.btnSignupAccountGo)
             if (check_account(account)) {
                 go_to_frag_password(account)
             }
@@ -44,6 +46,7 @@ class frag_signup_account : Fragment(R.layout.frag_signup_account) {
 
         binding.edtSignupAccount.setOnEditorActionListener { textView, i, keyEvent ->
             val account = binding.edtSignupAccount.text.toString()
+            hide_soft_key_board(signup1Activity , binding.edtSignupAccount)
             if (check_account(account)) {
                 go_to_frag_password(account)
                 true
@@ -55,6 +58,7 @@ class frag_signup_account : Fragment(R.layout.frag_signup_account) {
 
 
         binding.btnSignupAccountBack.setOnClickListener {
+            hide_soft_key_board(signup1Activity , binding.btnSignupAccountBack)
             val dialog = dialog_stop_signup(signup1Activity)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
@@ -73,7 +77,7 @@ class frag_signup_account : Fragment(R.layout.frag_signup_account) {
 
 
     private fun go_to_frag_password(account: String) {
-        viewmodelSigninSignup.account_user = account
+        viewmodel.account_user = account
         replacefrag(
             "frag_signup_password",
             frag_signup_password(),
@@ -105,9 +109,7 @@ class frag_signup_account : Fragment(R.layout.frag_signup_account) {
                 return false
             }
         }
-        val list_account = viewmodelSigninSignup.list_account
-        println("debug list: $list_account")
-        println("debug account: $account")
+        val list_account = viewmodel.list_account
         if (list_account.contains(account)){
             set_error_text_view("Account already use by another user")
             return false

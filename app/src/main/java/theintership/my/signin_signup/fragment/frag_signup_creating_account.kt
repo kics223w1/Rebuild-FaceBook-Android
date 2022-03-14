@@ -18,7 +18,7 @@ import theintership.my.MyMethod.Companion.showToastLong
 import theintership.my.R
 import theintership.my.databinding.FragSignupCreatingAccountBinding
 import theintership.my.signin_signup.Signup1Activity
-import theintership.my.signin_signup.viewModel_Signin_Signup
+import theintership.my.signin_signup.shareViewModel
 
 
 class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_account) {
@@ -27,7 +27,7 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
     private val binding get() = _binding!!
     private lateinit var signup1activity: Signup1Activity
     private lateinit var database: DatabaseReference
-    private val viewmodelSigninSignup: viewModel_Signin_Signup by activityViewModels()
+    private val viewmodel: shareViewModel by activityViewModels()
     private val auth: FirebaseAuth = Firebase.auth
 
     override fun onCreateView(
@@ -38,8 +38,8 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
         _binding = FragSignupCreatingAccountBinding.inflate(inflater, container, false)
         signup1activity = activity as Signup1Activity
         database = Firebase.database.reference
-        val account_user = viewmodelSigninSignup.account_user.toString()
-        val password_user = viewmodelSigninSignup.password_user
+        val account_user = viewmodel.account_user.toString()
+        val password_user = viewmodel.password_user
 
         create_auth_user_firebase(account_user, password_user)
 
@@ -135,7 +135,7 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
         var delete_phone_email_account = false
 
         //Deletet user_info
-        val account_ref = viewmodelSigninSignup.account_user
+        val account_ref = viewmodel.account_user
         val ref_user = database.child("User").child(account_ref).child("user info")
         ref_user.removeValue().addOnCompleteListener(signup1activity) { task ->
             if (task.isSuccessful) {
@@ -147,7 +147,7 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
         }
         // Delete phone and email and account
         val ref_phoneEmailAccount = database.child("phone and email and account")
-        var id = viewmodelSigninSignup.index_of_last_ele_phone_email_account
+        var id = viewmodel.index_of_last_ele_phone_email_account
         if (id != -1) {
             ref_phoneEmailAccount.child(id.toString()).removeValue()
                 .addOnCompleteListener(signup1activity) { task ->

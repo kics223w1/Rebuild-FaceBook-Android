@@ -19,7 +19,7 @@ import theintership.my.databinding.FragSignupDoneBinding
 import theintership.my.model.Phone_and_Email_Account
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
-import theintership.my.signin_signup.viewModel_Signin_Signup
+import theintership.my.signin_signup.shareViewModel
 import java.util.*
 
 
@@ -29,7 +29,7 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done){
     private val binding get() = _binding!!
     private lateinit var signup1activity: Signup1Activity
     private var database: DatabaseReference = Firebase.database.reference
-    private val viewmodelSigninSignup: viewModel_Signin_Signup by activityViewModels()
+    private val viewmodel: shareViewModel by activityViewModels()
 
 
     override fun onCreateView(
@@ -96,11 +96,11 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done){
         }
         val today = set_today()
         println("debug today $today")
-        viewmodelSigninSignup.set_user_info_create_at(today)
+        viewmodel.set_user_info_create_at(today)
         var id = 1
-        if (viewmodelSigninSignup.index_of_last_ele_phone_email_account != -1) {
-            id = viewmodelSigninSignup.index_of_last_ele_phone_email_account + 1
-            viewmodelSigninSignup.index_of_last_ele_phone_email_account = id // Update index
+        if (viewmodel.index_of_last_ele_phone_email_account != -1) {
+            id = viewmodel.index_of_last_ele_phone_email_account + 1
+            viewmodel.index_of_last_ele_phone_email_account = id // Update index
         }
 
         var add_user = false
@@ -108,8 +108,8 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done){
 
         //Add user to ref on firebase realtime database
         val ref_user = database.child("User")
-        val user = viewmodelSigninSignup.user_info
-        val account_ref = viewmodelSigninSignup.account_user
+        val user = viewmodel.user_info
+        val account_ref = viewmodel.account_user
         ref_user.child(account_ref).child("user info").setValue(user)
             .addOnCompleteListener(signup1activity) { task ->
                 if (task.isSuccessful) {
@@ -124,9 +124,9 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done){
 
         //Add data of phone and email and account on fireabase database
         val ref_phone_email_account = database.child("phone and email and account")
-        val email = viewmodelSigninSignup.user_info.email
-        val phone = viewmodelSigninSignup.user_info.phone
-        val account = viewmodelSigninSignup.account_user
+        val email = viewmodel.user_info.email
+        val phone = viewmodel.user_info.phone
+        val account = viewmodel.account_user
         val phoneAndEmailAccount =
             Phone_and_Email_Account(
                 id = id,

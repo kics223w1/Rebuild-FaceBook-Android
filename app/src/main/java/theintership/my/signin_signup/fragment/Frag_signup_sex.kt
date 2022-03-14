@@ -13,20 +13,21 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import theintership.my.MainActivity
+import theintership.my.MyMethod.Companion.hide_soft_key_board
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.R
 import theintership.my.databinding.FragSignupSexBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_bottom_sex
 import theintership.my.signin_signup.dialog.dialog_stop_signup
-import theintership.my.signin_signup.viewModel_Signin_Signup
+import theintership.my.signin_signup.shareViewModel
 
 class frag_signup_sex : Fragment(R.layout.frag_signup_sex) {
 
     private var _binding: FragSignupSexBinding? = null
     private val binding get() = _binding!!
     private lateinit var signup1Activity: Signup1Activity
-    private val viewModel_Signin_Signup: viewModel_Signin_Signup by activityViewModels()
+    private val shareViewModel: shareViewModel by activityViewModels()
     private var database: DatabaseReference = Firebase.database.reference
 
     override fun onCreateView(
@@ -139,10 +140,11 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex) {
             val sex = take_sex()
             val pronoun = take_pronoun()
             val gender = binding.edtGenderCustom.text.toString()
-            move_to_frag_phone(sex, pronoun, gender)
+            move_to_frag_phone(sex, pronoun, gender , binding.btnSignupSexGo)
         }
 
         binding.btnSignupSexBack.setOnClickListener {
+            hide_soft_key_board(signup1Activity , binding.btnSignupSexBack)
             val dialog = dialog_stop_signup(signup1Activity)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
@@ -208,11 +210,11 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex) {
         return ""
     }
 
-    private fun move_to_frag_phone(sex: String, pronoun: String, gender: String) {
-        viewModel_Signin_Signup.set_user_info_sex(sex)
-        viewModel_Signin_Signup.set_user_info_pronoun(pronoun)
-        viewModel_Signin_Signup.set_user_info_gender(gender)
-
+    private fun move_to_frag_phone(sex: String, pronoun: String, gender: String , view : View) {
+        shareViewModel.set_user_info_sex(sex)
+        shareViewModel.set_user_info_pronoun(pronoun)
+        shareViewModel.set_user_info_gender(gender)
+        hide_soft_key_board(signup1Activity , view)
         replacefrag(
             "frag_signup_phone",
             frag_signup_phone(),

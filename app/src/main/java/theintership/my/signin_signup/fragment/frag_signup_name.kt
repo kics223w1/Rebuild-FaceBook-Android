@@ -20,6 +20,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import theintership.my.MainActivity
+import theintership.my.MyMethod.Companion.hide_soft_key_board
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.MyMethod.Companion.showToastLong
 import theintership.my.R
@@ -27,7 +28,7 @@ import theintership.my.databinding.FragSignupNameBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.dialog.dialog_stop_signup
-import theintership.my.signin_signup.viewModel_Signin_Signup
+import theintership.my.signin_signup.shareViewModel
 
 
 class frag_signup_name : Fragment(R.layout.frag_signup_name)  {
@@ -39,7 +40,7 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name)  {
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var signup1Activity: Signup1Activity
     private lateinit var dialogLoading: dialog_loading
-    private val viewModel_Signin_Signup: viewModel_Signin_Signup by activityViewModels()
+    private val shareViewModel: shareViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -87,11 +88,11 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name)  {
             }
 
             if (signup1Activity.go_to_frag_signup_age) {
-                move_to_frag_age(firstname , lastname)
+                move_to_frag_age(firstname , lastname , binding.btnSignupNameGo)
                 return@setOnClickListener
             }
 
-           move_to_frag_birthday(firstname , lastname)
+           move_to_frag_birthday(firstname , lastname , binding.btnSignupNameGo)
 
         }
 
@@ -100,9 +101,9 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name)  {
             val lastname = binding.edtSignupNameLastname.text.toString()
             if (i == EditorInfo.IME_ACTION_DONE && firstname != "" && lastname != "") {
                 if (signup1Activity.go_to_frag_signup_age) {
-                   move_to_frag_age(firstname , lastname)
+                   move_to_frag_age(firstname , lastname , binding.edtSignupNameLastname)
                 } else {
-                  move_to_frag_birthday(firstname , lastname)
+                  move_to_frag_birthday(firstname , lastname , binding.edtSignupNameLastname)
                 }
                 true
             } else {
@@ -126,6 +127,7 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name)  {
         }
 
         binding.btnSignupNameBack.setOnClickListener {
+            hide_soft_key_board(signup1Activity , binding.btnSignupNameBack)
             val dialog = dialog_stop_signup(signup1Activity)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
@@ -263,20 +265,22 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name)  {
         }
     }
 
-    private fun move_to_frag_age(firstName: String , lastName: String){
+    private fun move_to_frag_age(firstName: String , lastName: String , view : View){
+        hide_soft_key_board(signup1Activity , view)
         replacefrag(
             tag = "frag_signup_age",
             frag = frag_signup_age(),
             fm = signup1Activity.supportFragmentManager
         )
         val fullName = take_fullname_vietnamese(firstName , lastName)
-        viewModel_Signin_Signup.set_user_info_fullname(fullname = fullName)
-        viewModel_Signin_Signup.set_user_info_firstname(firstname = firstName)
-        viewModel_Signin_Signup.set_user_info_lastname(lastname = lastName)
+        shareViewModel.set_user_info_fullname(fullname = fullName)
+        shareViewModel.set_user_info_firstname(firstname = firstName)
+        shareViewModel.set_user_info_lastname(lastname = lastName)
     }
 
-    private fun move_to_frag_birthday(firstName: String , lastName: String){
-        val list_email = viewModel_Signin_Signup.list_email_address.toMutableList()
+    private fun move_to_frag_birthday(firstName: String , lastName: String , view : View){
+        hide_soft_key_board(signup1Activity , view)
+        val list_email = shareViewModel.list_email_address.toMutableList()
         println("debug list email: $list_email")
         replacefrag(
             tag = "frag_signup_birthday",
@@ -284,8 +288,8 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name)  {
             fm = signup1Activity.supportFragmentManager
         )
         val fullName = take_fullname_vietnamese(firstName , lastName)
-        viewModel_Signin_Signup.set_user_info_fullname(fullname = fullName)
-        viewModel_Signin_Signup.set_user_info_firstname(firstname = firstName)
-        viewModel_Signin_Signup.set_user_info_lastname(lastname = lastName)
+        shareViewModel.set_user_info_fullname(fullname = fullName)
+        shareViewModel.set_user_info_firstname(firstname = firstName)
+        shareViewModel.set_user_info_lastname(lastname = lastName)
     }
 }

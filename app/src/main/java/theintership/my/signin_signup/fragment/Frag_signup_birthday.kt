@@ -13,7 +13,7 @@ import theintership.my.R
 import theintership.my.databinding.FragSignupBirthdayBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
-import theintership.my.signin_signup.viewModel_Signin_Signup
+import theintership.my.signin_signup.shareViewModel
 import java.util.*
 
 class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday) {
@@ -21,7 +21,7 @@ class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday) {
     private var _binding: FragSignupBirthdayBinding? = null
     private val binding get() = _binding!!
     private lateinit var signup1Activity: Signup1Activity
-    private val viewModel_Signin_Signup: viewModel_Signin_Signup by activityViewModels()
+    private val shareViewModel: shareViewModel by activityViewModels()
 
 
     override fun onCreateView(
@@ -93,8 +93,8 @@ class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday) {
             frag_signup_sex(),
             signup1Activity.supportFragmentManager
         )
-        viewModel_Signin_Signup.set_user_info_birthday(birthday = birthday)
-        viewModel_Signin_Signup.set_user_info_age(age)
+        shareViewModel.set_user_info_birthday(birthday = birthday)
+        shareViewModel.set_user_info_age(age)
     }
 
     private fun move_to_frag_age(){

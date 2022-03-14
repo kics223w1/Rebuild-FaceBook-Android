@@ -10,14 +10,16 @@ import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import theintership.my.MainActivity
+import theintership.my.MyMethod.Companion.hide_soft_key_board
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.R
 import theintership.my.databinding.FragSignupAgeBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_signup_age
 import theintership.my.signin_signup.dialog.dialog_stop_signup
-import theintership.my.signin_signup.viewModel_Signin_Signup
+import theintership.my.signin_signup.shareViewModel
 import java.util.*
+import kotlin.math.sign
 
 
 class frag_signup_age : Fragment(R.layout.frag_signup_age) {
@@ -25,7 +27,7 @@ class frag_signup_age : Fragment(R.layout.frag_signup_age) {
     private var _binding: FragSignupAgeBinding? = null
     private val binding get() = _binding!!
     private lateinit var signup1Activity: Signup1Activity
-    private val viewModel_Signin_Signup: viewModel_Signin_Signup by activityViewModels()
+    private val shareViewModel: shareViewModel by activityViewModels()
 
 
     override fun onCreateView(
@@ -49,7 +51,7 @@ class frag_signup_age : Fragment(R.layout.frag_signup_age) {
                 set_error_edittext()
                 return@setOnClickListener
             }
-
+            hide_soft_key_board(signup1Activity , binding.btnSignupAgeGo)
             val dialog = dialog_signup_age(signup1Activity, age)
             dialog.show()
             dialog.btn_go.setOnClickListener {
@@ -73,6 +75,7 @@ class frag_signup_age : Fragment(R.layout.frag_signup_age) {
                     set_error_edittext()
                     false
                 } else {
+                    hide_soft_key_board(signup1Activity , binding.btnSignupAgeGo)
                     val dialog = dialog_signup_age(signup1Activity, age)
                     dialog.show()
                     dialog.btn_go.setOnClickListener {
@@ -99,11 +102,14 @@ class frag_signup_age : Fragment(R.layout.frag_signup_age) {
                 return@setOnClickListener
             }
 
+            hide_soft_key_board(signup1Activity , binding.btnSignupAgePopback)
             signup1Activity.go_to_frag_signup_age = false
             signup1Activity.supportFragmentManager.popBackStack()
         }
 
         binding.btnSignupAgeBack.setOnClickListener {
+            hide_soft_key_board(signup1Activity , binding.btnSignupAgeBack)
+            signup1Activity.go_to_frag_signup_age = false
             val dialog = dialog_stop_signup(signup1Activity)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
@@ -140,8 +146,8 @@ class frag_signup_age : Fragment(R.layout.frag_signup_age) {
             signup1Activity.supportFragmentManager
         )
         val birthday = set_birthday(age)
-        viewModel_Signin_Signup.set_user_info_birthday(birthday)
-        viewModel_Signin_Signup.set_user_info_age(age)
+        shareViewModel.set_user_info_birthday(birthday)
+        shareViewModel.set_user_info_age(age)
     }
 
     private fun move_to_frag_birthday() {

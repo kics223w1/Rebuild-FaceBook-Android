@@ -3,7 +3,7 @@ package theintership.my.signin_signup
 import androidx.lifecycle.ViewModel
 import theintership.my.model.user_info
 
-class viewModel_Signin_Signup : ViewModel() {
+class shareViewModel : ViewModel() {
 
     var user_info: user_info = user_info(
         email = "",
@@ -25,9 +25,13 @@ class viewModel_Signin_Signup : ViewModel() {
     var account_user = ""
     var password_user = ""
     var index_of_last_ele_phone_email_account = -1
+
     var list_account = mutableListOf<String>()
     var list_phone_number = mutableListOf<String>()
     var list_email_address = mutableListOf<String>()
+
+    var is_user_change_phone_when_authencation = false
+    var is_user_change_email_when_authencation = false
 
     fun set_user_info_fullname(fullname: String) {
         user_info.fullname = fullname

@@ -8,19 +8,20 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import theintership.my.MainActivity
+import theintership.my.MyMethod.Companion.hide_soft_key_board
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.R
 import theintership.my.databinding.FragSignupPasswordBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
-import theintership.my.signin_signup.viewModel_Signin_Signup
+import theintership.my.signin_signup.shareViewModel
 
 class frag_signup_password : Fragment(R.layout.frag_signup_password) {
 
     private var _binding: FragSignupPasswordBinding? = null
     private val binding get() = _binding!!
     private lateinit var signup1Activity: Signup1Activity
-    private val viewmodelSigninSignup: viewModel_Signin_Signup by activityViewModels()
+    private val viewmodel: shareViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,6 +34,7 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password) {
 
         binding.btnSignupPasswordGo.setOnClickListener {
             val password = binding.edtSignupPassword.text.toString()
+            hide_soft_key_board(signup1Activity , binding.btnSignupPasswordGo)
             if (!valid_password(password)) {
                 val s = "Your password must has at least 6 characters " +
                         "number or symbol (! and %)."
@@ -54,6 +56,7 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password) {
 
         binding.edtSignupPassword.setOnEditorActionListener { textView, i, keyEvent ->
             val password = binding.edtSignupPassword.text.toString()
+            hide_soft_key_board(signup1Activity , binding.edtSignupPassword)
             if (!valid_password(password)) {
                 val s = "Your password must has at least 6 characters " +
                         "number or symbol (like ! and % ) or space."
@@ -73,6 +76,7 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password) {
         }
 
         binding.btnSignupPaswordBack.setOnClickListener {
+            hide_soft_key_board(signup1Activity , binding.btnSignupPaswordBack)
             val dialog = dialog_stop_signup(signup1Activity)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
@@ -126,7 +130,7 @@ class frag_signup_password : Fragment(R.layout.frag_signup_password) {
             frag_signup_done(),
             signup1Activity.supportFragmentManager
         )
-        viewmodelSigninSignup.password_user = password
+        viewmodel.password_user = password
     }
 
     fun move_error_edittext() {

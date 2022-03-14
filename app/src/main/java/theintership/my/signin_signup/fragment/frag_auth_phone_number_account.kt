@@ -12,14 +12,13 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import theintership.my.MyMethod
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.MyMethod.Companion.showToastLong
 import theintership.my.MyMethod.Companion.showToastShort
 import theintership.my.R
 import theintership.my.databinding.FragAuthPhoneNumberAccountBinding
 import theintership.my.signin_signup.Signup1Activity
-import theintership.my.signin_signup.viewModel_Signin_Signup
+import theintership.my.signin_signup.shareViewModel
 import java.util.concurrent.TimeUnit
 
 
@@ -29,7 +28,7 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
     private val binding get() = _binding!!
     private lateinit var signup1activity: Signup1Activity
     private lateinit var auth: FirebaseAuth
-    private val viewmodelSigninSignup: viewModel_Signin_Signup by activityViewModels()
+    private val viewmodel: shareViewModel by activityViewModels()
     private lateinit var mForceResendingToken: PhoneAuthProvider.ForceResendingToken
     private lateinit var database: DatabaseReference
     private var verifyID = ""
@@ -82,7 +81,7 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
         database = Firebase.database.reference
 
         binding.tvFragAuthPhoneNumberInfo.text = "Enter the code that we've sent to " +
-                "${viewmodelSigninSignup.user_info.phone} in your SMS"
+                "${viewmodel.user_info.phone} in your SMS"
 
         binding.btnAuthPhoneNumberConfirm.setOnClickListener {
             val otp = binding.edtAuthPhoneNumberAccount.text.toString()
@@ -122,6 +121,7 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
         }
 
         binding.btnAuthPhoneNumberChangePhoneNumber.setOnClickListener {
+            viewmodel.is_user_change_phone_when_authencation = true
             replacefrag(
                 "frag_signup_phone",
                 frag_signup_phone(),
@@ -169,8 +169,8 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
     private fun set_phone_number_for_send_otp(): String {
         var phone_number = ""
         //Phone number for opt must has format "+" and "country code" and "
-        val country_code = viewmodelSigninSignup.user_info.country_code
-        var phone_user = viewmodelSigninSignup.user_info.phone.toString()
+        val country_code = viewmodel.user_info.country_code
+        var phone_user = viewmodel.user_info.phone.toString()
         if (phone_user[0] == '0' && country_code == "84") {
             //VietNamese phone
             phone_user.drop(1)
@@ -208,7 +208,7 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
     }
 
     private fun set_ref_verify_phone_and_move_frag() {
-        val account_ref = viewmodelSigninSignup.account_user
+        val account_ref = viewmodel.account_user
         val ref_verify_phone = database
             .child("User")
             .child(account_ref)

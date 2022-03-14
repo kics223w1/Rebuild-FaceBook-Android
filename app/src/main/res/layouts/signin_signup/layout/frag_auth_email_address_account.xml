@@ -186,14 +186,4 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/btn_auth_email_reset"
-        android:background="@drawable/bg_white_ripple"
-        android:layout_marginTop="10dp"
-        android:gravity="center"
-        android:textSize="26sp"
-        android:text="Update"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
 </LinearLayout>
