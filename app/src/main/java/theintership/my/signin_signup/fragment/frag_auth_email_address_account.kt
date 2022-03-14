@@ -84,16 +84,18 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
         binding.btnAuthEmailAddressChangeEmail.setOnClickListener {
             shareViewModel.is_user_change_email_when_authencation = true
 
-            val size = signup1activity.supportFragmentManager.backStackEntryCount
-            for (i in 0 until size) {
-                println("debug stack: ${signup1activity.supportFragmentManager.getBackStackEntryAt(i).name}")
-            }
-            println("")
+
             replacefrag(
                 "frag_signup_email",
                 frag_signup_email(),
                 signup1activity.supportFragmentManager
             )
+            val size = signup1activity.supportFragmentManager.backStackEntryCount
+            for (i in 0 until size) {
+                println("debug stack trong changEmail: ${signup1activity.supportFragmentManager.getBackStackEntryAt(i).name}")
+            }
+            println("")
+
         }
 
         binding.btnAuthEmailAddressConfirmByPhoneNumber.setOnClickListener {

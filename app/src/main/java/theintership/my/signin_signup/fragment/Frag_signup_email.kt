@@ -41,11 +41,6 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email) {
         var user_change_email_address_when_verify =
             shareViewModel.is_user_change_email_when_authencation
 
-        val size = signup1activity.supportFragmentManager.backStackEntryCount
-        for (i in 0 until size){
-            println("debug stack: ${signup1activity.supportFragmentManager.getBackStackEntryAt(i).name}")
-        }
-        println("")
         if (user_change_email_address_when_verify) {
             //Change some UI to make user easy to understand
             binding.btnSignupEmailPhoneNumber.visibility = View.GONE
@@ -59,14 +54,21 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email) {
         binding.btnSignupEmailGo.setOnClickListener {
             val email = binding.edtSignupEmail.text.toString()
             hide_soft_key_board(signup1activity, binding.btnSignupEmailGo)
+            val size = signup1activity.supportFragmentManager.backStackEntryCount
+            for (i in 0 until size){
+                println("debug stack: ${signup1activity.supportFragmentManager.getBackStackEntryAt(i).name}")
+            }
+            println("")
+
+
             if (!check_email(email)) {
                 return@setOnClickListener
             }
             if (user_change_email_address_when_verify) {
                 set_ref_email_and_go_to_frag_authencation_email(email)
-                return@setOnClickListener
+            }else{
+                goto_frag_account(email)
             }
-            goto_frag_account(email)
         }
 
         binding.edtSignupEmail.setOnEditorActionListener { textview, i, keyevent ->
@@ -163,12 +165,14 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email) {
     }
 
     private fun set_ref_email_and_go_to_frag_authencation_email(email: String) {
+
+
         //Add new email address to list and delete the old one
         //And set new email address in user info
         val old_email_address = shareViewModel.user_info.email
         shareViewModel.list_email_address.add(email)
         shareViewModel.list_email_address.remove(old_email_address)
-        shareViewModel.set_user_info_email(email)
+        shareViewModel.set_user_info_email(email = email)
         shareViewModel.is_user_change_email_when_authencation = false
 
         var done_ref_phone_email_account = false
