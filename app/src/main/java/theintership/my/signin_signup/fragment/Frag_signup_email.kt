@@ -26,6 +26,7 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email) {
     private lateinit var signup1activity: Signup1Activity
     private var database: DatabaseReference = Firebase.database.reference
     private val viewModel_Signin_Signup: viewModel_Signin_Signup by activityViewModels()
+    private var user_change_email_address_when_verify = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +35,7 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email) {
     ): View {
         _binding = FragSignupEmailBinding.inflate(inflater, container, false)
         signup1activity = activity as Signup1Activity
+        user_change_email_address_when_verify = check_user_change_email_address_when_verify()
 
         binding.btnSignupEmailBack.setOnClickListener {
             signup1activity.supportFragmentManager.popBackStack()
@@ -106,8 +108,6 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email) {
             }
         }
         val list_email_address = viewModel_Signin_Signup.list_email_address
-        println("debug list email: $list_email_address")
-        println("debug email: $email")
         if (list_email_address.contains(email)){
             set_error_text_view("Email address already use by another user")
             return false
@@ -135,5 +135,17 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email) {
     private fun move_error_text_view(){
         binding.tvSignupEmailInfo.text = "Adding an email to keep your account secure, find friends and more"
         binding.tvSignupEmailInfo.setTextColor(resources.getColor(R.color.light_grey, null))
+    }
+
+
+
+    private fun check_user_change_email_address_when_verify() : Boolean{
+        val fm = signup1activity.supportFragmentManager
+        val size = fm.backStackEntryCount
+        if (fm.getBackStackEntryAt(size - 2).name == "frag_signup_email") {
+            return true
+        } else {
+            return false
+        }
     }
 }

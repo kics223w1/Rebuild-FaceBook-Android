@@ -3,6 +3,8 @@ package theintership.my
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -41,6 +43,11 @@ class MyMethod {
         fun replacefrag(tag: String, frag: Fragment, fm: FragmentManager) {
             fm.beginTransaction().addToBackStack(tag).replace(R.id.layout_Signup1Activity, frag)
                 .commit()
+        }
+
+        fun hide_soft_key_board(context : Context , view : View) {
+            val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
         }
 
     }

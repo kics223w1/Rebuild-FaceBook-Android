@@ -86,6 +86,16 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
 
     private fun create_auth_user_firebase(account: String, password: String) {
         val email = account + "@gmail.com"
+        //Why i set email = account + "@gmail.com"
+        //Because when user sign in by method signInWithEmailAndPassword
+        //We'll have the account and the password
+
+        //If you see my database realtime structure
+        //I store all infomation ( photo , avatar , friends , post , info ) of user
+        //according their account
+        //So we just need O(1) to get all of that
+        //And when user want to chang their email address
+        //We just need find the ref and update it
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(signup1activity) { task ->
                 if (task.isSuccessful) {

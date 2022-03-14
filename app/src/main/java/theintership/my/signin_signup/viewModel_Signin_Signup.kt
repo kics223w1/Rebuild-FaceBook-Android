@@ -18,6 +18,8 @@ class viewModel_Signin_Signup : ViewModel() {
         last_login = "",
         lastname = "",
         firstname = "",
+        verify_phone = false,
+        verify_email = false,
         country_code = "84"
     )
     var account_user = ""
@@ -77,5 +79,13 @@ class viewModel_Signin_Signup : ViewModel() {
 
     fun set_user_info_country_code(country_code : String){
         user_info.country_code = country_code
+    }
+
+    fun set_user_info_verify_phone(ok : Boolean){
+        user_info.verify_phone = ok
+    }
+
+    fun set_user_info_verify_email(ok : Boolean){
+        user_info.verify_email = ok
     }
 }

@@ -21,7 +21,6 @@ import theintership.my.databinding.FragAuthPhoneNumberAccountBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.viewModel_Signin_Signup
 import java.util.concurrent.TimeUnit
-import kotlin.math.sign
 
 
 class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_account) {
@@ -38,7 +37,7 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
     override fun onCreate(savedInstanceState: Bundle?) {
         signup1activity = activity as Signup1Activity
         auth = Firebase.auth
-        auth.setLanguageCode("vi")
+        auth.setLanguageCode("en")
 
         //If the program enter this fragment , this phoneNumber is non-empty
         //See the condition in frag_signup_creating_account
@@ -183,19 +182,16 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
 
 
     private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
-        println("debug vao signInPhone")
         auth.signInWithCredential(credential)
             .addOnCompleteListener(signup1activity) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     val s = "Verify success"
                     s.showToastShort(signup1activity)
-                    MyMethod.replacefrag(
-                        "frag_set_avatar",
-                        frag_set_avatar(),
-                        signup1activity.supportFragmentManager
-                    )
-                    val user = task.result?.user
+                    Firebase.auth.signOut()
+                    // Sign out because we already sign in by
+                    // SignInWithEmailAndPassword in frag_signing
+                    set_ref_verify_phone_and_move_frag()
                 } else {
                     // Sign in failed, display a message and update the UI
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
@@ -209,5 +205,23 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
                     // Update UI
                 }
             }
+    }
+
+    private fun set_ref_verify_phone_and_move_frag() {
+        val account_ref = viewmodelSigninSignup.account_user
+        val ref_verify_phone = database
+            .child("User")
+            .child(account_ref)
+            .child("user info")
+            .child("verify_phone")
+        ref_verify_phone.setValue(true).addOnCompleteListener(signup1activity) { task ->
+            if (task.isSuccessful) {
+                replacefrag(
+                    "frag_set_avatar",
+                    frag_set_avatar(),
+                    signup1activity.supportFragmentManager
+                )
+            }
+        }
     }
 }

@@ -128,6 +128,8 @@ class frag_signing : Fragment(R.layout.frag_signing) {
 
     private fun signin_user_and_move_frag(account: String, password: String) {
         val email = account + "@gmail.com"
+        //If you concern about above line
+        //See my explanation in frag_signup_creating_account in function create_auth_user_firebase
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {

@@ -16,6 +16,8 @@ data class user_info(
     var gender : String? = null,
     var age : Int,
     var birthday : String? = null,
+    var verify_phone : Boolean,
+    var verify_email : Boolean,
     var country_code : String? = null
 ) {
 

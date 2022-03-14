@@ -1,7 +1,6 @@
 package theintership.my.signin_signup.fragment
 
 import android.content.Intent
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +13,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import theintership.my.MainActivity
 import theintership.my.MyMethod
+import theintership.my.MyMethod.Companion.hide_soft_key_board
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.MyMethod.Companion.showToastLong
 import theintership.my.R
@@ -21,7 +21,6 @@ import theintership.my.databinding.FragSignupPhoneBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.viewModel_Signin_Signup
-import kotlin.math.sign
 
 class frag_signup_phone : Fragment(R.layout.frag_signup_phone) {
 
@@ -30,6 +29,7 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone) {
     private lateinit var signup1Activity: Signup1Activity
     private val viewModel_Signin_Signup: viewModel_Signin_Signup by activityViewModels()
     private lateinit var database: DatabaseReference
+    private var user_change_phone_number_when_verify = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,64 +41,50 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone) {
         database = Firebase.database.reference
         //signup1Activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         signup1Activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        user_change_phone_number_when_verify = check_user_change_phone_when_verify()
+
 
         binding.btnSignupPhoneGo.setOnClickListener {
             val phone = binding.edtSignupPhone.text.toString()
             val country_code = binding.edtSignupCountryCode.text.toString()
-            if (phone.length < 6) {
-                set_error_edittext("Please enter valid phone number , like VietNamese phone number or you can use email address.")
+
+            if (!validd_phone_number_and_country_code(phone = phone, country_code = country_code)) {
                 return@setOnClickListener
             }
-            if (!check_country_code(country_code)) {
-                set_error_edittext("Please just enter valid country code\\n Please enter number in country code and don't enter '+' or charaters.")
-                return@setOnClickListener
-            }
-            val list_phone_number = viewModel_Signin_Signup.list_phone_number
-            if (list_phone_number.contains(phone)) {
-                set_error_edittext("Phone number already use by another user")
-                return@setOnClickListener
-            }
+
             move_error_edittext()
-            val fm = signup1Activity.supportFragmentManager
-            val size = fm.backStackEntryCount
-            if (fm.getBackStackEntryAt(size - 2).name == "frag_signup_phone") {
-                //This condition will come up
-                // when user want to change phone number in frag_auth_phone_number_account
-                go_to_frag_auth_phone_number_account(phone, country_code)
-            } else {
-                goto_frag_signup_email(phone, country_code)
+            hide_soft_key_board(signup1Activity , binding.btnSignupPhoneGo)
+            if (user_change_phone_number_when_verify) {
+                go_to_frag_auth_phone_number_account(
+                    phone_number = phone,
+                    country_code = country_code
+                )
+            }else{
+                goto_frag_signup_email(phone = phone , country_code = country_code)
             }
         }
 
         binding.edtSignupCountryCode.setOnEditorActionListener { textView, i, keyEvent ->
             val phone = binding.edtSignupPhone.text.toString()
             val country_code = binding.edtSignupCountryCode.text.toString()
-            val list_phone_number = viewModel_Signin_Signup.list_phone_number
-            if (phone.length < 6) {
-                set_error_edittext("Please enter valid phone number , like VietNamese phone number or you can use email address.")
-                false
-            } else if (list_phone_number.contains(phone)) {
-                set_error_edittext("Phone number already use by another user")
-                false
-            } else if (!check_country_code(country_code)) {
-                set_error_edittext("Please just enter valid country code\n Please enter number in country code and don't enter '+' or charaters.")
-                false
-            } else {
+            if (validd_phone_number_and_country_code(phone = phone , country_code = country_code)){
                 move_error_edittext()
-                val fm = signup1Activity.supportFragmentManager
-                val size = fm.backStackEntryCount
-                if (fm.getBackStackEntryAt(size - 2).name == "frag_signup_phone") {
-                    //This condition will come up
-                    // when user want to change phone number in frag_auth_phone_number_account
-                    go_to_frag_auth_phone_number_account(phone, country_code)
-                } else {
-                    goto_frag_signup_email(phone, country_code)
+                if (user_change_phone_number_when_verify){
+                    go_to_frag_auth_phone_number_account(phone_number = phone , country_code = country_code)
+                    true
+                }else{
+                    goto_frag_signup_email(phone = phone , country_code = country_code)
+                    true
                 }
-                true
+            }else{
+                false
             }
+
+
         }
 
         binding.btnSignupPhoneEmailAddress.setOnClickListener {
+            hide_soft_key_board(signup1Activity , binding.btnSignupPhoneEmailAddress)
             goto_frag_signup_email("", "")
         }
 
@@ -159,9 +145,27 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone) {
         }
     }
 
+    fun validd_phone_number_and_country_code(phone: String, country_code: String): Boolean {
+        if (phone.length < 6) {
+            set_error_edittext("Please enter valid phone number , like VietNamese phone number or you can use email address.")
+            return false
+        }
+        if (!check_country_code(country_code)) {
+            set_error_edittext("Please just enter valid country code\\n Please enter number in country code and don't enter '+' or charaters.")
+            return false
+        }
+        val list_phone_number = viewModel_Signin_Signup.list_phone_number
+        if (list_phone_number.contains(phone)) {
+            set_error_edittext("Phone number already use by another user")
+            return false
+        }
+        return true
+    }
+
     fun go_to_frag_auth_phone_number_account(phone_number: String, country_code: String) {
         viewModel_Signin_Signup.set_user_info_phone(phone_number)
         viewModel_Signin_Signup.set_user_info_country_code(country_code)
+
 
         val account_ref = viewModel_Signin_Signup.account_user
 
@@ -185,7 +189,7 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone) {
                         //We must make sure that our database is updated and then popBackStack
                         signup1Activity.supportFragmentManager.popBackStack()
                     }
-                }else{
+                } else {
                     error_networking_and_move_frag()
                 }
             }
@@ -201,7 +205,7 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone) {
                             signup1Activity.supportFragmentManager.popBackStack()
                         }
                     } else {
-                       error_networking_and_move_frag()
+                        error_networking_and_move_frag()
                     }
                 }
         } else {
@@ -212,14 +216,24 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone) {
         }
     }
 
+    private fun check_user_change_phone_when_verify(): Boolean {
+        val fm = signup1Activity.supportFragmentManager
+        val size = fm.backStackEntryCount
+        if (fm.getBackStackEntryAt(size - 2).name == "frag_signup_phone") {
+            return true
+        } else {
+            return false
+        }
+    }
 
     private fun error_networking_and_move_frag() {
         if (!MyMethod.isWifi(signup1Activity)) {
             val s = "Please connect wifi to continue"
             s.showToastLong(signup1Activity)
         } else {
-            val s  = "One thing went wrong , but don't worry just continue"
+            val s = "One thing went wrong , but don't worry just continue"
             s.showToastLong(signup1Activity)
             signup1Activity.supportFragmentManager.popBackStack()
         }
-    }}
+    }
+}

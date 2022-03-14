@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_white"
+    android:orientation="vertical"
     android:tag="frag_auth_email_address_account">
 
     <LinearLayout
@@ -35,177 +35,165 @@
 
 
     <TextView
+        android:id="@+id/tv_auth_email_address_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="25dp"
-        android:text="Enter a code that we just sent you"
-        android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="22sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:textColor="@color/light_blue"
+        android:textSize="22sp" />
 
-    <TextView
-        android:gravity="center"
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:textColor="@color/light_grey"
-        android:text="Please, confirm that this is your phone number."
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/tv_frag_auth_phone_number_info"
-        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
         android:layout_marginTop="5dp"
-        android:textColor="@color/light_grey"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layout_edt_auth_phone_number_account"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="10dp"
-        android:hint="Code"
-        app:boxStrokeColor="@color/light_blue"
-        app:endIconMode="clear_text"
-        app:errorEnabled="true"
-        app:hintTextColor="@color/light_blue">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_auth_phone_number_account"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:background="@color/white"
-            android:gravity="start"
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:maxLines="1"
-            android:textColor="@color/black"
-            android:textCursorDrawable="@drawable/cursor_light_blue"
-            android:textSize="20sp"
-            android:textStyle="normal" />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        android:layout_marginEnd="20dp"
+        android:gravity="center"
+        android:textColor="@color/light_grey" />
 
 
     <TextView
-        android:id="@+id/btn_auth_phone_number_confirm"
+        android:id="@+id/tv_auth_email_address_status_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:text="Your email is not Verify"
+        android:textColor="@color/error"
+        android:textSize="24sp" />
+
+
+    <TextView
+        android:id="@+id/btn_auth_email_address_confirm"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:gravity="center"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/bg_8dp_all_lightblue_ripple"
-        android:text="Confirm"
+        android:gravity="center"
+        android:text="Confirm verified"
         android:textAllCaps="false"
         android:textColor="#ecfcff"
         android:textSize="20sp"
         android:textStyle="bold" />
 
     <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:background="@android:color/darker_gray"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:background="@android:color/darker_gray" />
 
     <TextView
-        android:text="You didn't receive a code"
-        android:textSize="18sp"
-        android:textColor="@color/light_grey"
-        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
+        android:text="You didn't receive a code"
+        android:textColor="@color/light_grey"
+        android:textSize="18sp" />
+
+
+    <LinearLayout
+        android:id="@+id/btn_auth_email_address_send_again"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bg_white_ripple"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/message" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:gravity="center_vertical"
+            android:text="Send again"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/btn_auth_email_address_change_email"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bg_white_ripple"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/pencil" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:gravity="center_vertical"
+            android:text="Change email address"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/btn_auth_email_address_confirm_by_phone_number"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/bg_white_ripple"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/phone" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:gravity="center_vertical"
+            android:text="Confirm by phone number"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/btn_auth_email_reset"
+        android:background="@drawable/bg_white_ripple"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textSize="26sp"
+        android:text="Update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-
-    
-    <LinearLayout
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
-        
-        <ImageView
-            android:src="@drawable/message"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
-        
-        <TextView
-            android:layout_marginStart="10dp"
-            android:textColor="@color/black"
-            android:gravity="center_vertical"
-            android:textSize="20sp"
-            android:text="Send again"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-        
-        
-    </LinearLayout>
-
-
-
-    <LinearLayout
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
-
-        <ImageView
-            android:src="@drawable/pencil"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
-
-        <TextView
-            android:layout_marginStart="10dp"
-            android:textColor="@color/black"
-            android:gravity="center_vertical"
-            android:textSize="20sp"
-            android:text="Change email address"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="40dp">
-
-        <ImageView
-            android:src="@drawable/phone"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
-
-        <TextView
-            android:layout_marginStart="10dp"
-            android:textColor="@color/black"
-            android:gravity="center_vertical"
-            android:textSize="20sp"
-            android:text="Confirm by phone number"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-
-    </LinearLayout>
 
 </LinearLayout>
