@@ -11,6 +11,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import theintership.my.MyMethod.Companion.hide_soft_key_board
 import theintership.my.MyMethod.Companion.isWifi
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.MyMethod.Companion.showToastLong
@@ -82,20 +83,12 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
 
 
         binding.btnAuthEmailAddressChangeEmail.setOnClickListener {
-            shareViewModel.is_user_change_email_when_authencation = true
-
-
+            hide_soft_key_board(signup1activity , binding.btnAuthEmailAddressChangeEmail)
             replacefrag(
-                "frag_signup_email",
-                frag_signup_email(),
+                "frag_change_email_when_auth",
+                frag_change_email_when_auth(),
                 signup1activity.supportFragmentManager
             )
-            val size = signup1activity.supportFragmentManager.backStackEntryCount
-            for (i in 0 until size) {
-                println("debug stack trong changEmail: ${signup1activity.supportFragmentManager.getBackStackEntryAt(i).name}")
-            }
-            println("")
-
         }
 
         binding.btnAuthEmailAddressConfirmByPhoneNumber.setOnClickListener {
@@ -120,6 +113,7 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
         val ref_user_info_verify_email = database
             .child("User")
             .child(account_ref)
+            .child("user info")
             .child("verify email")
         ref_user_info_verify_email.setValue(true).addOnCompleteListener(signup1activity) { task ->
             if (task.isSuccessful) {

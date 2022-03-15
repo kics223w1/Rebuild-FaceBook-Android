@@ -30,9 +30,6 @@ class shareViewModel : ViewModel() {
     var list_phone_number = mutableListOf<String>()
     var list_email_address = mutableListOf<String>()
 
-    var is_user_change_phone_when_authencation = false
-    var is_user_change_email_when_authencation = false
-
     fun set_user_info_fullname(fullname: String) {
         user_info.fullname = fullname
     }

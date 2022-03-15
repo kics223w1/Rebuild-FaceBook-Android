@@ -159,7 +159,7 @@ class Signup1Activity : AppCompatActivity() {
             return
         }
 
-        if (frag_last.name == "frag_signup_email" && frag_before_last.name == "frag_auth_email_address_account"){
+        if (frag_last.name == "frag_change_email_when_auth"){
             supportFragmentManager.popBackStack()
             return
         }

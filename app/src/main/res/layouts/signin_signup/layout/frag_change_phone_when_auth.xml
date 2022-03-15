@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/background_white"
     android:orientation="vertical"
-    android:tag="frag_signup_phone">
+    android:tag="frag_change_phone_when_auth">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +14,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/btn_signup_phone_back"
+            android:id="@+id/btn_change_phone_when_auth_back"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginStart="10dp"
@@ -28,7 +28,7 @@
             android:layout_marginStart="15dp"
             android:layout_weight="0.9"
             android:gravity="start"
-            android:text="Phone number"
+            android:text="Change phone number"
             android:textColor="@color/black"
             android:textSize="26sp"
             android:textStyle="normal" />
@@ -48,27 +48,26 @@
         android:layout_height="40dp"
         android:layout_marginTop="50dp"
         android:gravity="center"
-        android:text="Enter your phone number"
+        android:text="Change your phone number"
         android:textColor="#050505"
         android:textSize="26sp"
         android:textStyle="normal" />
 
     <TextView
-        android:id="@+id/tv_signup_phone_info"
+        android:id="@+id/tv_change_phone_when_auth_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout2"
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
-        android:text="Enter your phone number. You can always make this private later"
+        android:text="Enter the phone number that you want to change."
         android:textColor="#767676"
         android:textSize="16sp"
         android:textStyle="normal" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layout_edt_signup_phone"
+        android:id="@+id/layout_edt_change_phone_when_auth"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_below="@+id/tv_signup_phone_info"
@@ -81,7 +80,7 @@
         app:hintTextColor="#e1582c">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_signup_phone"
+            android:id="@+id/edt_change_phone_when_auth"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="20dp"
@@ -104,7 +103,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layout_edt_signup_country_code"
+        android:id="@+id/layout_edt_change_phone_when_auth_country_code"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_below="@+id/layout_edt_signup_phone"
@@ -117,7 +116,7 @@
         app:hintTextColor="#e1582c">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_signup_country_code"
+            android:id="@+id/edt_change_phone_when_auth_country_code"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="20dp"
@@ -139,7 +138,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout_edt_signup_country_code"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
@@ -150,31 +148,34 @@
 
 
 
-    <TextView
-        android:id="@+id/btn_signup_phone_go"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@+id/tv_signup_phone_info_country_code"
+    <FrameLayout
+        android:background="@drawable/bg_8dp_all_lightblue_ripple"
         android:layout_marginStart="20dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/bg_8dp_all_lightblue_ripple"
-        android:gravity="center"
-        android:text="Next"
-        android:textAllCaps="false"
-        android:textColor="#ecfcff"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/btn_signup_phone_email_address"
-        android:layout_below="@+id/btn_signup_phone_go"
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Use email address"
-        android:textColor="@color/light_blue"
-        android:textSize="18sp" />
+        android:layout_height="40dp">
+
+
+        <TextView
+            android:id="@+id/btn_change_phone_when_auth_change"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Change phone number"
+            android:textAllCaps="false"
+            android:textColor="#ecfcff"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ProgressBar
+            android:id="@+id/progressBar_change_phone_when_auth"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </FrameLayout>
+
+
 
 </LinearLayout>

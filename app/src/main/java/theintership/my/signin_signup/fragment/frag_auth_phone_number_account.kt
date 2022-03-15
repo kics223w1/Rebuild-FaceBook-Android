@@ -12,6 +12,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import theintership.my.MyMethod.Companion.hide_soft_key_board
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.MyMethod.Companion.showToastLong
 import theintership.my.MyMethod.Companion.showToastShort
@@ -121,10 +122,10 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
         }
 
         binding.btnAuthPhoneNumberChangePhoneNumber.setOnClickListener {
-            viewmodel.is_user_change_phone_when_authencation = true
+            hide_soft_key_board(signup1activity , binding.btnAuthPhoneNumberChangePhoneNumber)
             replacefrag(
-                "frag_signup_phone",
-                frag_signup_phone(),
+                "frag_change_phone_when_auth",
+                frag_change_phone_when_auth(),
                 signup1activity.supportFragmentManager
             )
         }
