@@ -14,9 +14,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import theintership.my.MyMethod
 import theintership.my.MyMethod.Companion.hide_soft_key_board
+import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.MyMethod.Companion.showToastLong
 import theintership.my.R
-import theintership.my.databinding.FragChangeEmailWhenAuthBinding
 import theintership.my.databinding.FragChangePhoneWhenAuthBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.shareViewModel
@@ -39,29 +39,35 @@ class frag_change_phone_when_auth : Fragment(R.layout.frag_change_phone_when_aut
         signup1activity = activity as Signup1Activity
 
         binding.btnChangePhoneWhenAuthBack.setOnClickListener {
-            hide_soft_key_board(signup1activity , binding.btnChangePhoneWhenAuthBack)
+            hide_soft_key_board(signup1activity, binding.btnChangePhoneWhenAuthBack)
             signup1activity.supportFragmentManager.popBackStack()
         }
 
         binding.btnChangePhoneWhenAuthChange.setOnClickListener {
             val phone_number = binding.edtChangePhoneWhenAuth.text.toString()
             val country_code = binding.edtChangePhoneWhenAuthCountryCode.text.toString()
-            hide_soft_key_board(signup1activity , binding.btnChangePhoneWhenAuthChange)
+            hide_soft_key_board(signup1activity, binding.btnChangePhoneWhenAuthChange)
 
-            if (validd_phone_number_and_country_code(phone = phone_number , country_code = country_code))
-                go_to_frag_auth_phone_number_account(phone_number, country_code)
+            if (validd_phone_number_and_country_code(phone_number, country_code)) {
+                set_ref_phoneEmailAccount_and_ref_userInfo_and_move_frag(
+                    phone_number = phone_number,
+                    country_code = country_code
+                )
+            }
 
         }
 
-        binding.edtChangePhoneWhenAuthCountryCode.setOnEditorActionListener{
-            textView , i , keyEvent ->
+        binding.edtChangePhoneWhenAuthCountryCode.setOnEditorActionListener { textView, i, keyEvent ->
             val phone_number = binding.edtChangePhoneWhenAuth.text.toString()
             val country_code = binding.edtChangePhoneWhenAuthCountryCode.text.toString()
-            hide_soft_key_board(signup1activity , binding.btnChangePhoneWhenAuthChange)
-            if (validd_phone_number_and_country_code(phone = phone_number , country_code = country_code)) {
-                go_to_frag_auth_phone_number_account(phone_number, country_code)
+            hide_soft_key_board(signup1activity, binding.btnChangePhoneWhenAuthChange)
+            if (validd_phone_number_and_country_code(phone_number, country_code)) {
+                set_ref_phoneEmailAccount_and_ref_userInfo_and_move_frag(
+                    phone_number = phone_number,
+                    country_code = country_code
+                )
                 true
-            }else{
+            } else {
                 false
             }
         }
@@ -88,13 +94,15 @@ class frag_change_phone_when_auth : Fragment(R.layout.frag_change_phone_when_aut
         return true
     }
 
-    private fun go_to_frag_auth_phone_number_account(
+    private fun set_ref_phoneEmailAccount_and_ref_userInfo_and_move_frag(
         phone_number: String,
         country_code: String
     ) {
         val old_phone_number = shareViewModel.user_info.phone
         shareViewModel.set_user_info_phone(phone_number)
-        shareViewModel.set_user_info_country_code(country_code)
+        if (country_code != ""){
+            shareViewModel.set_user_info_country_code(country_code)
+        }
 
         //Add new phone number to list and delete the old phone number
         //And set new phone number in user info
@@ -109,11 +117,13 @@ class frag_change_phone_when_auth : Fragment(R.layout.frag_change_phone_when_aut
         val ref_user_info_phone_number = database
             .child("User")
             .child(account_ref)
+            .child("user info")
             .child("phone")
 
         val ref_user_info_country_code = database
             .child("User")
             .child(account_ref)
+            .child("user info")
             .child("country_code")
 
         val ref_phone_and_email_and_account = database
@@ -133,7 +143,7 @@ class frag_change_phone_when_auth : Fragment(R.layout.frag_change_phone_when_aut
                         if (done_phone && done_country_code && done_phone_email_account) {
                             //We must make sure that our database is updated and then popBackStack
                             remove_loading_process()
-                            signup1activity.supportFragmentManager.popBackStack()
+                            go_to_frag_auth_phone_number_account()
                         }
                     } else {
                         error_networking_and_move_frag()
@@ -149,7 +159,7 @@ class frag_change_phone_when_auth : Fragment(R.layout.frag_change_phone_when_aut
                         if (done_phone && done_country_code && done_phone_email_account) {
                             //We must make sure that our database is updated and then popBackStack
                             remove_loading_process()
-                            signup1activity.supportFragmentManager.popBackStack()
+                            go_to_frag_auth_phone_number_account()
                         }
                     } else {
                         error_networking_and_move_frag()
@@ -169,7 +179,7 @@ class frag_change_phone_when_auth : Fragment(R.layout.frag_change_phone_when_aut
                             if (done_phone && done_country_code && done_phone_email_account) {
                                 //We must make sure that our database is updated and then popBackStack
                                 remove_loading_process()
-                                signup1activity.supportFragmentManager.popBackStack()
+                                go_to_frag_auth_phone_number_account()
                             }
                         } else {
                             error_networking_and_move_frag()
@@ -180,7 +190,7 @@ class frag_change_phone_when_auth : Fragment(R.layout.frag_change_phone_when_aut
             done_country_code = true
             if (done_phone && done_country_code && done_phone_email_account) {
                 remove_loading_process()
-                signup1activity.supportFragmentManager.popBackStack()
+                go_to_frag_auth_phone_number_account()
             }
         }
     }
@@ -213,14 +223,22 @@ class frag_change_phone_when_auth : Fragment(R.layout.frag_change_phone_when_aut
         binding.tvChangePhoneWhenAuthInfo.setTextColor(resources.getColor(R.color.light_grey, null))
     }
 
-    private fun set_loading_process(){
+    private fun set_loading_process() {
         binding.progressBarChangePhoneWhenAuth.visibility = View.VISIBLE
         binding.progressBarChangePhoneWhenAuth.visibility = View.INVISIBLE
     }
 
-    private fun remove_loading_process(){
+    private fun remove_loading_process() {
         binding.progressBarChangePhoneWhenAuth.visibility = View.VISIBLE
         binding.progressBarChangePhoneWhenAuth.visibility = View.INVISIBLE
+    }
+
+    private fun go_to_frag_auth_phone_number_account() {
+        replacefrag(
+            "frag_auth_phone_number_account",
+            frag_auth_phone_number_account(),
+            signup1activity.supportFragmentManager
+        )
     }
 
     private fun error_networking_and_move_frag() {

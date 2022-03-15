@@ -31,6 +31,30 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
     private val shareViewModel: shareViewModel by activityViewModels()
     private lateinit var database: DatabaseReference
 
+    override fun onDestroyView() {
+        println("debug onDestroyView frag auth email")
+        super.onDestroyView()
+    }
+
+    override fun onDestroy() {
+
+        println("debug onDestroy frag auth email")
+        super.onDestroy()
+    }
+
+    override fun onStop() {
+
+        println("debug onStop frag auth email")
+        super.onStop()
+    }
+
+    override fun onPause() {
+        println("debug onPause frag auth email")
+        super.onPause()
+    }
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -114,7 +138,7 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
             .child("User")
             .child(account_ref)
             .child("user info")
-            .child("verify email")
+            .child("verify_email")
         ref_user_info_verify_email.setValue(true).addOnCompleteListener(signup1activity) { task ->
             if (task.isSuccessful) {
                 replacefrag(
@@ -155,8 +179,12 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
                 if (task.isSuccessful) {
                     verify_user_email()
                 } else {
+                    println("debug vao error network trong update email")
                     error_network()
                 }
+            }
+            .addOnFailureListener(signup1activity){
+                println("debug update email e: $it")
             }
     }
 
@@ -188,6 +216,9 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
                 } else {
                     error_network()
                 }
+            }
+            .addOnFailureListener(signup1activity){
+                println("debug update email e: $it")
             }
     }
 

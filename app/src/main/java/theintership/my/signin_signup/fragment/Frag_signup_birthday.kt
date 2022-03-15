@@ -23,7 +23,6 @@ class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday) {
     private lateinit var signup1Activity: Signup1Activity
     private val shareViewModel: shareViewModel by activityViewModels()
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

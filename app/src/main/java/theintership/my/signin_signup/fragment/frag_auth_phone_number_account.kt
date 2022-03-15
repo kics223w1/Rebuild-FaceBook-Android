@@ -34,45 +34,6 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
     private lateinit var database: DatabaseReference
     private var verifyID = ""
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        signup1activity = activity as Signup1Activity
-        auth = Firebase.auth
-        auth.setLanguageCode("en")
-
-        //If the program enter this fragment , this phoneNumber is non-empty
-        //See the condition in frag_signup_creating_account
-        val phoneNumber: String = set_phone_number_for_send_otp()
-
-        //This Verificaiton is verify of you are not a robot , not verify the opt code
-        //onCodeSent will be invoked when the SMS sent to user phone
-        val options = PhoneAuthOptions.newBuilder(auth)
-            .setPhoneNumber(phoneNumber)
-            .setTimeout(100L, TimeUnit.SECONDS)
-            .setActivity(signup1activity)
-            .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                override fun onVerificationCompleted(p0: PhoneAuthCredential) {
-                    val s = "Verification Completed"
-                    s.showToastShort(signup1activity)
-                }
-
-                override fun onVerificationFailed(p0: FirebaseException) {
-                    val s = "Verification Fail , Please click send again"
-                    s.showToastLong(signup1activity)
-                }
-
-                override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
-                    super.onCodeSent(p0, p1)
-                    verifyID = p0
-                    mForceResendingToken = p1
-                }
-
-            })
-            .build()
-        PhoneAuthProvider.verifyPhoneNumber(options)
-        super.onCreate(savedInstanceState)
-    }
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -80,6 +41,11 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
     ): View {
         _binding = FragAuthPhoneNumberAccountBinding.inflate(inflater, container, false)
         database = Firebase.database.reference
+        signup1activity = activity as Signup1Activity
+        auth = Firebase.auth
+        auth.setLanguageCode("en")
+
+        verify_first_time_in_onCreatView()
 
         binding.tvFragAuthPhoneNumberInfo.text = "Enter the code that we've sent to " +
                 "${viewmodel.user_info.phone} in your SMS"
@@ -225,4 +191,38 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
             }
         }
     }
+
+   private fun verify_first_time_in_onCreatView(){
+       //If the program enter this fragment , this phoneNumber is non-empty
+       //See the condition in frag_signup_creating_account
+       val phoneNumber: String = set_phone_number_for_send_otp()
+        println("debug phone number trong verify first time: $phoneNumber")
+       //This Verificaiton is verify of you are not a robot , not verify the opt code
+       //onCodeSent will be invoked when the SMS sent to user phone
+       val options = PhoneAuthOptions.newBuilder(auth)
+           .setPhoneNumber(phoneNumber)
+           .setTimeout(100L, TimeUnit.SECONDS)
+           .setActivity(signup1activity)
+           .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+               override fun onVerificationCompleted(p0: PhoneAuthCredential) {
+                   val s = "Verification Completed"
+                   s.showToastShort(signup1activity)
+               }
+
+               override fun onVerificationFailed(p0: FirebaseException) {
+                   val s = "Verification Fail , Please click send again"
+                   s.showToastLong(signup1activity)
+               }
+
+               override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
+                   super.onCodeSent(p0, p1)
+                   verifyID = p0
+                   mForceResendingToken = p1
+               }
+
+           })
+           .build()
+       PhoneAuthProvider.verifyPhoneNumber(options)
+   }
+
 }
