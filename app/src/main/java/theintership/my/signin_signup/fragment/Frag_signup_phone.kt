@@ -130,7 +130,7 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone) {
         )
         shareViewModel.set_user_info_phone(phone)
         if (country_code != "") {
-            shareViewModel.user_info.country_code = country_code
+            shareViewModel.set_user_info_country_code(country_code)
         }
     }
 

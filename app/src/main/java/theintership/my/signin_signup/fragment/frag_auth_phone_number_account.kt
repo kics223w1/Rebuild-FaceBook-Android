@@ -29,7 +29,7 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
     private val binding get() = _binding!!
     private lateinit var signup1activity: Signup1Activity
     private lateinit var auth: FirebaseAuth
-    private val viewmodel: shareViewModel by activityViewModels()
+    private val shareViewmodel: shareViewModel by activityViewModels()
     private lateinit var mForceResendingToken: PhoneAuthProvider.ForceResendingToken
     private lateinit var database: DatabaseReference
     private var verifyID = ""
@@ -45,10 +45,19 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
         auth = Firebase.auth
         auth.setLanguageCode("en")
 
-        verify_first_time_in_onCreatView()
+        if (shareViewmodel.first_time_auth_phone_number || shareViewmodel.is_phone_number_change) {
+            if (shareViewmodel.first_time_auth_phone_number) {
+                shareViewmodel.first_time_auth_phone_number = false
+            }
+            if (shareViewmodel.is_phone_number_change) {
+                shareViewmodel.is_phone_number_change = false
+            }
+            set_tv_before_sending_SMS_code()
+            verify_first_time_in_onCreatView()
+        }else{
+            set_tv_after_sending_SMS_code()
+        }
 
-        binding.tvFragAuthPhoneNumberInfo.text = "Enter the code that we've sent to " +
-                "${viewmodel.user_info.phone} in your SMS"
 
         binding.btnAuthPhoneNumberConfirm.setOnClickListener {
             val otp = binding.edtAuthPhoneNumberAccount.text.toString()
@@ -88,7 +97,7 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
         }
 
         binding.btnAuthPhoneNumberChangePhoneNumber.setOnClickListener {
-            hide_soft_key_board(signup1activity , binding.btnAuthPhoneNumberChangePhoneNumber)
+            hide_soft_key_board(signup1activity, binding.btnAuthPhoneNumberChangePhoneNumber)
             replacefrag(
                 "frag_change_phone_when_auth",
                 frag_change_phone_when_auth(),
@@ -99,6 +108,7 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
 
         binding.btnAuthPhoneNumberSendAgain.setOnClickListener {
             val phoneNumber: String = set_phone_number_for_send_otp()
+            set_tv_before_sending_SMS_code()
 
             val options = PhoneAuthOptions.newBuilder(auth)
                 .setPhoneNumber(phoneNumber)
@@ -119,6 +129,7 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
 
                     override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
                         super.onCodeSent(p0, p1)
+                        set_tv_after_sending_SMS_code()
                         verifyID = p0
                         mForceResendingToken = p1
                     }
@@ -136,8 +147,8 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
     private fun set_phone_number_for_send_otp(): String {
         var phone_number = ""
         //Phone number for opt must has format "+" and "country code" and "
-        val country_code = viewmodel.user_info.country_code
-        var phone_user = viewmodel.user_info.phone.toString()
+        val country_code = shareViewmodel.user_info.country_code
+        var phone_user = shareViewmodel.user_info.phone.toString()
         if (phone_user[0] == '0' && country_code == "84") {
             //VietNamese phone
             phone_user.drop(1)
@@ -155,9 +166,6 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
                     // Sign in success, update UI with the signed-in user's information
                     val s = "Verify success"
                     s.showToastShort(signup1activity)
-                    Firebase.auth.signOut()
-                    // Sign out because we already sign in by
-                    // SignInWithEmailAndPassword in frag_signing
                     set_ref_verify_phone_and_move_frag()
                 } else {
                     // Sign in failed, display a message and update the UI
@@ -175,7 +183,25 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
     }
 
     private fun set_ref_verify_phone_and_move_frag() {
-        val account_ref = viewmodel.account_user
+        val account_ref = shareViewmodel.account_user
+        val user = Firebase.auth.currentUser!!
+        var done_ref = false
+        var done_delete = false
+        //Delete this user , because we have user signInWithEmailAndPassword
+        //so we don't need the user SignInWithPhoneAuthCredential
+        user.delete().addOnCompleteListener(signup1activity) { task ->
+            if (task.isSuccessful) {
+                done_delete = true
+                if (done_delete && done_ref) {
+                    replacefrag(
+                        "frag_set_avatar",
+                        frag_set_avatar(),
+                        signup1activity.supportFragmentManager
+                    )
+                }
+            }
+        }
+        //Set verify phone = true in firebase realtime database
         val ref_verify_phone = database
             .child("User")
             .child(account_ref)
@@ -183,46 +209,63 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
             .child("verify_phone")
         ref_verify_phone.setValue(true).addOnCompleteListener(signup1activity) { task ->
             if (task.isSuccessful) {
-                replacefrag(
-                    "frag_set_avatar",
-                    frag_set_avatar(),
-                    signup1activity.supportFragmentManager
-                )
+                done_ref = true
+                if (done_ref && done_delete) {
+                    replacefrag(
+                        "frag_set_avatar",
+                        frag_set_avatar(),
+                        signup1activity.supportFragmentManager
+                    )
+                }
             }
         }
     }
 
-   private fun verify_first_time_in_onCreatView(){
-       //If the program enter this fragment , this phoneNumber is non-empty
-       //See the condition in frag_signup_creating_account
-       val phoneNumber: String = set_phone_number_for_send_otp()
+
+    private fun verify_first_time_in_onCreatView() {
+        //If the program enter this fragment , this phoneNumber is non-empty
+        //See the condition in frag_signup_creating_account
+        val phoneNumber: String = set_phone_number_for_send_otp()
         println("debug phone number trong verify first time: $phoneNumber")
-       //This Verificaiton is verify of you are not a robot , not verify the opt code
-       //onCodeSent will be invoked when the SMS sent to user phone
-       val options = PhoneAuthOptions.newBuilder(auth)
-           .setPhoneNumber(phoneNumber)
-           .setTimeout(100L, TimeUnit.SECONDS)
-           .setActivity(signup1activity)
-           .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-               override fun onVerificationCompleted(p0: PhoneAuthCredential) {
-                   val s = "Verification Completed"
-                   s.showToastShort(signup1activity)
-               }
+        //This Verificaiton is verify of you are not a robot , not verify the opt code
+        //onCodeSent will be invoked when the SMS sent to user phone
+        val options = PhoneAuthOptions.newBuilder(auth)
+            .setPhoneNumber(phoneNumber)
+            .setTimeout(100L, TimeUnit.SECONDS)
+            .setActivity(signup1activity)
+            .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                override fun onVerificationCompleted(p0: PhoneAuthCredential) {
+                    val s = "Verification Completed"
+                    s.showToastShort(signup1activity)
+                }
 
-               override fun onVerificationFailed(p0: FirebaseException) {
-                   val s = "Verification Fail , Please click send again"
-                   s.showToastLong(signup1activity)
-               }
+                override fun onVerificationFailed(p0: FirebaseException) {
+                    val s = "Verification Fail , Please click send again"
+                    s.showToastLong(signup1activity)
+                }
 
-               override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
-                   super.onCodeSent(p0, p1)
-                   verifyID = p0
-                   mForceResendingToken = p1
-               }
+                override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
+                    super.onCodeSent(p0, p1)
+                    set_tv_after_sending_SMS_code()
+                    verifyID = p0
+                    mForceResendingToken = p1
+                }
 
-           })
-           .build()
-       PhoneAuthProvider.verifyPhoneNumber(options)
-   }
+            })
+            .build()
+        PhoneAuthProvider.verifyPhoneNumber(options)
+    }
+
+    private fun set_tv_after_sending_SMS_code() {
+        binding.tvFragAuthPhoneNumberInfo.text = "Enter the code that we've sent to " +
+                "${shareViewmodel.user_info.phone} in your SMS"
+        binding.tvFragAuthPhoneNumberStatus.visibility = View.VISIBLE
+    }
+
+    private fun set_tv_before_sending_SMS_code() {
+        binding.tvFragAuthPhoneNumberStatus.visibility = View.GONE
+        binding.tvFragAuthPhoneNumberInfo.text =
+            "Please wait for us to send you the SMS code to verify phone number"
+    }
 
 }

@@ -26,6 +26,11 @@ class shareViewModel : ViewModel() {
     var password_user = ""
     var index_of_last_ele_phone_email_account = -1
 
+    var is_email_address_change = false
+    var is_phone_number_change = false
+    var first_time_auth_phone_number = true
+    var first_time_auth_email_address = true
+
     var list_account = mutableListOf<String>()
     var list_phone_number = mutableListOf<String>()
     var list_email_address = mutableListOf<String>()

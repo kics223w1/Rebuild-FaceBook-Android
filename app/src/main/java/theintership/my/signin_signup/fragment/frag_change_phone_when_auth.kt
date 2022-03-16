@@ -86,6 +86,11 @@ class frag_change_phone_when_auth : Fragment(R.layout.frag_change_phone_when_aut
             return false
         }
         val list_phone_number = shareViewModel.list_phone_number
+        val old_phone_number = shareViewModel.user_info.phone.toString()
+        if(old_phone_number == phone){
+            set_error_edittext("You just entered the phone number which you enter when sign up")
+            return false
+        }
         if (list_phone_number.contains(phone)) {
             set_error_edittext("Phone number already use by another user")
             return false
@@ -100,6 +105,7 @@ class frag_change_phone_when_auth : Fragment(R.layout.frag_change_phone_when_aut
     ) {
         val old_phone_number = shareViewModel.user_info.phone
         shareViewModel.set_user_info_phone(phone_number)
+        shareViewModel.is_phone_number_change = true
         if (country_code != ""){
             shareViewModel.set_user_info_country_code(country_code)
         }

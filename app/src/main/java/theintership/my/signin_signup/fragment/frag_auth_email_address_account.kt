@@ -31,30 +31,6 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
     private val shareViewModel: shareViewModel by activityViewModels()
     private lateinit var database: DatabaseReference
 
-    override fun onDestroyView() {
-        println("debug onDestroyView frag auth email")
-        super.onDestroyView()
-    }
-
-    override fun onDestroy() {
-
-        println("debug onDestroy frag auth email")
-        super.onDestroy()
-    }
-
-    override fun onStop() {
-
-        println("debug onStop frag auth email")
-        super.onStop()
-    }
-
-    override fun onPause() {
-        println("debug onPause frag auth email")
-        super.onPause()
-    }
-
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -65,15 +41,27 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
         auth = Firebase.auth
         signup1activity = activity as Signup1Activity
         auth.setLanguageCode("en")
-        val User = Firebase.auth.currentUser
 
-        if (User != null) {
-            if (!User.isEmailVerified) {
-                update_email_user_and_verify_it()
-            } else {
-                reset_account_user_and_move_frag()
+        if (shareViewModel.first_time_auth_email_address || shareViewModel.is_email_address_change){
+            if (shareViewModel.first_time_auth_email_address){
+                shareViewModel.first_time_auth_email_address = false
             }
+            if (shareViewModel.is_email_address_change){
+                shareViewModel.is_email_address_change = false
+            }
+            val User = Firebase.auth.currentUser
+            if (User != null) {
+                if (!User.isEmailVerified ) {
+                    update_email_user_and_verify_it()
+                }
+            }
+        }else{
+            binding.tvAuthEmailAddressInfo.text =
+                "Please check the verification email which we've just sent you"
+            val s = "Please check your email to verify."
+            s.showToastLong(signup1activity)
         }
+
 
         binding.btnAuthEmailAddressConfirm.setOnClickListener {
             val mUser = Firebase.auth.currentUser
@@ -256,7 +244,6 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
             error_network()
         }
     }
-
 
     private fun error_network() {
         if (!isWifi(signup1activity)) {

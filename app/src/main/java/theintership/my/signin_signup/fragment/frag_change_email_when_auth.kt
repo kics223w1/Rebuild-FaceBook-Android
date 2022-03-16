@@ -93,6 +93,11 @@ class frag_change_email_when_auth : Fragment(R.layout.frag_change_email_when_aut
             }
         }
         val list_email_address = shareViewModel.list_email_address
+        val old_email_address = shareViewModel.user_info.email.toString()
+        if (old_email_address == email){
+            set_error_text_view("You just entered the emaill address which you enter when sign up.")
+            return false
+        }
         if (list_email_address.contains(email)) {
             set_error_text_view("Email address already use by another user")
             return false
@@ -109,6 +114,7 @@ class frag_change_email_when_auth : Fragment(R.layout.frag_change_email_when_aut
         shareViewModel.list_email_address.add(email)
         shareViewModel.list_email_address.remove(old_email_address)
         shareViewModel.set_user_info_email(email = email)
+        shareViewModel.is_email_address_change = true
 
         set_loading_process()
 

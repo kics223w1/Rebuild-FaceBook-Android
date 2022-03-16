@@ -35,33 +35,26 @@
 
 
     <TextView
+        android:id="@+id/tv_frag_auth_phone_number_info"
         android:layout_marginTop="25dp"
-        android:text="Enter a code that we just sent you"
+        android:text="Please wait for us to send you the SMS code to verify phone number"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:gravity="center"
         android:textColor="@color/black"
-        android:textSize="22sp"
+        android:textSize="18sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <TextView
-        android:gravity="center"
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:textColor="@color/light_grey"
-        android:text="Please, confirm that this is your phone number."
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/tv_frag_auth_phone_number_info"
+       android:id="@+id/tv_frag_auth_phone_number_status"
+        android:text="Please check your SMS to verify phone number"
+        android:visibility="gone"
         android:gravity="center"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="5dp"
-        android:textColor="@color/light_grey"
+        android:textColor="@color/light_blue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
