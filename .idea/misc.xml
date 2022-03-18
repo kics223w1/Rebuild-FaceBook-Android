@@ -6,15 +6,18 @@
         <entry key="..\:/Users/Admin/AndroidStudioProjects/the-intership/app/src/main/res/layouts/dialog/layout/dialog_stop_signup.xml" value="0.16576086956521738" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/the-intership/app/src/main/res/layouts/signin_signup/layout/frag_signup_creating_account.xml" value="0.1" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/the-intership/app/src/main/res/layouts/signin_signup/layout/frag_signup_signing_in.xml" value="0.1109375" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.25092592592592594" />
         <entry key="app/src/main/res/layouts/activity/layout/activity_main.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/dialog/layout/dialog_loading.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/dialog/layout/dialog_log_in_with_1_click.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/dialog/layout/dialog_show_account_and_password.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/dialog/layout/dialog_stop_signup.xml" value="0.15070921985815602" />
+        <entry key="app/src/main/res/layouts/rcv_item/layout/rcv_item_image.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_auth_email_address_account.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_auth_phone_number_account.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_change_email_when_auth.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_change_phone_when_auth.xml" value="0.15070921985815602" />
+        <entry key="app/src/main/res/layouts/signin_signup/layout/frag_set_avatar.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_signup_account.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_signup_age.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_signup_creating_account.xml" value="0.15070921985815602" />

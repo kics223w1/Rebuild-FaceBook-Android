@@ -5,13 +5,8 @@
     android:background="@color/background_white"
     android:tag="frag_set_avatar">
 
-    <TextView
-        android:gravity="center"
-        android:textSize="26sp"
-        android:layout_gravity="center"
-        android:text="Set Avatar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-
+ <androidx.recyclerview.widget.RecyclerView
+     android:id="@+id/gridViewFragSetAvatar"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent" />
 </LinearLayout>
