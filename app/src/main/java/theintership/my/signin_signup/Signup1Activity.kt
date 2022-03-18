@@ -26,7 +26,7 @@ class Signup1Activity : AppCompatActivity() {
 
     var go_to_frag_signup_age = false
     var signup_with_google = true
-    private val shareViewModel : shareViewModel by viewModels()
+    private val shareViewModel: shareViewModel by viewModels()
     private var database: DatabaseReference = Firebase.database.reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,10 +59,10 @@ class Signup1Activity : AppCompatActivity() {
         }
     }
 
-    private fun move_to_frag_name(){
+    private fun move_to_frag_name() {
         val dialogLoading = dialog_loading(this)
         dialogLoading.show()
-        if (!isWifi(this)){
+        if (!isWifi(this)) {
             val s = "Please connect wifi to continue"
             s.showToastLong(this)
             dialogLoading.dismiss()
@@ -78,16 +78,16 @@ class Signup1Activity : AppCompatActivity() {
                     val memail = it.child("email").getValue().toString()
                     val maccount = it.child("account").getValue().toString()
                     val id = it.child("id").getValue().toString()
-                    if(mphone != ""){
+                    if (mphone != "") {
                         shareViewModel.list_phone_number.add(mphone)
                     }
-                    if (memail != ""){
+                    if (memail != "") {
                         shareViewModel.list_email_address.add(memail)
                     }
-                    if (maccount != ""){
+                    if (maccount != "") {
                         shareViewModel.list_account.add(maccount)
                     }
-                    if (id != ""){
+                    if (id != "") {
                         shareViewModel.index_of_last_ele_phone_email_account = id.toInt()
                     }
                 }
@@ -114,7 +114,6 @@ class Signup1Activity : AppCompatActivity() {
         }
         myref.addValueEventListener(postListener)
     }
-
 
 
     override fun onBackPressed() {
@@ -154,13 +153,27 @@ class Signup1Activity : AppCompatActivity() {
 
         if (frag_last.name == "frag_signup_creating_account" || frag_last.name == "frag_signing_account") {
             //Don't let user pop back when program is creating account or signing account
-                val s = "Can't back when creating account"
-                s.showToastLong(this)
+            var s = "Can't back when creating account"
+            if (frag_last.name == "frag_signing_account") {
+                s = "Can't back when signing account"
+            }
+            s.showToastLong(this)
             return
         }
 
-        if (frag_last.name == "frag_change_email_when_auth"){
-            supportFragmentManager.popBackStack()
+        if (frag_last.name == "frag_auth_email_address_account"
+            || frag_last.name == "frag_auth_phone_number_account"
+        ) {
+            if (frag_before_last.name == "frag_auth_phone_number_account" && frag_last.name == "frag_auth_email_address_account") {
+                //This case is user entered phone number and email address
+                    //And user want to authencation email address instead of phone number
+                supportFragmentManager.popBackStack()
+            }else{
+                //if user just entered one of email address or phone number
+                //so we can't allow user to back when in authencation
+                val s = "Can't back when authencation"
+                s.showToastLong(this)
+            }
             return
         }
 

@@ -87,7 +87,7 @@ class frag_change_phone_when_auth : Fragment(R.layout.frag_change_phone_when_aut
         }
         val list_phone_number = shareViewModel.list_phone_number
         val old_phone_number = shareViewModel.user_info.phone.toString()
-        if(old_phone_number == phone){
+        if (old_phone_number == phone) {
             set_error_edittext("You just entered the phone number which you enter when sign up")
             return false
         }
@@ -106,7 +106,7 @@ class frag_change_phone_when_auth : Fragment(R.layout.frag_change_phone_when_aut
         val old_phone_number = shareViewModel.user_info.phone
         shareViewModel.set_user_info_phone(phone_number)
         shareViewModel.is_phone_number_change = true
-        if (country_code != ""){
+        if (country_code != "") {
             shareViewModel.set_user_info_country_code(country_code)
         }
 
@@ -173,11 +173,10 @@ class frag_change_phone_when_auth : Fragment(R.layout.frag_change_phone_when_aut
                 }
         }
 
-
-        if (country_code != "") {
-            //Defaut country code is 84 so if user don't enter country code ,
-            //so we leave it is 84
-            CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.IO).launch {
+            if (country_code != "") {
+                //Defaut country code is 84 so if user don't enter country code ,
+                //so we leave it is 84
                 ref_user_info_country_code.setValue(country_code)
                     .addOnCompleteListener(signup1activity) { task ->
                         if (task.isSuccessful) {
@@ -191,12 +190,12 @@ class frag_change_phone_when_auth : Fragment(R.layout.frag_change_phone_when_aut
                             error_networking_and_move_frag()
                         }
                     }
-            }
-        } else {
-            done_country_code = true
-            if (done_phone && done_country_code && done_phone_email_account) {
-                remove_loading_process()
-                go_to_frag_auth_phone_number_account()
+            } else {
+                done_country_code = true
+                if (done_phone && done_country_code && done_phone_email_account) {
+                    remove_loading_process()
+                    go_to_frag_auth_phone_number_account()
+                }
             }
         }
     }
@@ -240,6 +239,10 @@ class frag_change_phone_when_auth : Fragment(R.layout.frag_change_phone_when_aut
     }
 
     private fun go_to_frag_auth_phone_number_account() {
+        //Why i don't use popbackstack
+        //Because when i use it , the phone don't popback
+        //The phone just reset the UI of this frag .
+        //That is a bug i can't solve on March 19 2022.
         replacefrag(
             "frag_auth_phone_number_account",
             frag_auth_phone_number_account(),

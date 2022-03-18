@@ -1,4 +1,4 @@
-package theintership.my.signin_signup
+package theintership.my
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -25,6 +25,8 @@ class get_all_image_gallery(mcontext: Context) {
             path = cursor.getString(colum_index_data)
             list.add(path)
         }
+        println("debug size list image: ${list.size}")
+        println("debug list: $list")
         return list
     }
 

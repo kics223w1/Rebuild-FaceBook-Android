@@ -10,6 +10,9 @@ import androidx.fragment.app.activityViewModels
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import theintership.my.MainActivity
 import theintership.my.MyMethod.Companion.isWifi
 import theintership.my.MyMethod.Companion.replacefrag
@@ -23,7 +26,7 @@ import theintership.my.signin_signup.shareViewModel
 import java.util.*
 
 
-class frag_signup_done : Fragment(R.layout.frag_signup_done){
+class frag_signup_done : Fragment(R.layout.frag_signup_done) {
 
     private var _binding: FragSignupDoneBinding? = null
     private val binding get() = _binding!!
@@ -68,7 +71,7 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done){
         return binding.root
     }
 
-    private fun move_to_frag_create_account() {
+    private fun move_to_frag_creating_account() {
         replacefrag(
             "frag_signup_creating_account",
             frag_signup_creating_account(),
@@ -107,44 +110,48 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done){
         var add_phone_email_account = false
 
         //Add user to ref on firebase realtime database
-        val ref_user = database.child("User")
-        val user = viewmodel.user_info
-        val account_ref = viewmodel.account_user
-        ref_user.child(account_ref).child("user info").setValue(user)
-            .addOnCompleteListener(signup1activity) { task ->
-                if (task.isSuccessful) {
-                    add_user = true
-                    if (add_user && add_phone_email_account) {
-                        move_to_frag_create_account()
+        CoroutineScope(Dispatchers.IO).launch {
+            val ref_user = database.child("User")
+            val user = viewmodel.user_info
+            val account_ref = viewmodel.account_user
+            ref_user.child(account_ref).child("user info").setValue(user)
+                .addOnCompleteListener(signup1activity) { task ->
+                    if (task.isSuccessful) {
+                        add_user = true
+                        if (add_user && add_phone_email_account) {
+                            move_to_frag_creating_account()
+                        }
+                    } else {
+                        error_networking_and_move_frag()
                     }
-                } else {
-                    error_networking_and_move_frag()
                 }
-            }
+        }
 
         //Add data of phone and email and account on fireabase database
-        val ref_phone_email_account = database.child("phone and email and account")
-        val email = viewmodel.user_info.email
-        val phone = viewmodel.user_info.phone
-        val account = viewmodel.account_user
-        val phoneAndEmailAccount =
-            Phone_and_Email_Account(
-                id = id,
-                email = email,
-                phone = phone,
-                account = account
-            )
-        ref_phone_email_account.child(id.toString()).setValue(phoneAndEmailAccount)
-            .addOnCompleteListener(signup1activity) { task ->
-                if (task.isSuccessful) {
-                    add_phone_email_account = true
-                    if (add_user && add_phone_email_account) {
-                        move_to_frag_create_account()
+        CoroutineScope(Dispatchers.IO).launch {
+            val ref_phone_email_account = database.child("phone and email and account")
+            val email = viewmodel.user_info.email
+            val phone = viewmodel.user_info.phone
+            val account = viewmodel.account_user
+            val phoneAndEmailAccount =
+                Phone_and_Email_Account(
+                    id = id,
+                    email = email,
+                    phone = phone,
+                    account = account
+                )
+            ref_phone_email_account.child(id.toString()).setValue(phoneAndEmailAccount)
+                .addOnCompleteListener(signup1activity) { task ->
+                    if (task.isSuccessful) {
+                        add_phone_email_account = true
+                        if (add_user && add_phone_email_account) {
+                            move_to_frag_creating_account()
+                        }
+                    } else {
+                        error_networking_and_move_frag()
                     }
-                } else {
-                    error_networking_and_move_frag()
                 }
-            }
+        }
     }
 
     private fun error_networking_and_move_frag() {
@@ -152,9 +159,9 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done){
             val s = "Please connect wifi to continue"
             s.showToastLong(signup1activity)
         } else {
-            val s  = "One thing went wrong , but don't worry just continue"
+            val s = "One thing went wrong , but don't worry just continue"
             s.showToastLong(signup1activity)
-            move_to_frag_create_account()
+            move_to_frag_creating_account()
         }
     }
 

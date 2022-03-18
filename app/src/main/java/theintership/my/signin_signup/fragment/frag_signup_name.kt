@@ -22,6 +22,7 @@ import kotlinx.coroutines.*
 import theintership.my.MainActivity
 import theintership.my.MyMethod.Companion.hide_soft_key_board
 import theintership.my.MyMethod.Companion.replacefrag
+import theintership.my.MyMethod.Companion.replacefrag_by_silde_in_left
 import theintership.my.MyMethod.Companion.showToastLong
 import theintership.my.R
 import theintership.my.databinding.FragSignupNameBinding
@@ -280,8 +281,6 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name)  {
 
     private fun move_to_frag_birthday(firstName: String , lastName: String , view : View){
         hide_soft_key_board(signup1Activity , view)
-        val list_email = shareViewModel.list_email_address.toMutableList()
-        println("debug list email: $list_email")
         replacefrag(
             tag = "frag_signup_birthday",
             frag = frag_signup_birthday(),

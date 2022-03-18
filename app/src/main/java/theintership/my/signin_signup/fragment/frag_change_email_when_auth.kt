@@ -94,7 +94,7 @@ class frag_change_email_when_auth : Fragment(R.layout.frag_change_email_when_aut
         }
         val list_email_address = shareViewModel.list_email_address
         val old_email_address = shareViewModel.user_info.email.toString()
-        if (old_email_address == email){
+        if (old_email_address == email) {
             set_error_text_view("You just entered the emaill address which you enter when sign up.")
             return false
         }
@@ -122,15 +122,34 @@ class frag_change_email_when_auth : Fragment(R.layout.frag_change_email_when_aut
         var done_ref_user_info_email = false
 
         //These coroutine will death when fragment come to onDestroyView ( user move to next fragment )
-        // CoroutineScope(Dispatchers.IO).launch {
-        val ref_phone_and_email_and_account = database
-            .child("phone and email and account")
-            .child(shareViewModel.index_of_last_ele_phone_email_account.toString())
-            .child("email")
-        ref_phone_and_email_and_account.setValue(email)
-            .addOnCompleteListener(signup1activity) { task ->
+        CoroutineScope(Dispatchers.IO).launch {
+            val ref_phone_and_email_and_account = database
+                .child("phone and email and account")
+                .child(shareViewModel.index_of_last_ele_phone_email_account.toString())
+                .child("email")
+            ref_phone_and_email_and_account.setValue(email)
+                .addOnCompleteListener(signup1activity) { task ->
+                    if (task.isSuccessful) {
+                        done_ref_phone_email_account = true
+                        if (done_ref_phone_email_account && done_ref_user_info_email) {
+                            remove_loading_process()
+                            go_to_frag_auth_email_address_account()
+                        }
+                    } else {
+                        error_network()
+                    }
+                }
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            val account_ref = shareViewModel.account_user
+            val ref_user_info_email = database
+                .child("User")
+                .child(account_ref)
+                .child("user info")
+                .child("email")
+            ref_user_info_email.setValue(email).addOnCompleteListener(signup1activity) { task ->
                 if (task.isSuccessful) {
-                    done_ref_phone_email_account = true
+                    done_ref_user_info_email = true
                     if (done_ref_phone_email_account && done_ref_user_info_email) {
                         remove_loading_process()
                         go_to_frag_auth_email_address_account()
@@ -139,30 +158,15 @@ class frag_change_email_when_auth : Fragment(R.layout.frag_change_email_when_aut
                     error_network()
                 }
             }
-        //}
-        //CoroutineScope(Dispatchers.IO).launch {
-        val account_ref = shareViewModel.account_user
-        val ref_user_info_email = database
-            .child("User")
-            .child(account_ref)
-            .child("user info")
-            .child("email")
-        ref_user_info_email.setValue(email).addOnCompleteListener(signup1activity) { task ->
-            if (task.isSuccessful) {
-                    done_ref_user_info_email = true
-                    if (done_ref_phone_email_account && done_ref_user_info_email) {
-                        remove_loading_process()
-                        go_to_frag_auth_email_address_account()
-                    }
-            } else {
-                error_network()
-            }
         }
-        //}
 
     }
 
     private fun go_to_frag_auth_email_address_account() {
+        //Why i don't use popbackstack
+        //Because when i use it , the phone don't popback
+        //The phone just reset the UI of this frag .
+        //That is a bug i can't solve on March 19 2022.
         replacefrag(
             "frag_auth_email_address_account",
             frag_auth_email_address_account(),

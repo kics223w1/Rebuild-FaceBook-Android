@@ -1,26 +1,14 @@
 package theintership.my.signin_signup.fragment
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.content.pm.PackageManager
-import android.database.Cursor
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import theintership.my.MyMethod.Companion.showToastLong
+import theintership.my.MyMethod.Companion.replacefrag_by_silde_in_left
 import theintership.my.R
 import theintership.my.databinding.FragSetAvatarBinding
 import theintership.my.signin_signup.Signup1Activity
-import theintership.my.signin_signup.adapter_image
-import java.util.*
 
 
 class frag_set_avatar : Fragment(R.layout.frag_set_avatar) {
@@ -36,7 +24,14 @@ class frag_set_avatar : Fragment(R.layout.frag_set_avatar) {
     ): View {
         _binding = FragSetAvatarBinding.inflate(inflater, container, false)
         signup1activity = activity as Signup1Activity
-        val rcv = binding.gridViewFragSetAvatar
+
+        binding.btnFragSetAvatarChoseFromGallery.setOnClickListener {
+            replacefrag_by_silde_in_left(
+                tag = "frag_show_image_for_chosing_avatar",
+                frag_show_image_for_chosing_avatar(),
+                signup1activity.supportFragmentManager
+            )
+        }
 
 
         return binding.root
