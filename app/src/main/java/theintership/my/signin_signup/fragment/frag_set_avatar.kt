@@ -38,37 +38,8 @@ class frag_set_avatar : Fragment(R.layout.frag_set_avatar) {
         signup1activity = activity as Signup1Activity
         val rcv = binding.gridViewFragSetAvatar
 
-        val list = getAllImage()
-        println("debug vao frag avatar va list : $list")
-        val adapter = adapter_image(signup1activity)
-        adapter.setData(list)
-        val layoutManager : RecyclerView.LayoutManager = LinearLayoutManager(signup1activity)
-        rcv.layoutManager = layoutManager
-        rcv.adapter = adapter
-
 
         return binding.root
-    }
-
-    @SuppressLint("Recycle")
-    private fun getAllImage() : MutableList<String>{
-        var uri : Uri
-        var cursor : Cursor?
-        var colum_index_data : Int?
-        var list = mutableListOf<String>()
-        var path : String
-        uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-        var protection = Array<String?>(2){
-            MediaStore.MediaColumns.DATA; MediaStore.Images.Media.BUCKET_DISPLAY_NAME
-        }
-        cursor = signup1activity.contentResolver.query(uri , protection , null, null ,
-            "DESC")
-        colum_index_data = cursor?.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
-        while (cursor!!.moveToNext()){
-            path = cursor.getString(colum_index_data!!)
-            list.add(path)
-        }
-        return list
     }
 
 
