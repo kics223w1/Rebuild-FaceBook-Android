@@ -74,6 +74,7 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
             //If use the old one , it will not set isEmailVerified on time
             if (mUser != null) {
                 if (!mUser.isEmailVerified) {
+                    //OK
                     println("debug mUser email: ${mUser.email.toString()}")
                     val s = "If you have verified , please click again. Or please verify the eamil."
                     s.showToastShort(signup1activity)
