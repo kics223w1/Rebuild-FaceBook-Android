@@ -41,11 +41,22 @@ class MyMethod {
 
 
         fun replacefrag(tag: String, frag: Fragment, fm: FragmentManager) {
-            fm.beginTransaction().addToBackStack(tag).replace(R.id.layout_Signup1Activity, frag)
+            fm.beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in , android.R.anim.fade_out)
+                .addToBackStack(tag)
+                .replace(R.id.layout_Signup1Activity, frag)
                 .commit()
         }
 
-        fun hide_soft_key_board(context : Context , view : View) {
+        fun replacefrag_by_silde_in_left(tag: String, frag: Fragment, fm: FragmentManager) {
+            fm.beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_right , R.anim.slide_out_left)
+                .addToBackStack(tag)
+                .replace(R.id.layout_Signup1Activity, frag)
+                .commit()
+        }
+
+        fun hide_soft_key_board(context: Context, view: View) {
             val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
         }

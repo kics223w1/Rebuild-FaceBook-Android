@@ -12,6 +12,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import theintership.my.MyMethod.Companion.isWifi
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.MyMethod.Companion.showToastLong
@@ -131,31 +134,34 @@ class frag_signing : Fragment(R.layout.frag_signing) {
         val email = account + "@gmail.com"
         //If you concern about above line
         //See my explanation in frag_signup_creating_account in function create_auth_user_firebase
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(requireActivity()) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    val account_ref = viewmodel.account_user
-                    val today = set_today()
-                    val ref_last_login = database
-                        .child("User")
-                        .child(account_ref)
-                        .child("user info")
-                        .child("last login")
+        CoroutineScope(Dispatchers.IO).launch {
+            auth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(requireActivity()) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        val account_ref = viewmodel.account_user
+                        val today = set_today()
+                        val ref_last_login = database
+                            .child("User")
+                            .child(account_ref)
+                            .child("user info")
+                            .child("last login")
 
-                    ref_last_login.setValue(today).addOnCompleteListener(signup1activity) { task2 ->
-                        if (task2.isSuccessful) {
-                            move_to_frag_authencation_account()
-                        }else{
-                            //Some thing wrong , it might be lost internet.
-                                // But just keep move frag . We can update later
-                            move_to_frag_authencation_account()
-                        }
+                        ref_last_login.setValue(today)
+                            .addOnCompleteListener(signup1activity) { task2 ->
+                                if (task2.isSuccessful) {
+                                    move_to_frag_authencation_account()
+                                } else {
+                                    //Some thing wrong , it might be lost internet.
+                                    // But just keep move frag . We can update later
+                                    move_to_frag_authencation_account()
+                                }
+                            }
+                    } else {
+                        error_network()
                     }
-                } else {
-                    error_network()
                 }
-            }
+        }
     }
 
 
