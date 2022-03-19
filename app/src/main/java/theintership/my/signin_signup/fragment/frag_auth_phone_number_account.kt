@@ -37,6 +37,7 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
     private lateinit var mForceResendingToken: PhoneAuthProvider.ForceResendingToken
     private lateinit var database: DatabaseReference
     private var verifyID = ""
+    private var false_when_sending_SMS_code = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -77,6 +78,10 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
             }
         }
 
+        binding.btnCheckPhone.setOnClickListener {
+            println("debug check false: $false_when_sending_SMS_code")
+        }
+
 
         binding.edtAuthPhoneNumberAccount.setOnEditorActionListener { textview, i, keyevent ->
             val otp = binding.edtAuthPhoneNumberAccount.text.toString()
@@ -95,7 +100,7 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
 
         binding.btnAuthPhoneNumberConfirmByEmail.setOnClickListener {
             val email = shareViewmodel.user_info.email.toString()
-            if (email == ""){
+            if (email == "") {
                 val s = "You didn't enter email address , so you can't not authencation by it."
                 s.showToastLong(signup1activity)
                 return@setOnClickListener
@@ -118,45 +123,51 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
 
 
         binding.btnAuthPhoneNumberSendAgain.setOnClickListener {
-            val phoneNumber: String = set_phone_number_for_send_otp()
-            set_tv_before_sending_SMS_code()
-            CoroutineScope(Dispatchers.IO).launch {
-                val options = PhoneAuthOptions.newBuilder(auth)
-                    .setPhoneNumber(phoneNumber)
-                    .setTimeout(100L, TimeUnit.SECONDS)
-                    .setActivity(signup1activity)
-                    .setForceResendingToken(mForceResendingToken)
-                    .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                        override fun onVerificationCompleted(p0: PhoneAuthCredential) {
-                            val s = "Verification Completed"
-                            s.showToastShort(signup1activity)
-                            signInWithPhoneAuthCredential(p0)
-                        }
-
-                        override fun onVerificationFailed(p0: FirebaseException) {
-                            delete_user_auth_and_user_info_and_phoneEmailAccount()
-                            val s = "You just reached a limit of sending SMS from firebae sever.\n" +
-                                    "Please use authencation with email address\n" +
-                                    "Or comeback on tomorrow and sign up again."
-                            s.showToastLong(signup1activity)
-                        }
-
-                        override fun onCodeSent(
-                            p0: String,
-                            p1: PhoneAuthProvider.ForceResendingToken
-                        ) {
-                            super.onCodeSent(p0, p1)
-                            set_tv_after_sending_SMS_code()
-                            verifyID = p0
-                            mForceResendingToken = p1
-                        }
-
-                    })
-                    .build()
-                PhoneAuthProvider.verifyPhoneNumber(options)
+            if (!false_when_sending_SMS_code){
+                val s = "Please enter the SMS code which we just sent to your SMS."
+                s.showToastShort(signup1activity)
+                return@setOnClickListener
             }
 
+            val phoneNumber: String = set_phone_number_for_send_otp()
+            set_tv_before_sending_SMS_code()
+            val options = PhoneAuthOptions.newBuilder(auth)
+                .setPhoneNumber(phoneNumber)
+                .setTimeout(100L, TimeUnit.SECONDS)
+                .setActivity(signup1activity)
+                .setForceResendingToken(mForceResendingToken)
+                .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    override fun onVerificationCompleted(p0: PhoneAuthCredential) {
+                        val s = "Verification Completed"
+                        s.showToastShort(signup1activity)
+                        signInWithPhoneAuthCredential(p0)
+                    }
+
+                    override fun onVerificationFailed(p0: FirebaseException) {
+                        delete_user_auth_and_user_info_and_phoneEmailAccount()
+                        val s =
+                            "You just reached a limit of sending SMS from firebae sever.\n" +
+                                    "Please use authencation with email address\n" +
+                                    "Or comeback on tomorrow and sign up again."
+                        s.showToastLong(signup1activity)
+                    }
+
+                    override fun onCodeSent(
+                        p0: String,
+                        p1: PhoneAuthProvider.ForceResendingToken
+                    ) {
+                        super.onCodeSent(p0, p1)
+                        false_when_sending_SMS_code = false
+                        set_tv_after_sending_SMS_code()
+                        verifyID = p0
+                        mForceResendingToken = p1
+                    }
+
+                })
+                .build()
+            PhoneAuthProvider.verifyPhoneNumber(options)
         }
+
 
 
         return binding.root
@@ -168,10 +179,17 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
         //Phone number for opt must has format "+" and "country code" and "
         val country_code = shareViewmodel.user_info.country_code
         var phone_user = shareViewmodel.user_info.phone.toString()
+        println("debug phone user truoc : $phone_user")
         if (phone_user[0] == '0' && country_code == "84") {
             //VietNamese phone
-            phone_user.drop(1)
+            val temp = phone_user
+            phone_user = ""
+            for (i in 1 until temp.length){
+                phone_user += temp[i]
+            }
+            println("debug vao if voi phone user: $phone_user")
         }
+        println("debug phone user ngoai: $phone_user")
         phone_number = "+" + country_code + phone_user
 
         return phone_number
@@ -196,9 +214,9 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
                         val s = "Some thing wrong with our sever. Please click send again."
                         s.showToastLong(signup1activity)
                     }
-                    // Update UI
                 }
             }
+
     }
 
     private fun set_ref_verify_phone_and_move_frag() {
@@ -208,81 +226,74 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
         var done_delete = false
         //Delete this user , because we have user signInWithEmailAndPassword
         //so we don't need the user SignInWithPhoneAuthCredential
-        CoroutineScope(Dispatchers.IO).launch {
-            user.delete().addOnCompleteListener(signup1activity) { task ->
-                if (task.isSuccessful) {
-                    done_delete = true
-                    if (done_delete && done_ref) {
-                        replacefrag(
-                            "frag_set_avatar",
-                            frag_set_avatar(),
-                            signup1activity.supportFragmentManager
-                        )
-                    }
+        user.delete().addOnCompleteListener(signup1activity) { task ->
+            if (task.isSuccessful) {
+                done_delete = true
+                if (done_delete && done_ref) {
+                    go_to_frag_set_avatar()
                 }
             }
         }
 
         //Set verify phone = true in firebase realtime database
-        CoroutineScope(Dispatchers.IO).launch {
-            val ref_verify_phone = database
-                .child("User")
-                .child(account_ref)
-                .child("user info")
-                .child("verify_phone")
-            ref_verify_phone.setValue(true).addOnCompleteListener(signup1activity) { task ->
-                if (task.isSuccessful) {
-                    done_ref = true
-                    if (done_ref && done_delete) {
-                        replacefrag(
-                            "frag_set_avatar",
-                            frag_set_avatar(),
-                            signup1activity.supportFragmentManager
-                        )
-                    }
+        val ref_verify_phone = database
+            .child("User")
+            .child(account_ref)
+            .child("user info")
+            .child("verify_phone")
+        ref_verify_phone.setValue(true).addOnCompleteListener(signup1activity) { task ->
+            if (task.isSuccessful) {
+                done_ref = true
+                if (done_ref && done_delete) {
+                    go_to_frag_set_avatar()
                 }
             }
         }
+    }
+
+    private fun go_to_frag_set_avatar() {
+        replacefrag(
+            "frag_set_avatar",
+            frag_set_avatar(),
+            signup1activity.supportFragmentManager
+        )
     }
 
 
     private fun verify_first_time_in_onCreatView() {
         //If the program enter this fragment , this phoneNumber is non-empty
         //See the condition in frag_signup_creating_account
-        val phoneNumber: String = set_phone_number_for_send_otp()
-        println("debug phone number trong verify first time: $phoneNumber")
         //This Verificaiton is verify of you are not a robot , not verify the opt code
         //onCodeSent will be invoked when the SMS sent to user phone
-        CoroutineScope(Dispatchers.IO).launch {
-            val options = PhoneAuthOptions.newBuilder(auth)
-                .setPhoneNumber(phoneNumber)
-                .setTimeout(100L, TimeUnit.SECONDS)
-                .setActivity(signup1activity)
-                .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                    override fun onVerificationCompleted(p0: PhoneAuthCredential) {
-                        val s = "Verification Completed"
-                        s.showToastShort(signup1activity)
-                    }
 
-                    override fun onVerificationFailed(p0: FirebaseException) {
-                        delete_user_auth_and_user_info_and_phoneEmailAccount()
-                        val s = "You just reached a limit of sending SMS from firebae sever.\n" +
-                                "Please use authencation with email address\n" +
-                                "Or comeback on tomorrow and sign up again."
-                        s.showToastLong(signup1activity)
-                    }
+        val phoneNumber: String = set_phone_number_for_send_otp()
+        println("debug phone number trong verify first time: $phoneNumber")
+        val options = PhoneAuthOptions.newBuilder(auth)
+            .setPhoneNumber(phoneNumber)
+            .setTimeout(100L, TimeUnit.SECONDS)
+            .setActivity(signup1activity)
+            .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                override fun onVerificationCompleted(p0: PhoneAuthCredential) {
+                    val s = "Verification Completed"
+                    s.showToastShort(signup1activity)
+                }
 
-                    override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
-                        super.onCodeSent(p0, p1)
-                        set_tv_after_sending_SMS_code()
-                        verifyID = p0
-                        mForceResendingToken = p1
-                    }
+                override fun onVerificationFailed(p0: FirebaseException) {
+                    false_when_sending_SMS_code = true
+                    val s = "Verification Fail , please click send again."
+                    s.showToastLong(signup1activity)
+                }
 
-                })
-                .build()
-            PhoneAuthProvider.verifyPhoneNumber(options)
-        }
+                override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
+                    super.onCodeSent(p0, p1)
+                    set_tv_after_sending_SMS_code()
+                    verifyID = p0
+                    mForceResendingToken = p1
+                }
+
+            })
+            .build()
+        PhoneAuthProvider.verifyPhoneNumber(options)
 
     }
 
@@ -307,50 +318,44 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
         val s = "Delete user success"
 
         //Delete user auth
-        CoroutineScope(Dispatchers.IO).launch {
-            user!!.delete().addOnCompleteListener(signup1activity) { task ->
-                if (task.isSuccessful) {
-                    delete_user_auth = true
-                    if (delete_user_auth && delete_phone_email_account && delete_user_info) {
-                        s.showToastLong(signup1activity)
-                    }
+        user!!.delete().addOnCompleteListener(signup1activity) { task ->
+            if (task.isSuccessful) {
+                delete_user_auth = true
+                if (delete_user_auth && delete_phone_email_account && delete_user_info) {
+                    s.showToastLong(signup1activity)
                 }
             }
         }
 
         //Deletet user_info
-        CoroutineScope(Dispatchers.IO).launch {
-            val account_ref = shareViewmodel.account_user
-            val ref_user = database.child("User").child(account_ref).child("user info")
-            ref_user.removeValue().addOnCompleteListener(signup1activity) { task ->
-                if (task.isSuccessful) {
-                    delete_user_info = true
-                    if (delete_user_auth && delete_phone_email_account && delete_user_info) {
-                        s.showToastLong(signup1activity)
-                    }
+        val account_ref = shareViewmodel.account_user
+        val ref_user = database.child("User").child(account_ref)
+        ref_user.removeValue().addOnCompleteListener(signup1activity) { task ->
+            if (task.isSuccessful) {
+                delete_user_info = true
+                if (delete_user_auth && delete_phone_email_account && delete_user_info) {
+                    s.showToastLong(signup1activity)
                 }
             }
         }
 
         // Delete phone and email and account
-        CoroutineScope(Dispatchers.IO).launch {
-            val ref_phoneEmailAccount = database.child("phone and email and account")
-            var id = shareViewmodel.index_of_last_ele_phone_email_account
-            if (id != -1) {
-                ref_phoneEmailAccount.child(id.toString()).removeValue()
-                    .addOnCompleteListener(signup1activity) { task ->
-                        if (task.isSuccessful) {
-                            delete_phone_email_account = true
-                            if (delete_user_auth && delete_phone_email_account && delete_user_info) {
-                                s.showToastLong(signup1activity)
-                            }
+        val ref_phoneEmailAccount = database.child("phone and email and account")
+        var id = shareViewmodel.index_of_last_ele_phone_email_account
+        if (id != -1) {
+            ref_phoneEmailAccount.child(id.toString()).removeValue()
+                .addOnCompleteListener(signup1activity) { task ->
+                    if (task.isSuccessful) {
+                        delete_phone_email_account = true
+                        if (delete_user_auth && delete_phone_email_account && delete_user_info) {
+                            s.showToastLong(signup1activity)
                         }
                     }
-            } else {
-                delete_phone_email_account = true
-                if (delete_user_auth && delete_phone_email_account && delete_user_info) {
-                    s.showToastLong(signup1activity)
                 }
+        } else {
+            delete_phone_email_account = true
+            if (delete_user_auth && delete_phone_email_account && delete_user_info) {
+                s.showToastLong(signup1activity)
             }
         }
     }

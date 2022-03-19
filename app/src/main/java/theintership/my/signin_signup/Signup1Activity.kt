@@ -104,15 +104,21 @@ class Signup1Activity : AppCompatActivity() {
 
             override fun onCancelled(error: DatabaseError) {
                 dialogLoading.dismiss()
-                replacefrag(
-                    tag = "frag_signup_name",
-                    frag = frag_signup_name(),
-                    fm = supportFragmentManager
-                )
+                error_network()
             }
 
         }
         myref.addValueEventListener(postListener)
+    }
+
+    private fun error_network(){
+        if (!isWifi(this)){
+            val s = "Please check your wifi connection and click next again."
+            s.showToastLong(this)
+        }else{
+            val s = "Our sever went wrong. Sorry for the error. Please click next again."
+            s.showToastLong(this)
+        }
     }
 
 

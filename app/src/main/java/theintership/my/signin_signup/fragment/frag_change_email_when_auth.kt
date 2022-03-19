@@ -122,6 +122,7 @@ class frag_change_email_when_auth : Fragment(R.layout.frag_change_email_when_aut
         var done_ref_user_info_email = false
 
         //These coroutine will death when fragment come to onDestroyView ( user move to next fragment )
+
         CoroutineScope(Dispatchers.IO).launch {
             val ref_phone_and_email_and_account = database
                 .child("phone and email and account")
@@ -139,8 +140,6 @@ class frag_change_email_when_auth : Fragment(R.layout.frag_change_email_when_aut
                         error_network()
                     }
                 }
-        }
-        CoroutineScope(Dispatchers.IO).launch {
             val account_ref = shareViewModel.account_user
             val ref_user_info_email = database
                 .child("User")
