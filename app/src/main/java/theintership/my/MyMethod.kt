@@ -8,6 +8,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import java.util.*
 
 class MyMethod {
     companion object {
@@ -39,6 +40,14 @@ class MyMethod {
             return false
         }
 
+        fun check_wifi(context: Context) : Boolean{
+            if (!isWifi(context)) {
+                val s = "Please connect wifi to continue"
+                s.showToastLong(context)
+                return false
+            }
+            return true
+        }
 
         fun replacefrag(tag: String, frag: Fragment, fm: FragmentManager) {
             fm.beginTransaction()
@@ -60,6 +69,19 @@ class MyMethod {
             val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
         }
+
+        fun set_today(): String {
+            var mtoday = Calendar.getInstance()
+            var today = ""
+            today += (mtoday.get(Calendar.MONTH) + 1).toString()
+            today += "/"
+            today += mtoday.get(Calendar.DAY_OF_MONTH).toString()
+            today += "/"
+            today += mtoday.get(Calendar.YEAR).toString()
+
+            return today
+        }
+
 
     }
 }

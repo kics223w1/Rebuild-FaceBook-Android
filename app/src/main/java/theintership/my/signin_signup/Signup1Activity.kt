@@ -11,12 +11,17 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import theintership.my.MainActivity
+import theintership.my.MyMethod.Companion.check_wifi
 import theintership.my.MyMethod.Companion.isWifi
 import theintership.my.MyMethod.Companion.replacefrag
+import theintership.my.MyMethod.Companion.set_today
 import theintership.my.MyMethod.Companion.showToastLong
+import theintership.my.MyMethod.Companion.showToastShort
 import theintership.my.R
+import theintership.my.model.limit_auth_phone
 import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.fragment.frag_signup_name
@@ -28,19 +33,44 @@ class Signup1Activity : AppCompatActivity() {
     var signup_with_google = true
     private val shareViewModel: shareViewModel by viewModels()
     private var database: DatabaseReference = Firebase.database.reference
+    private lateinit var dialogLoading: dialog_loading
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (shareViewModel.is_delete_user) {
+            //Delete user_info
+                //See explaintion in function delete_user in frag_auth_phone_number_account
+            val account_ref = shareViewModel.account_user
+            val ref_user = database.child("User").child(account_ref)
+            ref_user.removeValue().addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val s = "Delete user info success trong onDestroy"
+                    s.showToastLong(this)
+                    shareViewModel.is_delete_user = false
+                }else{
+                    //Don't know what to do if this fail
+                        //At this time , the user has already left Signup1Activity
+                    shareViewModel.is_delete_user = false
+                }
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
 
-        val btnGo = findViewById<TextView>(R.id.btn_signup1_go)
+        val btnSignup = findViewById<TextView>(R.id.btn_signup1_go)
         val btnShowDialog = findViewById<TextView>(R.id.btn_signup1_showdialog)
         val btnBack = findViewById<ImageView>(R.id.btn_signup1_back)
 
+        dialogLoading = dialog_loading(this)
 
-
-        btnGo.setOnClickListener {
-            move_to_frag_name()
+        btnSignup.setOnClickListener {
+            if (!check_wifi(this)) {
+                return@setOnClickListener
+            }
+            update_list_and_limit_auth_phone_and_move_frag()
         }
 
         btnShowDialog.setOnClickListener {
@@ -59,8 +89,7 @@ class Signup1Activity : AppCompatActivity() {
         }
     }
 
-    private fun move_to_frag_name() {
-        val dialogLoading = dialog_loading(this)
+    private fun update_list_and_limit_auth_phone_and_move_frag() {
         dialogLoading.show()
         if (!isWifi(this)) {
             val s = "Please connect wifi to continue"
@@ -68,12 +97,14 @@ class Signup1Activity : AppCompatActivity() {
             dialogLoading.dismiss()
             return
         }
+        println("debug vao update list")
         //Set up list account and phone number and email address , then move to frag_signup_phone
         val myref = database.child("phone and email and account")
         val postListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = snapshot.children
                 list.forEach {
+                    println("debug vao list for Each ne")
                     val mphone = it.child("phone").getValue().toString()
                     val memail = it.child("email").getValue().toString()
                     val maccount = it.child("account").getValue().toString()
@@ -91,15 +122,10 @@ class Signup1Activity : AppCompatActivity() {
                         shareViewModel.index_of_last_ele_phone_email_account = id.toInt()
                     }
                 }
-                dialogLoading.dismiss()
                 //Why this function must be here
                 //Because firebase function always the last thing program does
                 //So i must do what i want to do in firebase function
-                replacefrag(
-                    tag = "frag_signup_name",
-                    frag = frag_signup_name(),
-                    fm = supportFragmentManager
-                )
+                set_limit_number_of_auth_phone_in_a_day_and_move_frag()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -111,14 +137,91 @@ class Signup1Activity : AppCompatActivity() {
         myref.addValueEventListener(postListener)
     }
 
-    private fun error_network(){
-        if (!isWifi(this)){
+    private fun set_limit_number_of_auth_phone_in_a_day_and_move_frag() {
+        val today = set_today()
+        var day_on_firebase = ""
+        var number_of_auth_phone_in_a_day = ""
+        val limitAuthPhone = limit_auth_phone(today, 0)
+
+        var done_day = false
+        var done_number = false
+
+        val ref_limit_auth_phone = database
+            .child("limit_auth_phone_in_a_day")
+            .child("1")
+        ref_limit_auth_phone.child("day").get().addOnSuccessListener {
+            done_day = true
+            day_on_firebase = it.value.toString()
+            day_on_firebase.showToastShort(this@Signup1Activity)
+            if (done_day && done_number) {
+                if (day_on_firebase != today) {
+                    ref_limit_auth_phone.setValue(limitAuthPhone)
+                        .addOnCompleteListener(this@Signup1Activity) { task ->
+                            if (task.isSuccessful) {
+                                move_to_frag_name()
+                            } else {
+                                error_network()
+                            }
+                        }
+                } else {
+                    shareViewModel.number_of_auth_phone_number_in_a_day =
+                        number_of_auth_phone_in_a_day.toInt()
+                    move_to_frag_name()
+                }
+            }
+        }
+        ref_limit_auth_phone.child("number").get().addOnSuccessListener {
+            done_number = true
+            number_of_auth_phone_in_a_day = it.value.toString()
+            number_of_auth_phone_in_a_day.showToastShort(this)
+            if (done_day && done_number) {
+                if (day_on_firebase != today) {
+                    ref_limit_auth_phone.setValue(limitAuthPhone)
+                        .addOnCompleteListener(this@Signup1Activity) { task ->
+                            if (task.isSuccessful) {
+                                move_to_frag_name()
+                            } else {
+                                error_network()
+                            }
+                        }
+                } else {
+                    shareViewModel.number_of_auth_phone_number_in_a_day =
+                        number_of_auth_phone_in_a_day.toInt()
+                    move_to_frag_name()
+                }
+            }
+        }
+//        ref_limit_auth_phone.addListenerForSingleValueEvent(object : ValueEventListener {
+//            override fun onDataChange(snapshot: DataSnapshot) {
+//                val ele = snapshot.children
+//
+//            }
+//
+//            override fun onCancelled(error: DatabaseError) {
+//                error_network()
+//            }
+//
+//        })
+
+    }
+
+    private fun error_network() {
+        if (!isWifi(this)) {
             val s = "Please check your wifi connection and click next again."
             s.showToastLong(this)
-        }else{
+        } else {
             val s = "Our sever went wrong. Sorry for the error. Please click next again."
-            s.showToastLong(this)
+            s.showToastShort(this)
         }
+    }
+
+    private fun move_to_frag_name() {
+        dialogLoading.dismiss()
+        replacefrag(
+            tag = "frag_signup_name",
+            frag = frag_signup_name(),
+            fm = supportFragmentManager
+        )
     }
 
 
@@ -172,9 +275,9 @@ class Signup1Activity : AppCompatActivity() {
         ) {
             if (frag_before_last.name == "frag_auth_phone_number_account" && frag_last.name == "frag_auth_email_address_account") {
                 //This case is user entered phone number and email address
-                    //And user want to authencation email address instead of phone number
+                //And user want to authencation email address instead of phone number
                 supportFragmentManager.popBackStack()
-            }else{
+            } else {
                 //if user just entered one of email address or phone number
                 //so we can't allow user to back when in authencation
                 val s = "Can't back when authencation"
@@ -188,3 +291,5 @@ class Signup1Activity : AppCompatActivity() {
 
 
 }
+
+

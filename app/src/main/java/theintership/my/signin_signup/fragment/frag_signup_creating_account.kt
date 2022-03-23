@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
@@ -15,6 +16,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import theintership.my.MyMethod.Companion.isWifi
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.MyMethod.Companion.showToastLong
@@ -41,16 +43,13 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
         _binding = FragSignupCreatingAccountBinding.inflate(inflater, container, false)
         signup1activity = activity as Signup1Activity
         database = Firebase.database.reference
-        val account_user = viewmodel.account_user.toString()
+        val account_user = viewmodel.account_user
         val password_user = viewmodel.password_user
 
-        create_auth_user_firebase(account_user, password_user)
+        //create_auth_user_firebase(account_user, password_user)
 
+            show_icon_success_and_move()
 
-        binding.btnSignupCreatingAccountBackAndDelete.setOnClickListener {
-            val s = "Can't back when creating account"
-            s.showToastLong(signup1activity)
-        }
 
         return binding.root
     }
@@ -79,12 +78,11 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
                         scaleX(1.5F)
                         scaleY(1.5F)
                     }.start()
+                }.withEndAction {
+                    move_to_frag_signing()
                 }
             }
         }
-        Handler().postDelayed({
-            move_to_frag_signing()
-        }, 5000)
     }
 
     private fun create_auth_user_firebase(account: String, password: String) {
@@ -99,18 +97,20 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
         //So we just need O(1) to get all of that instead of O(n)
         //And when user want to chang their email address
         //We just need find the ref and update it
-        CoroutineScope(Dispatchers.IO).launch {
+        //CoroutineScope(Dispatchers.IO).launch {
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(signup1activity) { task ->
                     if (task.isSuccessful) {
                         val user = auth.currentUser
-                        show_icon_success_and_move()
+                        move_to_frag_signing()
+                        //show_icon_success_and_move()
                     } else {
                         error_network()
                     }
                 }
-        }
+        //}
     }
+
 
     private fun error_network() {
         if (!isWifi(signup1activity)) {
@@ -122,7 +122,7 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
             s.showToastLong(signup1activity)
             //Delete user_info and phone_email_account in firebase realtime database
             //After delete user can sign up again with same infomation
-            delete_user_auth_and_user_info_and_phoneEmailAccount_and_move_frag()
+            // delete_user_auth_and_user_info_and_phoneEmailAccount_and_move_frag()
         }
     }
 
@@ -135,58 +135,57 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
     }
 
 
-    private fun delete_user_auth_and_user_info_and_phoneEmailAccount_and_move_frag() {
-        var delete_user_auth = false
-        var delete_user_info = false
-        var delete_phone_email_account = false
-        var user = Firebase.auth.currentUser
+//    private fun delete_user_auth_and_user_info_and_phoneEmailAccount_and_move_frag() {
+//        viewLifecycleOwner.lifecycleScope.launch {
+//            withContext(Dispatchers.IO) {
+//                var delete_user_auth = false
+//                var delete_user_info = false
+//                var delete_phone_email_account = false
+//                var user = Firebase.auth.currentUser
+//
+//                //Delete user auth
+//                user!!.delete().addOnCompleteListener(signup1activity) { task ->
+//                    if (task.isSuccessful) {
+//                        delete_user_auth = true
+//                        if (delete_user_auth && delete_phone_email_account && delete_user_info) {
+//                            move_to_frag_signing()
+//                        }
+//                    }
+//                }
+//
+//                //Deletet user_info
+//                val account_ref = viewmodel.account_user
+//                val ref_user = database.child("User").child(account_ref).child("user info")
+//                ref_user.removeValue().addOnCompleteListener(signup1activity) { task ->
+//                    if (task.isSuccessful) {
+//                        delete_user_info = true
+//                        if (delete_user_auth && delete_phone_email_account && delete_user_info) {
+//                            move_to_frag_signing()
+//                        }
+//                    }
+//                }
+//
+//                // Delete phone and email and account
+//                val ref_phoneEmailAccount = database.child("phone and email and account")
+//                var id = viewmodel.index_of_last_ele_phone_email_account
+//                if (id != -1) {
+//                    ref_phoneEmailAccount.child(id.toString()).removeValue()
+//                        .addOnCompleteListener(signup1activity) { task ->
+//                            if (task.isSuccessful) {
+//                                delete_phone_email_account = true
+//                                if (delete_user_auth && delete_phone_email_account && delete_user_info) {
+//                                    move_to_frag_signing()
+//                                }
+//                            }
+//                        }
+//                } else {
+//                    delete_phone_email_account = true
+//                    if (delete_user_auth && delete_phone_email_account && delete_user_info) {
+//                        move_to_frag_signing()
+//                    }
+//                }
+//            }
+//        }
+//    }
 
-        //Delete user auth
-        CoroutineScope(Dispatchers.IO).launch {
-            user!!.delete().addOnCompleteListener(signup1activity) { task ->
-                if (task.isSuccessful) {
-                    delete_user_auth = true
-                    if (delete_user_auth && delete_phone_email_account && delete_user_info) {
-                        move_to_frag_signing()
-                    }
-                }
-            }
-        }
-
-        //Deletet user_info
-        CoroutineScope(Dispatchers.IO).launch {
-            val account_ref = viewmodel.account_user
-            val ref_user = database.child("User").child(account_ref).child("user info")
-            ref_user.removeValue().addOnCompleteListener(signup1activity) { task ->
-                if (task.isSuccessful) {
-                    delete_user_info = true
-                    if (delete_user_auth && delete_phone_email_account && delete_user_info) {
-                        move_to_frag_signing()
-                    }
-                }
-            }
-        }
-
-        // Delete phone and email and account
-        CoroutineScope(Dispatchers.IO).launch {
-            val ref_phoneEmailAccount = database.child("phone and email and account")
-            var id = viewmodel.index_of_last_ele_phone_email_account
-            if (id != -1) {
-                ref_phoneEmailAccount.child(id.toString()).removeValue()
-                    .addOnCompleteListener(signup1activity) { task ->
-                        if (task.isSuccessful) {
-                            delete_phone_email_account = true
-                            if (delete_user_auth && delete_phone_email_account && delete_user_info) {
-                                move_to_frag_signing()
-                            }
-                        }
-                    }
-            } else {
-                delete_phone_email_account = true
-                if (delete_user_auth && delete_phone_email_account && delete_user_info) {
-                    move_to_frag_signing()
-                }
-            }
-        }
-    }
 }

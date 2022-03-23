@@ -140,11 +140,11 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex) {
             val sex = take_sex()
             val pronoun = take_pronoun()
             val gender = binding.edtGenderCustom.text.toString()
-            move_to_frag_phone(sex, pronoun, gender , binding.btnSignupSexGo)
+            move_to_frag_phone(sex, pronoun, gender, binding.btnSignupSexGo)
         }
 
         binding.btnSignupSexBack.setOnClickListener {
-            hide_soft_key_board(signup1Activity , binding.btnSignupSexBack)
+            hide_soft_key_board(signup1Activity, binding.btnSignupSexBack)
             val dialog = dialog_stop_signup(signup1Activity)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
@@ -210,11 +210,16 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex) {
         return ""
     }
 
-    private fun move_to_frag_phone(sex: String, pronoun: String, gender: String , view : View) {
+    private fun move_to_frag_phone(
+        sex: String,
+        pronoun: String,
+        gender: String,
+        view: View
+    ) {
         shareViewModel.set_user_info_sex(sex)
         shareViewModel.set_user_info_pronoun(pronoun)
         shareViewModel.set_user_info_gender(gender)
-        hide_soft_key_board(signup1Activity , view)
+        hide_soft_key_board(signup1Activity, view)
         replacefrag(
             "frag_signup_phone",
             frag_signup_phone(),

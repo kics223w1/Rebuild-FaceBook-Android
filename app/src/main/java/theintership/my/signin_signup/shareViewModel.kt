@@ -25,11 +25,13 @@ class shareViewModel : ViewModel() {
     var account_user = ""
     var password_user = ""
     var index_of_last_ele_phone_email_account = -1
+    var number_of_auth_phone_number_in_a_day = 0
 
     var is_email_address_change = false
     var is_phone_number_change = false
     var first_time_auth_phone_number = true
     var first_time_auth_email_address = true
+    var is_delete_user = false
 
     var list_account = mutableListOf<String>()
     var list_phone_number = mutableListOf<String>()
@@ -83,15 +85,15 @@ class shareViewModel : ViewModel() {
         user_info.gender = gender
     }
 
-    fun set_user_info_country_code(country_code : String){
+    fun set_user_info_country_code(country_code: String) {
         user_info.country_code = country_code
     }
 
-    fun set_user_info_verify_phone(ok : Boolean){
+    fun set_user_info_verify_phone(ok: Boolean) {
         user_info.verify_phone = ok
     }
 
-    fun set_user_info_verify_email(ok : Boolean){
+    fun set_user_info_verify_email(ok: Boolean) {
         user_info.verify_email = ok
     }
 }

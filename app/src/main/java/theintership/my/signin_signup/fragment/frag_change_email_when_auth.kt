@@ -6,14 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.DisposableHandle
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import theintership.my.MyMethod
+import theintership.my.MyMethod.Companion.check_wifi
 import theintership.my.MyMethod.Companion.hide_soft_key_board
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.MyMethod.Companion.showToastLong
@@ -48,7 +47,7 @@ class frag_change_email_when_auth : Fragment(R.layout.frag_change_email_when_aut
         binding.btnChangeEmailWhenAuthChange.setOnClickListener {
             val email = binding.edtChangeEmailWhenAuth.text.toString()
             hide_soft_key_board(signup1activity, binding.btnChangeEmailWhenAuthChange)
-            if (check_email(email)) {
+            if (check_email(email) && check_wifi(signup1activity)) {
                 set_ref_email_and_go_to_frag_authencation_email(email)
             }
         }
@@ -57,7 +56,7 @@ class frag_change_email_when_auth : Fragment(R.layout.frag_change_email_when_aut
             val email = binding.edtChangeEmailWhenAuth.text.toString()
             hide_soft_key_board(signup1activity, binding.btnChangeEmailWhenAuthChange)
 
-            if (check_email(email)) {
+            if (check_email(email) && check_wifi(signup1activity)) {
                 set_ref_email_and_go_to_frag_authencation_email(email)
                 true
             } else {
@@ -122,16 +121,33 @@ class frag_change_email_when_auth : Fragment(R.layout.frag_change_email_when_aut
         var done_ref_user_info_email = false
 
         //These coroutine will death when fragment come to onDestroyView ( user move to next fragment )
-
-        CoroutineScope(Dispatchers.IO).launch {
-            val ref_phone_and_email_and_account = database
-                .child("phone and email and account")
-                .child(shareViewModel.index_of_last_ele_phone_email_account.toString())
-                .child("email")
-            ref_phone_and_email_and_account.setValue(email)
-                .addOnCompleteListener(signup1activity) { task ->
+        viewLifecycleOwner.lifecycleScope.launch {
+            withContext(Dispatchers.IO){
+                val ref_phone_and_email_and_account = database
+                    .child("phone and email and account")
+                    .child(shareViewModel.index_of_last_ele_phone_email_account.toString())
+                    .child("email")
+                ref_phone_and_email_and_account.setValue(email)
+                    .addOnCompleteListener(signup1activity) { task ->
+                        if (task.isSuccessful) {
+                            done_ref_phone_email_account = true
+                            if (done_ref_phone_email_account && done_ref_user_info_email) {
+                                remove_loading_process()
+                                go_to_frag_auth_email_address_account()
+                            }
+                        } else {
+                            error_network()
+                        }
+                    }
+                val account_ref = shareViewModel.account_user
+                val ref_user_info_email = database
+                    .child("User")
+                    .child(account_ref)
+                    .child("user info")
+                    .child("email")
+                ref_user_info_email.setValue(email).addOnCompleteListener(signup1activity) { task ->
                     if (task.isSuccessful) {
-                        done_ref_phone_email_account = true
+                        done_ref_user_info_email = true
                         if (done_ref_phone_email_account && done_ref_user_info_email) {
                             remove_loading_process()
                             go_to_frag_auth_email_address_account()
@@ -140,25 +156,8 @@ class frag_change_email_when_auth : Fragment(R.layout.frag_change_email_when_aut
                         error_network()
                     }
                 }
-            val account_ref = shareViewModel.account_user
-            val ref_user_info_email = database
-                .child("User")
-                .child(account_ref)
-                .child("user info")
-                .child("email")
-            ref_user_info_email.setValue(email).addOnCompleteListener(signup1activity) { task ->
-                if (task.isSuccessful) {
-                    done_ref_user_info_email = true
-                    if (done_ref_phone_email_account && done_ref_user_info_email) {
-                        remove_loading_process()
-                        go_to_frag_auth_email_address_account()
-                    }
-                } else {
-                    error_network()
-                }
             }
         }
-
     }
 
     private fun go_to_frag_auth_email_address_account() {

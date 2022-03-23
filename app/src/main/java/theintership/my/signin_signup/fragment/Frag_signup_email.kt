@@ -99,7 +99,7 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email) {
 
     private fun check_email(email: String): Boolean {
         if (email == "") {
-            set_error_text_view("Enter email please")
+            set_error_text_view("Please enter email")
             return false
         }
         if (!email.contains("@gmail.com")) {
