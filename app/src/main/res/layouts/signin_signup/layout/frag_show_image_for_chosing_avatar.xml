@@ -49,10 +49,8 @@
         android:layout_marginTop="10dp"
         android:background="@android:color/darker_gray" />
 
-
-    <GridView
-        android:id="@+id/gridView_frag_show_image_for_chose_avatar"
-        android:numColumns="3"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcv_show_image_for_selecting_avatar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

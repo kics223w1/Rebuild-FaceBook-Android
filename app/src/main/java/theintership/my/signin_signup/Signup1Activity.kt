@@ -25,6 +25,7 @@ import theintership.my.R
 import theintership.my.model.limit_auth_phone
 import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.dialog.dialog_stop_signup
+import theintership.my.signin_signup.fragment.frag_show_image_for_chosing_avatar
 import theintership.my.signin_signup.fragment.frag_signup_name
 
 
