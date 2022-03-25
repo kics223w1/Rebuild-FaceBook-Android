@@ -10,6 +10,7 @@ import android.view.inputmethod.EditorInfo
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -24,6 +25,7 @@ import theintership.my.MyMethod.Companion.hide_soft_key_board
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.MyMethod.Companion.replacefrag_by_silde_in_left
 import theintership.my.MyMethod.Companion.showToastLong
+import theintership.my.MyMethod.Companion.showToastShort
 import theintership.my.R
 import theintership.my.databinding.FragSignupNameBinding
 import theintership.my.signin_signup.Signup1Activity
@@ -32,7 +34,7 @@ import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.shareViewModel
 
 
-class frag_signup_name : Fragment(R.layout.frag_signup_name)  {
+class frag_signup_name : Fragment(R.layout.frag_signup_name) {
 
     private var _binding: FragSignupNameBinding? = null
     private val binding get() = _binding!!
@@ -60,7 +62,8 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name)  {
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(signup1Activity, gso)
-
+        val s = shareViewModel.number_of_auth_phone_number_in_a_day.toString()
+        s.showToastShort(signup1Activity)
         if (signup1Activity.signup_with_google) {
             //With this condition ,google sign in just show one times
             //If user return to this fragment from other fragment in signup
@@ -89,11 +92,11 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name)  {
             }
 
             if (signup1Activity.go_to_frag_signup_age) {
-                move_to_frag_age(firstname , lastname , binding.btnSignupNameGo)
+                move_to_frag_age(firstname, lastname, binding.btnSignupNameGo)
                 return@setOnClickListener
             }
 
-           move_to_frag_birthday(firstname , lastname , binding.btnSignupNameGo)
+            move_to_frag_birthday(firstname, lastname, binding.btnSignupNameGo)
 
         }
 
@@ -102,9 +105,9 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name)  {
             val lastname = binding.edtSignupNameLastname.text.toString()
             if (i == EditorInfo.IME_ACTION_DONE && firstname != "" && lastname != "") {
                 if (signup1Activity.go_to_frag_signup_age) {
-                   move_to_frag_age(firstname , lastname , binding.edtSignupNameLastname)
+                    move_to_frag_age(firstname, lastname, binding.edtSignupNameLastname)
                 } else {
-                  move_to_frag_birthday(firstname , lastname , binding.edtSignupNameLastname)
+                    move_to_frag_birthday(firstname, lastname, binding.edtSignupNameLastname)
                 }
                 true
             } else {
@@ -128,7 +131,7 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name)  {
         }
 
         binding.btnSignupNameBack.setOnClickListener {
-            hide_soft_key_board(signup1Activity , binding.btnSignupNameBack)
+            hide_soft_key_board(signup1Activity, binding.btnSignupNameBack)
             val dialog = dialog_stop_signup(signup1Activity)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
@@ -196,7 +199,7 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name)  {
         return firstname
     }
 
-    private fun take_fullname_vietnamese(firstName : String , lastName : String) : String{
+    private fun take_fullname_vietnamese(firstName: String, lastName: String): String {
         return lastName + " " + firstName
     }
 
@@ -232,61 +235,64 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name)  {
     ) {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         try {
-             CoroutineScope(Dispatchers.IO).launch {
-                 //This coroutine will be cancel when user move to next fragment
-                auth.signInWithCredential(credential)
-                    .addOnCompleteListener(signup1Activity) { task ->
-                        if (task.isSuccessful) {
-                            if (Firebase.auth.currentUser != null) {
-                                val user = Firebase.auth.currentUser
-                                val name = user?.displayName.toString()
-                                binding.edtSignupNameLastname.setText(takelastname(name))
-                                binding.edtSignupNameFistname.setText(takefirstname(name))
-                                Firebase.auth.signOut()
-                                googleSignInClient.signOut()
-                                user?.delete()?.addOnCompleteListener{ task2 ->
-                                    if (task2.isSuccessful){
-                                        dialogLoading.dismiss()
-                                    }else{
-                                        dialogLoading.dismiss()
+            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+                withContext(Dispatchers.IO) {
+                    //This coroutine will be cancel when user move to next fragment
+                    auth.signInWithCredential(credential)
+                        .addOnCompleteListener(signup1Activity) { task ->
+                            if (task.isSuccessful) {
+                                if (Firebase.auth.currentUser != null) {
+                                    val user = Firebase.auth.currentUser
+                                    val name = user?.displayName.toString()
+                                    binding.edtSignupNameLastname.setText(takelastname(name))
+                                    binding.edtSignupNameFistname.setText(takefirstname(name))
+                                    Firebase.auth.signOut()
+                                    googleSignInClient.signOut()
+                                    user?.delete()?.addOnCompleteListener { task2 ->
+                                        if (task2.isSuccessful) {
+                                            dialogLoading.dismiss()
+                                        } else {
+                                            dialogLoading.dismiss()
+                                        }
                                     }
                                 }
+                            } else {
+                                dialogLoading.dismiss()
+                                val s =
+                                    "Connect firebase has problem. Please enter your first and last name"
+                                s.showToastLong(signup1Activity)
                             }
-                        } else {
-                            dialogLoading.dismiss()
-                            val s = "Connect firebase has problem. Please enter your first and last name"
-                            s.showToastLong(signup1Activity)
                         }
-                    }
+                }
             }
         } catch (e: Exception) {
             dialogLoading.dismiss()
-            val  s = "Connect firebase has problem. Please enter your first and last name"
+            val s = "Connect firebase has problem. Please enter your first and last name"
             s.showToastLong(signup1Activity)
         }
     }
 
-    private fun move_to_frag_age(firstName: String , lastName: String , view : View){
-        hide_soft_key_board(signup1Activity , view)
+    private fun move_to_frag_age(firstName: String, lastName: String, view: View) {
+        hide_soft_key_board(signup1Activity, view)
         replacefrag(
             tag = "frag_signup_age",
             frag = frag_signup_age(),
             fm = signup1Activity.supportFragmentManager
         )
-        val fullName = take_fullname_vietnamese(firstName , lastName)
+        val fullName = take_fullname_vietnamese(firstName, lastName)
         shareViewModel.set_user_info_fullname(fullname = fullName)
         shareViewModel.set_user_info_firstname(firstname = firstName)
         shareViewModel.set_user_info_lastname(lastname = lastName)
     }
 
-    private fun move_to_frag_birthday(firstName: String , lastName: String , view : View){
-        hide_soft_key_board(signup1Activity , view)
+    private fun move_to_frag_birthday(firstName: String, lastName: String, view: View) {
+        hide_soft_key_board(signup1Activity, view)
         replacefrag(
             tag = "frag_signup_birthday",
             frag = frag_signup_birthday(),
             fm = signup1Activity.supportFragmentManager
         )
-        val fullName = take_fullname_vietnamese(firstName , lastName)
+        val fullName = take_fullname_vietnamese(firstName, lastName)
         shareViewModel.set_user_info_fullname(fullname = fullName)
         shareViewModel.set_user_info_firstname(firstname = firstName)
         shareViewModel.set_user_info_lastname(lastname = lastName)

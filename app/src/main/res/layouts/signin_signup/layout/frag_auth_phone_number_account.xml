@@ -207,13 +207,4 @@
 
     </LinearLayout>
 
-    <TextView
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:id="@+id/btn_check_phone"
-        android:text="Check"
-        android:textSize="22sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
 </LinearLayout>

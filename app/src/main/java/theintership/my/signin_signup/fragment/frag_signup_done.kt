@@ -7,15 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import theintership.my.MainActivity
+import theintership.my.MyMethod
 import theintership.my.MyMethod.Companion.isWifi
 import theintership.my.MyMethod.Companion.replacefrag
+import theintership.my.MyMethod.Companion.set_today
 import theintership.my.MyMethod.Companion.showToastLong
 import theintership.my.R
 import theintership.my.databinding.FragSignupDoneBinding
@@ -45,10 +49,16 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done) {
 
 
         binding.btnSignupDoneGo.setOnClickListener {
+            if (!MyMethod.check_wifi(signup1activity)) {
+                return@setOnClickListener
+            }
             add_phone_email_account_to_firebase_realtime_database_and_move_frag_create_account()
         }
 
         binding.btnSignupDoneGo2.setOnClickListener {
+            if (!MyMethod.check_wifi(signup1activity)) {
+                return@setOnClickListener
+            }
             add_phone_email_account_to_firebase_realtime_database_and_move_frag_create_account()
         }
 
@@ -79,17 +89,6 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done) {
         )
     }
 
-    private fun set_today(): String {
-        var mtoday = Calendar.getInstance()
-        var today = ""
-        today += (mtoday.get(Calendar.MONTH) + 1).toString()
-        today += "/"
-        today += mtoday.get(Calendar.DAY_OF_MONTH).toString()
-        today += "/"
-        today += mtoday.get(Calendar.YEAR).toString()
-
-        return today
-    }
 
     private fun add_phone_email_account_to_firebase_realtime_database_and_move_frag_create_account() {
         if (!isWifi(signup1activity)) {
@@ -104,53 +103,55 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done) {
         if (viewmodel.index_of_last_ele_phone_email_account != -1) {
             id = viewmodel.index_of_last_ele_phone_email_account + 1
             viewmodel.index_of_last_ele_phone_email_account = id // Update index
+            val ss = viewmodel.index_of_last_ele_phone_email_account.toString()
+            ss.showToastLong(signup1activity)
         }
 
         var add_user = false
         var add_phone_email_account = false
 
         //Add user to ref on firebase realtime database
-        CoroutineScope(Dispatchers.IO).launch {
-            val ref_user = database.child("User")
-            val user = viewmodel.user_info
-            val account_ref = viewmodel.account_user
-            ref_user.child(account_ref).child("user info").setValue(user)
-                .addOnCompleteListener(signup1activity) { task ->
-                    if (task.isSuccessful) {
-                        add_user = true
-                        if (add_user && add_phone_email_account) {
-                            move_to_frag_creating_account()
-                        }
-                    } else {
-                        error_networking_and_move_frag()
+        viewLifecycleOwner.lifecycleScope.launch{
+            withContext(Dispatchers.IO) {
+        val ref_user = database.child("User")
+        val user = viewmodel.user_info
+        val account_ref = viewmodel.account_user
+        ref_user.child(account_ref).child("user info").setValue(user)
+            .addOnCompleteListener(signup1activity) { task ->
+                if (task.isSuccessful) {
+                    add_user = true
+                    if (add_user && add_phone_email_account) {
+                        move_to_frag_creating_account()
                     }
+                } else {
+                    error_networking_and_move_frag()
                 }
-        }
+            }
 
         //Add data of phone and email and account on fireabase database
-        CoroutineScope(Dispatchers.IO).launch {
-            val ref_phone_email_account = database.child("phone and email and account")
-            val email = viewmodel.user_info.email
-            val phone = viewmodel.user_info.phone
-            val account = viewmodel.account_user
-            val phoneAndEmailAccount =
-                Phone_and_Email_Account(
-                    id = id,
-                    email = email,
-                    phone = phone,
-                    account = account
-                )
-            ref_phone_email_account.child(id.toString()).setValue(phoneAndEmailAccount)
-                .addOnCompleteListener(signup1activity) { task ->
-                    if (task.isSuccessful) {
-                        add_phone_email_account = true
-                        if (add_user && add_phone_email_account) {
-                            move_to_frag_creating_account()
-                        }
-                    } else {
-                        error_networking_and_move_frag()
+        val ref_phone_email_account = database.child("phone and email and account")
+        val email = viewmodel.user_info.email
+        val phone = viewmodel.user_info.phone
+        val account = viewmodel.account_user
+        val phoneAndEmailAccount =
+            Phone_and_Email_Account(
+                id = id,
+                email = email,
+                phone = phone,
+                account = account
+            )
+        ref_phone_email_account.child(id.toString()).setValue(phoneAndEmailAccount)
+            .addOnCompleteListener(signup1activity) { task ->
+                if (task.isSuccessful) {
+                    add_phone_email_account = true
+                    if (add_user && add_phone_email_account) {
+                        move_to_frag_creating_account()
                     }
+                } else {
+                    error_networking_and_move_frag()
                 }
+            }
+            }
         }
     }
 

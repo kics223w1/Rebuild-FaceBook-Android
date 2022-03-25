@@ -6,13 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import theintership.my.MyMethod
+import theintership.my.MyMethod.Companion.check_wifi
 import theintership.my.MyMethod.Companion.hide_soft_key_board
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.MyMethod.Companion.showToastLong
@@ -48,7 +51,7 @@ class frag_change_phone_when_auth : Fragment(R.layout.frag_change_phone_when_aut
             val country_code = binding.edtChangePhoneWhenAuthCountryCode.text.toString()
             hide_soft_key_board(signup1activity, binding.btnChangePhoneWhenAuthChange)
 
-            if (validd_phone_number_and_country_code(phone_number, country_code)) {
+            if (validd_phone_number_and_country_code(phone_number, country_code) && check_wifi(signup1activity)) {
                 set_ref_phoneEmailAccount_and_ref_userInfo_and_move_frag(
                     phone_number = phone_number,
                     country_code = country_code
@@ -61,7 +64,7 @@ class frag_change_phone_when_auth : Fragment(R.layout.frag_change_phone_when_aut
             val phone_number = binding.edtChangePhoneWhenAuth.text.toString()
             val country_code = binding.edtChangePhoneWhenAuthCountryCode.text.toString()
             hide_soft_key_board(signup1activity, binding.btnChangePhoneWhenAuthChange)
-            if (validd_phone_number_and_country_code(phone_number, country_code)) {
+            if (validd_phone_number_and_country_code(phone_number, country_code) && check_wifi(signup1activity)) {
                 set_ref_phoneEmailAccount_and_ref_userInfo_and_move_frag(
                     phone_number = phone_number,
                     country_code = country_code
@@ -74,7 +77,6 @@ class frag_change_phone_when_auth : Fragment(R.layout.frag_change_phone_when_aut
 
         return binding.root
     }
-
 
     private fun validd_phone_number_and_country_code(phone: String, country_code: String): Boolean {
         if (phone.length < 6) {
@@ -140,47 +142,12 @@ class frag_change_phone_when_auth : Fragment(R.layout.frag_change_phone_when_aut
         var done_phone = false
         var done_country_code = false
         var done_phone_email_account = false
-
-        CoroutineScope(Dispatchers.IO).launch {
-            ref_phone_and_email_and_account.setValue(phone_number)
-                .addOnCompleteListener(signup1activity) { task ->
-                    if (task.isSuccessful) {
-                        done_phone_email_account = true
-                        if (done_phone && done_country_code && done_phone_email_account) {
-                            //We must make sure that our database is updated and then popBackStack
-                            remove_loading_process()
-                            go_to_frag_auth_phone_number_account()
-                        }
-                    } else {
-                        error_networking_and_move_frag()
-                    }
-                }
-        }
-
-        CoroutineScope(Dispatchers.IO).launch {
-            ref_user_info_phone_number.setValue(phone_number)
-                .addOnCompleteListener(signup1activity) { task ->
-                    if (task.isSuccessful) {
-                        done_phone = true
-                        if (done_phone && done_country_code && done_phone_email_account) {
-                            //We must make sure that our database is updated and then popBackStack
-                            remove_loading_process()
-                            go_to_frag_auth_phone_number_account()
-                        }
-                    } else {
-                        error_networking_and_move_frag()
-                    }
-                }
-        }
-
-        CoroutineScope(Dispatchers.IO).launch {
-            if (country_code != "") {
-                //Defaut country code is 84 so if user don't enter country code ,
-                //so we leave it is 84
-                ref_user_info_country_code.setValue(country_code)
+        viewLifecycleOwner.lifecycleScope.launch {
+            withContext(Dispatchers.IO){
+                ref_phone_and_email_and_account.setValue(phone_number)
                     .addOnCompleteListener(signup1activity) { task ->
                         if (task.isSuccessful) {
-                            done_country_code = true
+                            done_phone_email_account = true
                             if (done_phone && done_country_code && done_phone_email_account) {
                                 //We must make sure that our database is updated and then popBackStack
                                 remove_loading_process()
@@ -190,11 +157,43 @@ class frag_change_phone_when_auth : Fragment(R.layout.frag_change_phone_when_aut
                             error_networking_and_move_frag()
                         }
                     }
-            } else {
-                done_country_code = true
-                if (done_phone && done_country_code && done_phone_email_account) {
-                    remove_loading_process()
-                    go_to_frag_auth_phone_number_account()
+
+                ref_user_info_phone_number.setValue(phone_number)
+                    .addOnCompleteListener(signup1activity) { task ->
+                        if (task.isSuccessful) {
+                            done_phone = true
+                            if (done_phone && done_country_code && done_phone_email_account) {
+                                //We must make sure that our database is updated and then popBackStack
+                                remove_loading_process()
+                                go_to_frag_auth_phone_number_account()
+                            }
+                        } else {
+                            error_networking_and_move_frag()
+                        }
+                    }
+
+                if (country_code != "") {
+                    //Defaut country code is 84 so if user don't enter country code ,
+                    //so we leave it is 84
+                    ref_user_info_country_code.setValue(country_code)
+                        .addOnCompleteListener(signup1activity) { task ->
+                            if (task.isSuccessful) {
+                                done_country_code = true
+                                if (done_phone && done_country_code && done_phone_email_account) {
+                                    //We must make sure that our database is updated and then popBackStack
+                                    remove_loading_process()
+                                    go_to_frag_auth_phone_number_account()
+                                }
+                            } else {
+                                error_networking_and_move_frag()
+                            }
+                        }
+                } else {
+                    done_country_code = true
+                    if (done_phone && done_country_code && done_phone_email_account) {
+                        remove_loading_process()
+                        go_to_frag_auth_phone_number_account()
+                    }
                 }
             }
         }

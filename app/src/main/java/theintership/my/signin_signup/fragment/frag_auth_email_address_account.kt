@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
+import theintership.my.MyMethod.Companion.check_wifi
 import theintership.my.MyMethod.Companion.hide_soft_key_board
 import theintership.my.MyMethod.Companion.isWifi
 import theintership.my.MyMethod.Companion.replacefrag
@@ -57,7 +59,7 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
                 if (!User.isEmailVerified) {
                     update_email_user_and_verify_it()
                 }
-            }else{
+            } else {
                 error_network()
             }
         } else {
@@ -69,6 +71,10 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
 
 
         binding.btnAuthEmailAddressConfirm.setOnClickListener {
+            if (!check_wifi(signup1activity)) {
+                return@setOnClickListener
+            }
+
             val mUser = Firebase.auth.currentUser
             //Init user again to make sure that isEmailVerified true or false
             //If use the old one , it will not set isEmailVerified on time
@@ -87,7 +93,10 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
 
 
         binding.btnAuthEmailAddressSendAgain.setOnClickListener {
-            if (is_sending_verification_email_sucess){
+            if (!check_wifi(signup1activity)) {
+                return@setOnClickListener
+            }
+            if (is_sending_verification_email_sucess) {
                 val s = "Please go to your email and verify it."
                 s.showToastShort(signup1activity)
                 return@setOnClickListener
@@ -176,22 +185,24 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
             }
             return
         }
-        CoroutineScope(Dispatchers.IO).launch {
-            user.updateEmail(email_address_for_verification)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        if (!is_sending_verification_email_sucess){
-                            //Make sure that we just send one time when this fragment is created
-                            verify_user_email()
+        viewLifecycleOwner.lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                user.updateEmail(email_address_for_verification)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            if (!is_sending_verification_email_sucess) {
+                                //Make sure that we just send one time when this fragment is created
+                                verify_user_email()
+                            }
+                        } else {
+                            println("debug vao error network trong update email")
+                            error_network()
                         }
-                    } else {
-                        println("debug vao error network trong update email")
-                        error_network()
                     }
-                }
-                .addOnFailureListener(signup1activity) {
-                    println("debug update email e: $it")
-                }
+                    .addOnFailureListener(signup1activity) {
+                        println("debug update email e: $it")
+                    }
+            }
         }
     }
 
@@ -207,20 +218,22 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
             }
             return
         }
-        CoroutineScope(Dispatchers.IO).launch {
-            user.updateEmail(account_user)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        set_tv_email_has_verified()
-                        println("debug user email sau khi reset: ${user.email}")
-                        go_to_frag_set_avatar_and_set_ref_user_info_verify_email()
-                    } else {
-                        error_network()
+        viewLifecycleOwner.lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                user.updateEmail(account_user)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            set_tv_email_has_verified()
+                            println("debug user email sau khi reset: ${user.email}")
+                            go_to_frag_set_avatar_and_set_ref_user_info_verify_email()
+                        } else {
+                            error_network()
+                        }
                     }
-                }
-                .addOnFailureListener(signup1activity) {
-                    println("debug update email e: $it")
-                }
+                    .addOnFailureListener(signup1activity) {
+                        println("debug update email e: $it")
+                    }
+            }
         }
     }
 
@@ -253,32 +266,39 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
     }
 
     private fun set_tv_email_are_sending(email_user: String) {
-        CoroutineScope(Dispatchers.Main).launch {
-            binding.tvAuthEmailAddressInfo.text =
-                "We are sending a verification email to ${email_user}"
+        viewLifecycleOwner.lifecycleScope.launch {
+            withContext(Dispatchers.Main) {
+                binding.tvAuthEmailAddressInfo.text =
+                    "We are sending a verification email to ${email_user}"
+            }
         }
     }
 
 
     private fun set_tv_email_has_verified() {
-        CoroutineScope(Dispatchers.Main).launch {
-            binding.tvAuthEmailAddressInfo.text =
-                "Your email has been verified. Please click next and go to set your avatar."
-            binding.tvAuthEmailAddressStatusEmail.text =
-                "Your email address has been verified."
-            binding.tvAuthEmailAddressStatusEmail.setTextColor(
-                resources.getColor(
-                    R.color.light_blue,
-                    null
+        viewLifecycleOwner.lifecycleScope.launch {
+            withContext(Dispatchers.Main) {
+                binding.tvAuthEmailAddressInfo.text =
+                    "Your email has been verified. Please click next and go to set your avatar."
+                binding.tvAuthEmailAddressStatusEmail.text =
+                    "Your email address has been verified."
+                binding.tvAuthEmailAddressStatusEmail.setTextColor(
+                    resources.getColor(
+                        R.color.light_blue,
+                        null
+                    )
                 )
-            )
+
+            }
         }
     }
 
     private fun set_tv_after_sending_verification_email() {
-        CoroutineScope(Dispatchers.Main).launch {
-            binding.tvAuthEmailAddressInfo.text =
-                "Please check the verification email which we've just sent you"
+        viewLifecycleOwner.lifecycleScope.launch {
+            withContext(Dispatchers.Main) {
+                binding.tvAuthEmailAddressInfo.text =
+                    "Please check the verification email which we've just sent you"
+            }
         }
     }
 

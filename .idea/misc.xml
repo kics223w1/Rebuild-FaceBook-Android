@@ -9,12 +9,15 @@
         <entry key="app/src/main/res/drawable-v24/bg_8dp_all_lighter_blue_ripple.xml" value="0.24074074074074073" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.25092592592592594" />
         <entry key="app/src/main/res/layouts/activity/layout/activity_main.xml" value="0.15070921985815602" />
+        <entry key="app/src/main/res/layouts/activity/layout/activity_signup.xml" value="0.1381340579710145" />
         <entry key="app/src/main/res/layouts/activity/layout/test_activity.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/dialog/layout/dialog_loading.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/dialog/layout/dialog_log_in_with_1_click.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/dialog/layout/dialog_show_account_and_password.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/dialog/layout/dialog_stop_signup.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/rcv_item/layout/base_adapter_item_image.xml" value="0.15070921985815602" />
+        <entry key="app/src/main/res/layouts/rcv_item/layout/item_rcv_for_selecting_avatar.xml" value="0.15070921985815602" />
+        <entry key="app/src/main/res/layouts/rcv_item/layout/item_rcv_image_for_selecting_avatar.xml" value="0.14719202898550723" />
         <entry key="app/src/main/res/layouts/rcv_item/layout/rcv_item_image.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/rcv_item/layout/rcv_item_language.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_auth_email_address_account.xml" value="0.15070921985815602" />

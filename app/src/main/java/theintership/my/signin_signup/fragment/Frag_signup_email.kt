@@ -29,6 +29,7 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email) {
     private val binding get() = _binding!!
     private lateinit var signup1activity: Signup1Activity
     private val shareViewModel: shareViewModel by activityViewModels()
+    private var database: DatabaseReference = Firebase.database.reference
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,7 +72,7 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email) {
         binding.btnSignupEmailSkip.setOnClickListener {
             val phone_number = shareViewModel.user_info.phone
             val email = binding.edtSignupEmail.text.toString()
-            hide_soft_key_board(signup1activity , binding.btnSignupEmailSkip)
+            hide_soft_key_board(signup1activity, binding.btnSignupEmailSkip)
             if (phone_number == "") {
                 val s = "You must enter phone number or email address . Can't skip both."
                 s.showToastLong(signup1activity)
@@ -99,7 +100,7 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email) {
 
     private fun check_email(email: String): Boolean {
         if (email == "") {
-            set_error_text_view("Enter email please")
+            set_error_text_view("Please enter email")
             return false
         }
         if (!email.contains("@gmail.com")) {

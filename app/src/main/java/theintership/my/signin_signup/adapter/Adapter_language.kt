@@ -1,4 +1,4 @@
-package theintership.my.signin_signup
+package theintership.my.signin_signup.adapter
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
@@ -30,7 +30,7 @@ class adapter_language(private val interaction: Interaction? = null) :
 
         return ViewHolder(
             LayoutInflater.from(parent.context).inflate(
-                R.layout.rcv_item_language,
+                R.layout.item_rcv_language,
                 parent,
                 false
             ),

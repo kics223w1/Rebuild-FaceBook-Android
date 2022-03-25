@@ -147,5 +147,4 @@
         android:textColor="@color/light_blue"
         android:textSize="18sp" />
 
-
 </LinearLayout>

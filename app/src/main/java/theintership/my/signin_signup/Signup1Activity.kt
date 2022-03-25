@@ -11,14 +11,21 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.*
 import theintership.my.MainActivity
+import theintership.my.MyMethod.Companion.check_wifi
 import theintership.my.MyMethod.Companion.isWifi
 import theintership.my.MyMethod.Companion.replacefrag
+import theintership.my.MyMethod.Companion.set_today
 import theintership.my.MyMethod.Companion.showToastLong
+import theintership.my.MyMethod.Companion.showToastShort
 import theintership.my.R
+import theintership.my.model.limit_auth_phone
 import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.dialog.dialog_stop_signup
+import theintership.my.signin_signup.fragment.frag_show_image_for_chosing_avatar
 import theintership.my.signin_signup.fragment.frag_signup_name
 
 
@@ -28,19 +35,29 @@ class Signup1Activity : AppCompatActivity() {
     var signup_with_google = true
     private val shareViewModel: shareViewModel by viewModels()
     private var database: DatabaseReference = Firebase.database.reference
+    private lateinit var dialogLoading: dialog_loading
+
+    override fun onDestroy() {
+        //See explain in function below
+        delete_phone_email_account_of_user()
+        super.onDestroy()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
 
-        val btnGo = findViewById<TextView>(R.id.btn_signup1_go)
+        val btnSignup = findViewById<TextView>(R.id.btn_signup1_go)
         val btnShowDialog = findViewById<TextView>(R.id.btn_signup1_showdialog)
         val btnBack = findViewById<ImageView>(R.id.btn_signup1_back)
 
+        dialogLoading = dialog_loading(this)
 
-
-        btnGo.setOnClickListener {
-            move_to_frag_name()
+        btnSignup.setOnClickListener {
+            if (!check_wifi(this)) {
+                return@setOnClickListener
+            }
+            update_list_and_limit_auth_phone_and_move_frag()
         }
 
         btnShowDialog.setOnClickListener {
@@ -59,8 +76,7 @@ class Signup1Activity : AppCompatActivity() {
         }
     }
 
-    private fun move_to_frag_name() {
-        val dialogLoading = dialog_loading(this)
+    private fun update_list_and_limit_auth_phone_and_move_frag() {
         dialogLoading.show()
         if (!isWifi(this)) {
             val s = "Please connect wifi to continue"
@@ -91,15 +107,10 @@ class Signup1Activity : AppCompatActivity() {
                         shareViewModel.index_of_last_ele_phone_email_account = id.toInt()
                     }
                 }
-                dialogLoading.dismiss()
                 //Why this function must be here
                 //Because firebase function always the last thing program does
                 //So i must do what i want to do in firebase function
-                replacefrag(
-                    tag = "frag_signup_name",
-                    frag = frag_signup_name(),
-                    fm = supportFragmentManager
-                )
+                set_limit_number_of_auth_phone_in_a_day_and_move_frag()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -111,14 +122,52 @@ class Signup1Activity : AppCompatActivity() {
         myref.addValueEventListener(postListener)
     }
 
-    private fun error_network(){
-        if (!isWifi(this)){
+    private fun set_limit_number_of_auth_phone_in_a_day_and_move_frag() {
+        val today = set_today()
+        var day_on_firebase = ""
+        var number_of_auth_phone_in_a_day = ""
+        val limitAuthPhone = limit_auth_phone(today, 0)
+
+        move_to_frag_name()
+
+        //This will run in behind
+        CoroutineScope(Dispatchers.IO).launch {
+            val ref_limit_auth_phone = database
+                .child("limit_auth_phone_in_a_day")
+                .child("1")
+            ref_limit_auth_phone.child("day").get().addOnSuccessListener(this@Signup1Activity) {
+                day_on_firebase = it.value.toString()
+                if (day_on_firebase != today) {
+                    ref_limit_auth_phone.setValue(limitAuthPhone)
+                }
+            }
+            ref_limit_auth_phone.child("number").get().addOnSuccessListener(this@Signup1Activity) {
+                number_of_auth_phone_in_a_day = it.value.toString()
+                if (number_of_auth_phone_in_a_day != "") {
+                    shareViewModel.number_of_auth_phone_number_in_a_day =
+                        number_of_auth_phone_in_a_day.toInt()
+                }
+            }
+        }
+    }
+
+    private fun error_network() {
+        if (!isWifi(this)) {
             val s = "Please check your wifi connection and click next again."
             s.showToastLong(this)
-        }else{
+        } else {
             val s = "Our sever went wrong. Sorry for the error. Please click next again."
-            s.showToastLong(this)
+            s.showToastShort(this)
         }
+    }
+
+    private fun move_to_frag_name() {
+        dialogLoading.dismiss()
+        replacefrag(
+            tag = "frag_signup_name",
+            frag = frag_signup_name(),
+            fm = supportFragmentManager
+        )
     }
 
 
@@ -172,9 +221,9 @@ class Signup1Activity : AppCompatActivity() {
         ) {
             if (frag_before_last.name == "frag_auth_phone_number_account" && frag_last.name == "frag_auth_email_address_account") {
                 //This case is user entered phone number and email address
-                    //And user want to authencation email address instead of phone number
+                //And user want to authencation email address instead of phone number
                 supportFragmentManager.popBackStack()
-            }else{
+            } else {
                 //if user just entered one of email address or phone number
                 //so we can't allow user to back when in authencation
                 val s = "Can't back when authencation"
@@ -186,5 +235,37 @@ class Signup1Activity : AppCompatActivity() {
         super.onBackPressed()
     }
 
+    private fun delete_phone_email_account_of_user() {
+        //Delete phone and email and account
+        val s = "Delete user success"
+        val index_of_last_element_phone_email_account = shareViewModel.index_of_last_ele_phone_email_account
+        if (index_of_last_element_phone_email_account == -1) {
+            return
+        }
+        //This code make frag_auth_phone_number_account crash
+        //But the value in ref_phoneEmailAccount1 has been replace after run this code
+        //So this code work fine in terms of removeValue from Firebase Realtime Database
+
+        //I must put this into onDestroy because when onDestroy is invoked,
+        //frag_auth_phone_number_account has been destroy , so don't need worry about crash fragment
+        val ref_phoneEmailAccount1 = database
+            .child("phone and email and account")
+            .child(index_of_last_element_phone_email_account.toString())
+
+        ref_phoneEmailAccount1
+            .removeValue()
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    s.showToastLong(this)
+                } else {
+                    //I don't have any idea to do when it fail
+                }
+            }
+            .addOnFailureListener(this) {
+                //I don't have any idea to do when it fail
+            }
+    }
 
 }
+
+
