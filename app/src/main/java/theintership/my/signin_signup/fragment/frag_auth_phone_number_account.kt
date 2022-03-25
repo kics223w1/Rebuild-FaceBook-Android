@@ -29,23 +29,31 @@ import theintership.my.databinding.FragAuthPhoneNumberAccountBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.shareViewModel
 import java.util.concurrent.TimeUnit
+import kotlin.math.acos
 
 
 class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_account) {
 
     private var _binding: FragAuthPhoneNumberAccountBinding? = null
     private val binding get() = _binding!!
+
     private lateinit var signup1activity: Signup1Activity
     private lateinit var auth: FirebaseAuth
     private val shareViewmodel: shareViewModel by activityViewModels()
     private lateinit var database: DatabaseReference
+
     private lateinit var mForceResendingToken: PhoneAuthProvider.ForceResendingToken
+    private var verifyID = ""
+
     private var verify_false_first_time = false
     private var verify_false_again = false
-    private var verifyID = ""
+
     private var list_mForceResendingToken = mutableListOf<String>()
     private var list_mForceResendingToken_is_use = mutableListOf<Boolean>()
+
     private var number_of_auth_phone_in_a_day = 0
+    private var index_of_last_element_phone_email_account = 0
+    private lateinit var account_ref: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -58,6 +66,9 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
         auth = Firebase.auth
         auth.setLanguageCode("en")
         number_of_auth_phone_in_a_day = shareViewmodel.number_of_auth_phone_number_in_a_day
+        index_of_last_element_phone_email_account =
+            shareViewmodel.index_of_last_ele_phone_email_account.toInt()
+        account_ref = shareViewmodel.account_user
 
         println("debug number dau tien ne: $number_of_auth_phone_in_a_day")
 
@@ -79,6 +90,11 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
 
         binding.btnAuthPhoneNumberConfirm.setOnClickListener {
             if (!check_wifi(signup1activity)) {
+                return@setOnClickListener
+            }
+            if (check_when_we_reach_the_limit_of_number_authecation_phone()) {
+                val s = "Please read the text view."
+                s.showToastShort(signup1activity)
                 return@setOnClickListener
             }
             val otp = binding.edtAuthPhoneNumberAccount.text.toString()
@@ -103,6 +119,10 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
                 s.showToastShort(signup1activity)
                 false
             } else if (!check_wifi(signup1activity)) {
+                false
+            } else if (check_when_we_reach_the_limit_of_number_authecation_phone()) {
+                val s = "Please read the text view."
+                s.showToastShort(signup1activity)
                 false
             } else if (verifyID != "") {
                 val credential = PhoneAuthProvider.getCredential(verifyID, otp)
@@ -129,6 +149,11 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
 
         binding.btnAuthPhoneNumberChangePhoneNumber.setOnClickListener {
             hide_soft_key_board(signup1activity, binding.btnAuthPhoneNumberChangePhoneNumber)
+            if (check_when_we_reach_the_limit_of_number_authecation_phone()) {
+                val s = "Please read the text view."
+                s.showToastShort(signup1activity)
+                return@setOnClickListener
+            }
             replacefrag(
                 "frag_change_phone_when_auth",
                 frag_change_phone_when_auth(),
@@ -144,7 +169,9 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
             println("debug number of auth trong send again: $number_of_auth_phone_in_a_day")
             if (number_of_auth_phone_in_a_day >= 10) {
                 set_tv_reach_the_limit_of_number_authencation_phone()
+                shareViewmodel.is_delete_user = true
                 delete_user_auth_and_user_info_and_phoneEmailAccount()
+                //delete_phone_email_account_of_user()
                 return@setOnClickListener
             }
             if (verify_false_first_time && !verify_false_again) {
@@ -153,14 +180,20 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
             }
             if (verify_false_first_time && verify_false_again) {
                 set_tv_reach_the_limit_of_number_authencation_phone()
+                shareViewmodel.is_delete_user = true
                 delete_user_auth_and_user_info_and_phoneEmailAccount()
+                //delete_phone_email_account_of_user()
                 return@setOnClickListener
             }
             val size = list_mForceResendingToken_is_use.size
-            if (list_mForceResendingToken_is_use[size - 1]) {
-                set_tv_reach_the_limit_of_number_authencation_phone()
-                delete_user_auth_and_user_info_and_phoneEmailAccount()
-                return@setOnClickListener
+            if (size > 0) {
+                if (list_mForceResendingToken_is_use.last()) {
+                    set_tv_reach_the_limit_of_number_authencation_phone()
+                    shareViewmodel.is_delete_user = true
+                    delete_user_auth_and_user_info_and_phoneEmailAccount()
+                    //delete_phone_email_account_of_user()
+                    return@setOnClickListener
+                }
             }
             //User receive verification email but want to send again , so we call verify_again()
             //Add the token we got from verify_first_time and we use it for resend email
@@ -372,39 +405,42 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
     }
 
     private fun set_tv_reach_the_limit_of_number_authencation_phone() {
-        val s = "You just reach the limit of number authencation phone in a day.\n" +
+        val s = "You just reach the limit of number authencation phone number in a day.\n" +
                 "We'll delete all infomation you were typing and then you can sign up again in tomorrow.\n" +
                 "Thanks for signing up this project.\n" +
                 "We use free Firebase for backend so it has limit of authencation in a day."
         binding.tvFragAuthPhoneNumberInfo.setText(s)
         binding.tvFragAuthPhoneNumberInfo.setTextColor(resources.getColor(R.color.light_blue, null))
-        s.showToastLong(signup1activity)
+        val ss = "Please read the textview."
+        ss.showToastLong(signup1activity)
+    }
+
+    private fun check_when_we_reach_the_limit_of_number_authecation_phone(): Boolean {
+        val s = binding.tvFragAuthPhoneNumberInfo.text.toString()
+        val ss = "You just reach the limit of number authencation phone number in a day.\n" +
+                "We'll delete all infomation you were typing and then you can sign up again in tomorrow.\n" +
+                "Thanks for signing up this project.\n" +
+                "We use free Firebase for backend so it has limit of authencation in a day."
+        if (s == ss) {
+            return true
+        }
+        return false
     }
 
 
     private fun delete_user_auth_and_user_info_and_phoneEmailAccount() {
         var delete_user_auth = false
-        var delete_phone_email_account = false
+        var delete_user_info = false
         var user = Firebase.auth.currentUser
-        shareViewmodel.is_delete_user = true
-
-        var id = shareViewmodel.index_of_last_ele_phone_email_account
-        val ref_phoneEmailAccount = database.child("phone and email and account")
-        var idd = id
 
         val s = "Delete user success"
 
-        //Need to delet user_auth , user_info , user_phone_email_account
+        //Need to delete user_auth , user_info , user_phone_email_account
+        //But the code of deleting user_phone_email_account make this fragment crash
+        //The code work fine in terms of removeValue out of Firebase Realtime Database
+        //But some how it makes fragment crash
 
-        //But user_info and user_phone_email_account are stored in firebase realtime database
-        //And this fragment will crash when we delete them in different time or same time
-        //So i must move function delete user_info to onDestroy in Signup1Actiivity
-
-        //In general , if user_auth and user_phone email account are still in firebase realtime
-        //other people will not be able create account because the infomation is duplicated with
-        //non-exitsiting user
-
-        //so delete them is priority in this funciton
+        //You can see more detail in onDestroy in Signup1Activity
         viewLifecycleOwner.lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 //Delete user auth
@@ -412,39 +448,31 @@ class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_
                     user.delete().addOnCompleteListener(signup1activity) { task ->
                         if (task.isSuccessful) {
                             delete_user_auth = true
-                            if (delete_user_auth && delete_phone_email_account ) {
+                            if (delete_user_info && delete_user_auth) {
                                 s.showToastLong(signup1activity)
                             }
                         }
                     }
                 } else {
-                    delete_user_auth = true
-                    if (delete_user_auth && delete_phone_email_account ) {
-                        s.showToastLong(signup1activity)
-                    }
+                    s.showToastLong(signup1activity)
                 }
 
-                //Delete phone and email and account
-                if (idd != -1) {
-                    ref_phoneEmailAccount.child(idd.toString()).removeValue()
-                        .addOnCompleteListener(signup1activity) { task ->
-                            if (task.isSuccessful) {
-                                delete_phone_email_account = true
-                                if (delete_user_auth && delete_phone_email_account ) {
-                                    s.showToastLong(signup1activity)
-                                }
-                            }
-                        }
-                } else {
-                    delete_phone_email_account = true
-                    if (delete_user_auth && delete_phone_email_account ) {
-                        s.showToastLong(signup1activity)
-                    }
-                }
 
                 //We will continue delete user_info in onDestroy in Signup1Activity
+                val ref_user_info = database
+                    .child("User")
+                    .child(account_ref)
+                ref_user_info.removeValue().addOnCompleteListener(signup1activity) { task ->
+                    if (task.isSuccessful) {
+                        delete_user_info = true
+                        if (delete_user_info && delete_user_auth) {
+                            s.showToastLong(signup1activity)
+                        }
+                    }
+                }
             }
         }
     }
+
 }
 

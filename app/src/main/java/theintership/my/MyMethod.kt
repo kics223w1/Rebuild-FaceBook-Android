@@ -57,6 +57,14 @@ class MyMethod {
                 .commit()
         }
 
+        fun addfrag(tag: String, frag: Fragment, fm: FragmentManager) {
+            fm.beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in , android.R.anim.fade_out)
+                .addToBackStack(tag)
+                .add(R.id.layout_Signup1Activity , frag , tag)
+                .commit()
+        }
+
         fun replacefrag_by_silde_in_left(tag: String, frag: Fragment, fm: FragmentManager) {
             fm.beginTransaction()
                 .setCustomAnimations(R.anim.slide_in_right , R.anim.slide_out_left)

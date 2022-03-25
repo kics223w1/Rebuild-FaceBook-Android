@@ -13,6 +13,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.*
 import theintership.my.MainActivity
 import theintership.my.MyMethod.Companion.check_wifi
 import theintership.my.MyMethod.Companion.isWifi
@@ -36,24 +37,9 @@ class Signup1Activity : AppCompatActivity() {
     private lateinit var dialogLoading: dialog_loading
 
     override fun onDestroy() {
+        //See explain in function below
+        delete_phone_email_account_of_user()
         super.onDestroy()
-        if (shareViewModel.is_delete_user) {
-            //Delete user_info
-                //See explaintion in function delete_user in frag_auth_phone_number_account
-            val account_ref = shareViewModel.account_user
-            val ref_user = database.child("User").child(account_ref)
-            ref_user.removeValue().addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    val s = "Delete user info success trong onDestroy"
-                    s.showToastLong(this)
-                    shareViewModel.is_delete_user = false
-                }else{
-                    //Don't know what to do if this fail
-                        //At this time , the user has already left Signup1Activity
-                    shareViewModel.is_delete_user = false
-                }
-            }
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,14 +83,12 @@ class Signup1Activity : AppCompatActivity() {
             dialogLoading.dismiss()
             return
         }
-        println("debug vao update list")
         //Set up list account and phone number and email address , then move to frag_signup_phone
         val myref = database.child("phone and email and account")
         val postListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = snapshot.children
                 list.forEach {
-                    println("debug vao list for Each ne")
                     val mphone = it.child("phone").getValue().toString()
                     val memail = it.child("email").getValue().toString()
                     val maccount = it.child("account").getValue().toString()
@@ -143,66 +127,27 @@ class Signup1Activity : AppCompatActivity() {
         var number_of_auth_phone_in_a_day = ""
         val limitAuthPhone = limit_auth_phone(today, 0)
 
-        var done_day = false
-        var done_number = false
+        move_to_frag_name()
 
-        val ref_limit_auth_phone = database
-            .child("limit_auth_phone_in_a_day")
-            .child("1")
-        ref_limit_auth_phone.child("day").get().addOnSuccessListener {
-            done_day = true
-            day_on_firebase = it.value.toString()
-            day_on_firebase.showToastShort(this@Signup1Activity)
-            if (done_day && done_number) {
+        //This will run in behind
+        CoroutineScope(Dispatchers.IO).launch {
+            val ref_limit_auth_phone = database
+                .child("limit_auth_phone_in_a_day")
+                .child("1")
+            ref_limit_auth_phone.child("day").get().addOnSuccessListener(this@Signup1Activity) {
+                day_on_firebase = it.value.toString()
                 if (day_on_firebase != today) {
                     ref_limit_auth_phone.setValue(limitAuthPhone)
-                        .addOnCompleteListener(this@Signup1Activity) { task ->
-                            if (task.isSuccessful) {
-                                move_to_frag_name()
-                            } else {
-                                error_network()
-                            }
-                        }
-                } else {
+                }
+            }
+            ref_limit_auth_phone.child("number").get().addOnSuccessListener(this@Signup1Activity) {
+                number_of_auth_phone_in_a_day = it.value.toString()
+                if (number_of_auth_phone_in_a_day != "") {
                     shareViewModel.number_of_auth_phone_number_in_a_day =
                         number_of_auth_phone_in_a_day.toInt()
-                    move_to_frag_name()
                 }
             }
         }
-        ref_limit_auth_phone.child("number").get().addOnSuccessListener {
-            done_number = true
-            number_of_auth_phone_in_a_day = it.value.toString()
-            number_of_auth_phone_in_a_day.showToastShort(this)
-            if (done_day && done_number) {
-                if (day_on_firebase != today) {
-                    ref_limit_auth_phone.setValue(limitAuthPhone)
-                        .addOnCompleteListener(this@Signup1Activity) { task ->
-                            if (task.isSuccessful) {
-                                move_to_frag_name()
-                            } else {
-                                error_network()
-                            }
-                        }
-                } else {
-                    shareViewModel.number_of_auth_phone_number_in_a_day =
-                        number_of_auth_phone_in_a_day.toInt()
-                    move_to_frag_name()
-                }
-            }
-        }
-//        ref_limit_auth_phone.addListenerForSingleValueEvent(object : ValueEventListener {
-//            override fun onDataChange(snapshot: DataSnapshot) {
-//                val ele = snapshot.children
-//
-//            }
-//
-//            override fun onCancelled(error: DatabaseError) {
-//                error_network()
-//            }
-//
-//        })
-
     }
 
     private fun error_network() {
@@ -289,6 +234,36 @@ class Signup1Activity : AppCompatActivity() {
         super.onBackPressed()
     }
 
+    private fun delete_phone_email_account_of_user() {
+        //Delete phone and email and account
+        val s = "Delete user success"
+        val index_of_last_element_phone_email_account = shareViewModel.index_of_last_ele_phone_email_account
+        if (index_of_last_element_phone_email_account == -1) {
+            return
+        }
+        //This code make frag_auth_phone_number_account crash
+        //But the value in ref_phoneEmailAccount1 has been replace after run this code
+        //So this code work fine in terms of removeValue from Firebase Realtime Database
+
+        //I must put this into onDestroy because when onDestroy is invoked,
+        //frag_auth_phone_number_account has been destroy , so don't need worry about crash fragment
+        val ref_phoneEmailAccount1 = database
+            .child("phone and email and account")
+            .child(index_of_last_element_phone_email_account.toString())
+
+        ref_phoneEmailAccount1
+            .removeValue()
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    s.showToastLong(this)
+                } else {
+                    //I don't have any idea to do when it fail
+                }
+            }
+            .addOnFailureListener(this) {
+                //I don't have any idea to do when it fail
+            }
+    }
 
 }
 

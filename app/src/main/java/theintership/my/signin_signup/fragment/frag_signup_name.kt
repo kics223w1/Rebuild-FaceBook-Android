@@ -235,7 +235,7 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name) {
     ) {
         val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         try {
-            viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
                 withContext(Dispatchers.IO) {
                     //This coroutine will be cancel when user move to next fragment
                     auth.signInWithCredential(credential)

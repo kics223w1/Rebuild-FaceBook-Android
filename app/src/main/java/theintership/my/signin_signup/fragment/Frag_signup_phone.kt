@@ -13,6 +13,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import theintership.my.MainActivity
 import theintership.my.MyMethod
+import theintership.my.MyMethod.Companion.addfrag
 import theintership.my.MyMethod.Companion.hide_soft_key_board
 import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.MyMethod.Companion.showToastLong
@@ -123,7 +124,7 @@ class frag_signup_phone : Fragment(R.layout.frag_signup_phone) {
     }
 
     private fun goto_frag_signup_email(phone: String, country_code: String) {
-        replacefrag(
+        addfrag(
             "frag_signup_email",
             frag_signup_email(),
             signup1Activity.supportFragmentManager

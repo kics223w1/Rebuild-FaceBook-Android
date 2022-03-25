@@ -33,7 +33,7 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
     private lateinit var signup1activity: Signup1Activity
     private lateinit var database: DatabaseReference
     private val viewmodel: shareViewModel by activityViewModels()
-    private val auth: FirebaseAuth = Firebase.auth
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,18 +43,20 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
         _binding = FragSignupCreatingAccountBinding.inflate(inflater, container, false)
         signup1activity = activity as Signup1Activity
         database = Firebase.database.reference
+        auth = Firebase.auth
         val account_user = viewmodel.account_user
         val password_user = viewmodel.password_user
 
-        //create_auth_user_firebase(account_user, password_user)
+        create_auth_user_firebase(account_user, password_user)
 
-            show_icon_success_and_move()
 
 
         return binding.root
     }
 
     private fun show_icon_success_and_move() {
+//        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+        //withContext(Dispatchers.Main) {
         binding.progressCreatingAccount.visibility = View.GONE
         binding.tvFragSignupCreatingAccountInfo.visibility = View.GONE
         binding.iconCreatingAccountSuccess.visibility = View.VISIBLE
@@ -77,12 +79,17 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
                         duration = 1000
                         scaleX(1.5F)
                         scaleY(1.5F)
+                    }.withEndAction {
+                        move_to_frag_signing()
                     }.start()
-                }.withEndAction {
-                    move_to_frag_signing()
                 }
             }
         }
+//        Handler().postDelayed(
+//            { move_to_frag_signing() }, 5000
+//        )
+        //  }
+        //}
     }
 
     private fun create_auth_user_firebase(account: String, password: String) {
@@ -97,18 +104,19 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
         //So we just need O(1) to get all of that instead of O(n)
         //And when user want to chang their email address
         //We just need find the ref and update it
-        //CoroutineScope(Dispatchers.IO).launch {
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(signup1activity) { task ->
-                    if (task.isSuccessful) {
-                        val user = auth.currentUser
-                        move_to_frag_signing()
-                        //show_icon_success_and_move()
-                    } else {
-                        error_network()
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            withContext(Dispatchers.IO) {
+                auth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(signup1activity) { task ->
+                        if (task.isSuccessful) {
+                            val user = auth.currentUser
+                            show_icon_success_and_move()
+                        } else {
+                            error_network()
+                        }
                     }
-                }
-        //}
+            }
+        }
     }
 
 

@@ -31,8 +31,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-
+        
         val btn_create_account = findViewById<TextView>(R.id.btn_signin_createAccout)
         val edt_signin_account = findViewById<EditText>(R.id.edt_signin_account)
         val edt_signin_password = findViewById<EditText>(R.id.edt_signin_password)

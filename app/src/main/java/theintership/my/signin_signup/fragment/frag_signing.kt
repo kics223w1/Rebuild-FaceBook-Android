@@ -57,21 +57,13 @@ class frag_signing : Fragment(R.layout.frag_signing) {
         dialogLogInWith1Click.show()
 
         dialogLogInWith1Click.btn_cancel.setOnClickListener {
+            set_is_user_save_password_in_share_pref(save = false)
             dialogLogInWith1Click.dismiss()
             open_dialog_show_account_and_password(account = account, password = password)
         }
 
         dialogLogInWith1Click.btn_save.setOnClickListener {
-            val sharedPref = activity?.getSharedPreferences(
-                getString(R.string.preference_file_key), Context.MODE_PRIVATE
-            )
-            if (sharedPref != null) {
-                with(sharedPref.edit()) {
-                    //Checking for show sign in view when user open app
-                    putBoolean("User save password", true)
-                    apply()
-                }
-            }
+            set_is_user_save_password_in_share_pref(save = true)
             dialogLogInWith1Click.dismiss()
             open_dialog_show_account_and_password(account = account, password = password)
         }
@@ -83,16 +75,16 @@ class frag_signing : Fragment(R.layout.frag_signing) {
 
     private fun move_to_frag_authencation_account() {
         //User just need verify one of two ( phone number or email address )
-        if (viewmodel.user_info.phone != "") {
+        if (viewmodel.user_info.email != "") {
             replacefrag(
-                "frag_auth_phone_number_account",
-                frag_auth_phone_number_account(),
+                "frag_auth_email_address_account",
+                frag_auth_email_address_account(),
                 signup1activity.supportFragmentManager
             )
         } else {
             replacefrag(
-                "frag_auth_email_address_account",
-                frag_auth_email_address_account(),
+                "frag_auth_phone_number_account",
+                frag_auth_phone_number_account(),
                 signup1activity.supportFragmentManager
             )
         }
@@ -104,7 +96,7 @@ class frag_signing : Fragment(R.layout.frag_signing) {
         dialogshowAccountPassword.tv_account.text = viewmodel.account_user
         dialogshowAccountPassword.tv_password.text = viewmodel.password_user
         dialogshowAccountPassword.btn_go.setOnClickListener {
-            if (!check_wifi(signup1activity)){
+            if (!check_wifi(signup1activity)) {
                 return@setOnClickListener
             }
             signin_user_and_move_frag(account = account, password = password)
@@ -140,37 +132,51 @@ class frag_signing : Fragment(R.layout.frag_signing) {
         val email = account + "@gmail.com"
         //If you concern about above line
         //See my explanation in frag_signup_creating_account in function create_auth_user_firebase
-        viewLifecycleOwner.lifecycleScope.launch{
-           withContext(Dispatchers.IO){
-               auth.signInWithEmailAndPassword(email, password)
-                   .addOnCompleteListener(requireActivity()) { task ->
-                       if (task.isSuccessful) {
-                           // Sign in success, update UI with the signed-in user's information
-                           val account_ref = viewmodel.account_user
-                           val today = set_today()
-                           val ref_last_login = database
-                               .child("User")
-                               .child(account_ref)
-                               .child("user info")
-                               .child("last login")
+        viewLifecycleOwner.lifecycleScope.launch {
+            withContext(Dispatchers.IO) {
+                auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(requireActivity()) { task ->
+                        if (task.isSuccessful) {
+                            // Sign in success, update UI with the signed-in user's information
+                            val account_ref = viewmodel.account_user
+                            val today = set_today()
+                            val ref_last_login = database
+                                .child("User")
+                                .child(account_ref)
+                                .child("user info")
+                                .child("last login")
 
-                           ref_last_login.setValue(today)
-                               .addOnCompleteListener(signup1activity) { task2 ->
-                                   if (task2.isSuccessful) {
-                                       move_to_frag_authencation_account()
-                                   } else {
-                                       //Some thing wrong , it might be lost internet.
-                                       // But just keep move frag . We can update later
-                                       move_to_frag_authencation_account()
-                                   }
-                               }
-                       } else {
-                           error_network()
-                       }
-                   }
-           }
+                            ref_last_login.setValue(today)
+                                .addOnCompleteListener(signup1activity) { task2 ->
+                                    if (task2.isSuccessful) {
+                                        move_to_frag_authencation_account()
+                                    } else {
+                                        //Some thing wrong , it might be lost internet.
+                                        // But just keep move frag . We can update later
+                                        move_to_frag_authencation_account()
+                                    }
+                                }
+                        } else {
+                            error_network()
+                        }
+                    }
+            }
         }
     }
 
+
+    private fun set_is_user_save_password_in_share_pref(save: Boolean) {
+        val sharedPref = activity?.getSharedPreferences(
+            getString(R.string.preference_file_key), Context.MODE_PRIVATE
+        )
+        val account = viewmodel.account_user
+        if (sharedPref != null) {
+            with(sharedPref.edit()) {
+                //Checking for show sign in view when user open app
+                putBoolean("$account save password", save)
+                apply()
+            }
+        }
+    }
 
 }

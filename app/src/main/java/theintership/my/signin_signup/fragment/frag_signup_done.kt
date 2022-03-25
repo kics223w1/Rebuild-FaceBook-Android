@@ -111,46 +111,46 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done) {
         var add_phone_email_account = false
 
         //Add user to ref on firebase realtime database
-        viewLifecycleOwner.lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch{
             withContext(Dispatchers.IO) {
-                val ref_user = database.child("User")
-                val user = viewmodel.user_info
-                val account_ref = viewmodel.account_user
-                ref_user.child(account_ref).child("user info").setValue(user)
-                    .addOnCompleteListener(signup1activity) { task ->
-                        if (task.isSuccessful) {
-                            add_user = true
-                            if (add_user && add_phone_email_account) {
-                                move_to_frag_creating_account()
-                            }
-                        } else {
-                            error_networking_and_move_frag()
-                        }
+        val ref_user = database.child("User")
+        val user = viewmodel.user_info
+        val account_ref = viewmodel.account_user
+        ref_user.child(account_ref).child("user info").setValue(user)
+            .addOnCompleteListener(signup1activity) { task ->
+                if (task.isSuccessful) {
+                    add_user = true
+                    if (add_user && add_phone_email_account) {
+                        move_to_frag_creating_account()
                     }
+                } else {
+                    error_networking_and_move_frag()
+                }
+            }
 
-                //Add data of phone and email and account on fireabase database
-                val ref_phone_email_account = database.child("phone and email and account")
-                val email = viewmodel.user_info.email
-                val phone = viewmodel.user_info.phone
-                val account = viewmodel.account_user
-                val phoneAndEmailAccount =
-                    Phone_and_Email_Account(
-                        id = id,
-                        email = email,
-                        phone = phone,
-                        account = account
-                    )
-                ref_phone_email_account.child(id.toString()).setValue(phoneAndEmailAccount)
-                    .addOnCompleteListener(signup1activity) { task ->
-                        if (task.isSuccessful) {
-                            add_phone_email_account = true
-                            if (add_user && add_phone_email_account) {
-                                move_to_frag_creating_account()
-                            }
-                        } else {
-                            error_networking_and_move_frag()
-                        }
+        //Add data of phone and email and account on fireabase database
+        val ref_phone_email_account = database.child("phone and email and account")
+        val email = viewmodel.user_info.email
+        val phone = viewmodel.user_info.phone
+        val account = viewmodel.account_user
+        val phoneAndEmailAccount =
+            Phone_and_Email_Account(
+                id = id,
+                email = email,
+                phone = phone,
+                account = account
+            )
+        ref_phone_email_account.child(id.toString()).setValue(phoneAndEmailAccount)
+            .addOnCompleteListener(signup1activity) { task ->
+                if (task.isSuccessful) {
+                    add_phone_email_account = true
+                    if (add_user && add_phone_email_account) {
+                        move_to_frag_creating_account()
                     }
+                } else {
+                    error_networking_and_move_frag()
+                }
+            }
             }
         }
     }
