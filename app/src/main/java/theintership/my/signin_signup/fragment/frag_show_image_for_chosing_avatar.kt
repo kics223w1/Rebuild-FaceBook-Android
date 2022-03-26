@@ -1,5 +1,8 @@
 package theintership.my.signin_signup.fragment
 
+import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,12 +18,23 @@ import theintership.my.model.image
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.adapter.IClickImage
 import theintership.my.signin_signup.adapter.adapter_image
+import android.graphics.BitmapFactory
+
+import android.graphics.Bitmap
+import android.provider.MediaStore
+import androidx.fragment.app.activityViewModels
+import theintership.my.MyMethod
+import theintership.my.signin_signup.shareViewModel
+
 
 class frag_show_image_for_chosing_avatar : Fragment(R.layout.frag_show_image_for_chosing_avatar) , IClickImage {
 
     private var _binding : FragShowImageForChosingAvatarBinding? = null
     private val binding get() = _binding!!
     private lateinit var signup1activity: Signup1Activity
+    private val shareViewModel: shareViewModel by activityViewModels()
+    private val REQUEST_IMAGE_CAPTURE = 1
+    private var image_path = ""
 
 
     override fun onCreateView(
@@ -40,10 +54,53 @@ class frag_show_image_for_chosing_avatar : Fragment(R.layout.frag_show_image_for
         rcv.layoutManager = linearLayout
         rcv.adapter = adapter
 
+        binding.btnFragShowImageForChoseAvatarCamera.setOnClickListener {
+            dispatchTakePictureIntent()
+        }
+
+        binding.btnFragShowImageForChoseAvatarDone.setOnClickListener {
+            //User just can click that after click image
+            val options: BitmapFactory.Options = BitmapFactory.Options()
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888
+            val bitmap = BitmapFactory.decodeFile(image_path, options)
+            shareViewModel.photo_user = bitmap
+            shareViewModel.photo_user_null = false
+            move_to_frag_done_set_avatar()
+        }
+
         return binding.root
     }
 
+    private fun dispatchTakePictureIntent() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        try {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+        } catch (e: ActivityNotFoundException) {
+            println("debug e in dispatchTakePictureIntent: $e")
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            shareViewModel.photo_user = imageBitmap
+            shareViewModel.photo_user_null = false
+            move_to_frag_done_set_avatar()
+        }
+    }
+
+
+    private fun move_to_frag_done_set_avatar(){
+        MyMethod.replacefrag_by_silde_in_left(
+            tag = "frag_done_set_avatar",
+            frag_done_set_avatar(),
+            signup1activity.supportFragmentManager
+        )
+    }
+
     override fun onClickImage(path: String) {
-        path.showToastShort(signup1activity)
+        binding.btnFragShowImageForChoseAvatarCamera.visibility = View.GONE
+        binding.btnFragShowImageForChoseAvatarDone.visibility = View.VISIBLE
+        image_path = path
     }
 }
