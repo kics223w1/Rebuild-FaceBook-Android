@@ -1,5 +1,6 @@
 package theintership.my.signin_signup
 
+import androidx.core.graphics.createBitmap
 import androidx.lifecycle.ViewModel
 import theintership.my.model.user_info
 
@@ -26,6 +27,9 @@ class shareViewModel : ViewModel() {
     var password_user = ""
     var index_of_last_ele_phone_email_account = -1
     var number_of_auth_phone_number_in_a_day = 0
+
+    var photo_user  = createBitmap(1000 , 1000)
+    var photo_user_null = true
 
     var is_email_address_change = false
     var is_phone_number_change = false

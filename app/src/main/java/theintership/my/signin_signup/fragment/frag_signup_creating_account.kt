@@ -55,8 +55,6 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
     }
 
     private fun show_icon_success_and_move() {
-//        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-        //withContext(Dispatchers.Main) {
         binding.progressCreatingAccount.visibility = View.GONE
         binding.tvFragSignupCreatingAccountInfo.visibility = View.GONE
         binding.iconCreatingAccountSuccess.visibility = View.VISIBLE
@@ -85,12 +83,7 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
                 }
             }
         }
-//        Handler().postDelayed(
-//            { move_to_frag_signing() }, 5000
-//        )
-        //  }
-        //}
-    }
+   }
 
     private fun create_auth_user_firebase(account: String, password: String) {
         val email = account + "@gmail.com"
@@ -128,9 +121,6 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
             val s =
                 "Some thing with our sever went wrong . Sorry for the error . Pls sign up again."
             s.showToastLong(signup1activity)
-            //Delete user_info and phone_email_account in firebase realtime database
-            //After delete user can sign up again with same infomation
-            // delete_user_auth_and_user_info_and_phoneEmailAccount_and_move_frag()
         }
     }
 
@@ -141,59 +131,4 @@ class frag_signup_creating_account : Fragment(R.layout.frag_signup_creating_acco
             signup1activity.supportFragmentManager
         )
     }
-
-
-//    private fun delete_user_auth_and_user_info_and_phoneEmailAccount_and_move_frag() {
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            withContext(Dispatchers.IO) {
-//                var delete_user_auth = false
-//                var delete_user_info = false
-//                var delete_phone_email_account = false
-//                var user = Firebase.auth.currentUser
-//
-//                //Delete user auth
-//                user!!.delete().addOnCompleteListener(signup1activity) { task ->
-//                    if (task.isSuccessful) {
-//                        delete_user_auth = true
-//                        if (delete_user_auth && delete_phone_email_account && delete_user_info) {
-//                            move_to_frag_signing()
-//                        }
-//                    }
-//                }
-//
-//                //Deletet user_info
-//                val account_ref = viewmodel.account_user
-//                val ref_user = database.child("User").child(account_ref).child("user info")
-//                ref_user.removeValue().addOnCompleteListener(signup1activity) { task ->
-//                    if (task.isSuccessful) {
-//                        delete_user_info = true
-//                        if (delete_user_auth && delete_phone_email_account && delete_user_info) {
-//                            move_to_frag_signing()
-//                        }
-//                    }
-//                }
-//
-//                // Delete phone and email and account
-//                val ref_phoneEmailAccount = database.child("phone and email and account")
-//                var id = viewmodel.index_of_last_ele_phone_email_account
-//                if (id != -1) {
-//                    ref_phoneEmailAccount.child(id.toString()).removeValue()
-//                        .addOnCompleteListener(signup1activity) { task ->
-//                            if (task.isSuccessful) {
-//                                delete_phone_email_account = true
-//                                if (delete_user_auth && delete_phone_email_account && delete_user_info) {
-//                                    move_to_frag_signing()
-//                                }
-//                            }
-//                        }
-//                } else {
-//                    delete_phone_email_account = true
-//                    if (delete_user_auth && delete_phone_email_account && delete_user_info) {
-//                        move_to_frag_signing()
-//                    }
-//                }
-//            }
-//        }
-//    }
-
 }
