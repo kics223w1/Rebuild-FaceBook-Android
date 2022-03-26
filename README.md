@@ -1,2 +1,2 @@
 # the-intership
-# Rewrite 60% of facebook for android job :))
+# Rewrite posting , user profile , stories , friends , status , notifications , sign in and sign up and almost every UI from FaceBook.
