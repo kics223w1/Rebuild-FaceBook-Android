@@ -21,15 +21,15 @@ class TestActivity : AppCompatActivity()  , IClickImage {
         setContentView(R.layout.test_activity)
         super.onCreate(savedInstanceState)
 
-        val rcv= findViewById<RecyclerView>(R.id.rcv_test_activity)
-        val list_image = get_all_image_gallery(this).getAllImage()
-
-        val linearLayout : RecyclerView.LayoutManager = LinearLayoutManager(this)
-        val adapter = adapter_image(this, this)
-        adapter.submitList(list_image)
-
-        rcv.layoutManager = linearLayout
-        rcv.adapter = adapter
+//        val rcv= findViewById<RecyclerView>(R.id.rcv_test_activity)
+//        val list_image = get_all_image_gallery(this).getAllImage()
+//
+//        val linearLayout : RecyclerView.LayoutManager = LinearLayoutManager(this)
+//        val adapter = adapter_image(this, this)
+//        adapter.submitList(list_image)
+//
+//        rcv.layoutManager = linearLayout
+//        rcv.adapter = adapter
 
 
 

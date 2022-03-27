@@ -22,6 +22,7 @@ import android.graphics.BitmapFactory
 
 import android.graphics.Bitmap
 import android.provider.MediaStore
+import android.widget.CheckBox
 import androidx.fragment.app.activityViewModels
 import theintership.my.MyMethod
 import theintership.my.signin_signup.shareViewModel
@@ -35,6 +36,7 @@ class frag_show_image_for_chosing_avatar : Fragment(R.layout.frag_show_image_for
     private val shareViewModel: shareViewModel by activityViewModels()
     private val REQUEST_IMAGE_CAPTURE = 1
     private var image_path = ""
+    private var check_image_path = ""
 
 
     override fun onCreateView(
@@ -49,7 +51,7 @@ class frag_show_image_for_chosing_avatar : Fragment(R.layout.frag_show_image_for
 
         val linearLayout : RecyclerView.LayoutManager = LinearLayoutManager(signup1activity)
         val adapter = adapter_image(this, signup1activity)
-        adapter.submitList(list_image)
+        adapter.submitList(list_image )
 
         rcv.layoutManager = linearLayout
         rcv.adapter = adapter
@@ -80,6 +82,15 @@ class frag_show_image_for_chosing_avatar : Fragment(R.layout.frag_show_image_for
         }
     }
 
+    private fun create_list_check_box(size : Int) : MutableList<CheckBox>{
+        var list = mutableListOf<CheckBox>()
+        for (i in 0 until size){
+            val a : CheckBox = CheckBox(signup1activity)
+            list.add(a)
+        }
+        return list
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
@@ -99,8 +110,15 @@ class frag_show_image_for_chosing_avatar : Fragment(R.layout.frag_show_image_for
     }
 
     override fun onClickImage(path: String) {
+        if (check_image_path == path){
+            //User want to remove clicking from the image has been clicked
+            binding.btnFragShowImageForChoseAvatarCamera.visibility = View.VISIBLE
+            binding.btnFragShowImageForChoseAvatarDone.visibility = View.GONE
+            return
+        }
         binding.btnFragShowImageForChoseAvatarCamera.visibility = View.GONE
         binding.btnFragShowImageForChoseAvatarDone.visibility = View.VISIBLE
         image_path = path
+        check_image_path = path
     }
 }

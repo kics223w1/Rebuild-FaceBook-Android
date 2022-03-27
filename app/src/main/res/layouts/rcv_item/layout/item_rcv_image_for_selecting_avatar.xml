@@ -16,6 +16,8 @@
            android:id="@+id/checkbox_image1"
            android:visibility="invisible"
            android:checked="true"
+           android:buttonTint="@color/light_blue"
+           android:elevation="10dp"
            android:layout_gravity="end"
            android:layout_width="30dp"
            android:layout_height="30dp"/>
@@ -40,6 +42,8 @@
             android:id="@+id/checkbox_image2"
             android:visibility="invisible"
             android:checked="true"
+            android:buttonTint="@color/light_blue"
+            android:elevation="10dp"
             android:layout_gravity="end"
             android:layout_width="30dp"
             android:layout_height="30dp"/>
@@ -63,8 +67,11 @@
 
         <CheckBox
             android:id="@+id/checkbox_image3"
+            android:visibility="invisible"
             app:layout_anchor="@id/item_image3"
             app:layout_anchorGravity="end"
+            android:buttonTint="@color/light_blue"
+            android:elevation="10dp"
             android:checked="true"
             android:layout_width="30dp"
             android:layout_height="30dp"/>

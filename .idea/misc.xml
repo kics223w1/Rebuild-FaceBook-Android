@@ -31,6 +31,7 @@
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_change_email_when_auth.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_change_phone_when_auth.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_done_set_avatar.xml" value="0.15070921985815602" />
+        <entry key="app/src/main/res/layouts/signin_signup/layout/frag_go_to_main_interface.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_set_avatar.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_show_image_for_chose_avatar.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_show_image_for_chosing_avatar.xml" value="0.15070921985815602" />
