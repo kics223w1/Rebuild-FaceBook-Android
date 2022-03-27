@@ -5,7 +5,10 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.ImageView
+import androidx.core.view.marginStart
+import androidx.core.view.updateLayoutParams
 import com.bumptech.glide.Glide
 import theintership.my.R
 import theintership.my.model.image
@@ -49,12 +52,27 @@ class adapter_image(
         }
         holder.image1.setOnClickListener {
             iClickImage.onClickImage(path1)
+            holder.image1.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                setMargins(10 , 10 , 10 , 10)
+            }
+            holder.checkbox_image1.visibility = View.VISIBLE
         }
         holder.image2.setOnClickListener {
             iClickImage.onClickImage(path2)
+            holder.image2.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                setMargins(10 , 10 , 10 , 10)
+            }
+            holder.checkbox_image2.visibility = View.VISIBLE
+
         }
         holder.image3.setOnClickListener {
             iClickImage.onClickImage(path3)
+            holder.image3.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                setMargins(10 , 10 , 10 , 10)
+            }
+            holder.image3.visibility = View.INVISIBLE
+            holder.image3.visibility = View.VISIBLE
+            //holder.checkbox_image3.visibility = View.VISIBLE
         }
     }
 
@@ -66,11 +84,18 @@ class adapter_image(
         var image1 : ImageView
         var image2 : ImageView
         var image3 : ImageView
+        var checkbox_image1 : CheckBox
+        var checkbox_image2 : CheckBox
+        var checkbox_image3 : CheckBox
 
         init {
             image1 = itemView.findViewById(R.id.item_image1)
             image2 = itemView.findViewById(R.id.item_image2)
             image3 = itemView.findViewById(R.id.item_image3)
+            checkbox_image1 = itemView.findViewById(R.id.checkbox_image1)
+            checkbox_image2 = itemView.findViewById(R.id.checkbox_image2)
+            checkbox_image3 = itemView.findViewById(R.id.checkbox_image3)
+
         }
     }
 

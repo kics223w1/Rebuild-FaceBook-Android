@@ -6,8 +6,13 @@
         <entry key="..\:/Users/Admin/AndroidStudioProjects/the-intership/app/src/main/res/layouts/dialog/layout/dialog_stop_signup.xml" value="0.16576086956521738" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/the-intership/app/src/main/res/layouts/signin_signup/layout/frag_signup_creating_account.xml" value="0.1" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/the-intership/app/src/main/res/layouts/signin_signup/layout/frag_signup_signing_in.xml" value="0.1109375" />
+        <entry key="app/src/main/res/drawable-v24/bg_14dp_top_white.xml" value="0.23148148148148148" />
         <entry key="app/src/main/res/drawable-v24/bg_8dp_all_lighter_blue_ripple.xml" value="0.24074074074074073" />
+        <entry key="app/src/main/res/drawable-v24/bg_circle_white.xml" value="0.23148148148148148" />
+        <entry key="app/src/main/res/drawable-v24/bg_rectangle_border_blue.xml" value="0.23148148148148148" />
+        <entry key="app/src/main/res/drawable-v24/bg_rectangle_grey.xml" value="0.23148148148148148" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.25092592592592594" />
+        <entry key="app/src/main/res/drawable-v24/selecter_image.xml" value="0.23148148148148148" />
         <entry key="app/src/main/res/layouts/activity/layout/activity_main.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/activity/layout/activity_signup.xml" value="0.1381340579710145" />
         <entry key="app/src/main/res/layouts/activity/layout/test_activity.xml" value="0.15070921985815602" />
@@ -17,7 +22,8 @@
         <entry key="app/src/main/res/layouts/dialog/layout/dialog_stop_signup.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/rcv_item/layout/base_adapter_item_image.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/rcv_item/layout/item_rcv_for_selecting_avatar.xml" value="0.15070921985815602" />
-        <entry key="app/src/main/res/layouts/rcv_item/layout/item_rcv_image_for_selecting_avatar.xml" value="0.14719202898550723" />
+        <entry key="app/src/main/res/layouts/rcv_item/layout/item_rcv_image_for_selecting_avatar.xml" value="0.11028120002060961" />
+        <entry key="app/src/main/res/layouts/rcv_item/layout/item_rcv_language.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/rcv_item/layout/rcv_item_image.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/rcv_item/layout/rcv_item_language.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_auth_email_address_account.xml" value="0.15070921985815602" />

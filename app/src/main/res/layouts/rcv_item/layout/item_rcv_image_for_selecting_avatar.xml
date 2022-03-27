@@ -1,32 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_marginBottom="5dp"
     android:layout_height="100dp">
 
-    <ImageView
-        android:id="@+id/item_image1"
-        android:scaleType="centerCrop"
-        android:layout_weight="0.33"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"/>
+   <FrameLayout
+       android:background="@drawable/boder_light_blue"
+       android:layout_weight="0.33"
+       android:layout_width="0dp"
+       android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/item_image2"
-        android:scaleType="centerCrop"
+       <CheckBox
+           android:id="@+id/checkbox_image1"
+           android:visibility="invisible"
+           android:checked="true"
+           android:layout_gravity="end"
+           android:layout_width="30dp"
+           android:layout_height="30dp"/>
+
+       <ImageView
+           android:id="@+id/item_image1"
+           android:scaleType="centerCrop"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"/>
+
+   </FrameLayout>
+
+    <FrameLayout
+        android:background="@drawable/boder_light_blue"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_weight="0.33"
         android:layout_width="0dp"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/item_image3"
-        android:scaleType="centerCrop"
+        <CheckBox
+            android:id="@+id/checkbox_image2"
+            android:visibility="invisible"
+            android:checked="true"
+            android:layout_gravity="end"
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
+
+        <ImageView
+            android:id="@+id/item_image2"
+            android:scaleType="centerCrop"
+            android:background="@drawable/selecter_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </FrameLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:background="@drawable/boder_light_blue"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:layout_weight="0.33"
         android:layout_width="0dp"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <CheckBox
+            android:id="@+id/checkbox_image3"
+            app:layout_anchor="@id/item_image3"
+            app:layout_anchorGravity="end"
+            android:checked="true"
+            android:layout_width="30dp"
+            android:layout_height="30dp"/>
+
+        <ImageView
+            android:id="@+id/item_image3"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+
+
 
 
 </LinearLayout>
