@@ -30,6 +30,8 @@ class shareViewModel : ViewModel() {
 
     var photo_user  = createBitmap(1000 , 1000)
     var photo_user_null = true
+    var image_is_local_or_bitmap = ""
+    var image_path_from_local = ""
 
     var is_email_address_change = false
     var is_phone_number_change = false

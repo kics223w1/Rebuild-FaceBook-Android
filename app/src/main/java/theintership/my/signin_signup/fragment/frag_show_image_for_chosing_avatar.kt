@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -14,17 +15,16 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import theintership.my.R
-import theintership.my.all_class.MyMethod
+import theintership.my.all_class.*
 import theintership.my.all_class.MyMethod.Companion.check_wifi
 import theintership.my.all_class.MyMethod.Companion.showToastShort
-import theintership.my.all_class.get_all_image_gallery
-import theintership.my.all_class.upload_image_by_putBytes_to_firebase
-import theintership.my.all_class.upload_image_by_putFile_to_firebase
 import theintership.my.databinding.FragShowImageForChosingAvatarBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.adapter.IClickImage
 import theintership.my.signin_signup.adapter.adapter_image
+import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.shareViewModel
+import kotlin.math.sign
 
 
 class frag_show_image_for_chosing_avatar : Fragment(R.layout.frag_show_image_for_chosing_avatar),
@@ -56,6 +56,15 @@ class frag_show_image_for_chosing_avatar : Fragment(R.layout.frag_show_image_for
         rcv.layoutManager = linearLayout
         rcv.adapter = adapter
 
+        if (list_image.size == 0){
+            val s = "Not thing in your gallery."
+            s.showToastShort(signup1activity)
+        }
+
+        binding.btnFragShowImageForChoseAvatarBack.setOnClickListener {
+            signup1activity.supportFragmentManager.popBackStack()
+        }
+
         binding.btnFragShowImageForChoseAvatarCamera.setOnClickListener {
             dispatchTakePictureIntent()
         }
@@ -65,20 +74,17 @@ class frag_show_image_for_chosing_avatar : Fragment(R.layout.frag_show_image_for
             if (!check_wifi(signup1activity)) {
                 return@setOnClickListener
             }
-            val account_ref = shareViewModel.account_user
-            val path_ref = "avatar_user/$account_ref"
-            val upload2 = upload_image_by_putFile_to_firebase()
-                .upload(path_image = image_path , path_ref = path_ref )
+            val bitmap_image = Compress_image_to_bitmap().compress(image_path = image_path)
+            shareViewModel.image_is_local_or_bitmap = "local"
+            shareViewModel.image_path_from_local = image_path
 
-            upload2.addOnSuccessListener {
-                move_to_frag_done_set_avatar()
-            }.addOnFailureListener {
-                val s = "Please click again. My sever went wrong."
-                s.showToastShort(signup1activity)
-            }
-
-
+            //2 line below is for storing image to shareViewModel
+            //So frag_done_set_avatar can take it easy
+            shareViewModel.photo_user_null = false
+            shareViewModel.photo_user = bitmap_image
+            move_to_frag_done_set_avatar()
         }
+
 
         return binding.root
     }
@@ -95,17 +101,10 @@ class frag_show_image_for_chosing_avatar : Fragment(R.layout.frag_show_image_for
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
-            val account_ref = shareViewModel.account_user
-            val path_ref = "avatar_user/$account_ref"
-            upload_image_by_putBytes_to_firebase().upload(
-                bitmap = imageBitmap,
-                path_ref = path_ref
-            ).addOnSuccessListener {
-                move_to_frag_done_set_avatar()
-            }.addOnFailureListener{
-                val s = "Please click again. My sever went wrong."
-                s.showToastShort(signup1activity)
-            }
+            shareViewModel.photo_user = imageBitmap
+            shareViewModel.photo_user_null = false
+            shareViewModel.image_is_local_or_bitmap = "bitmap"
+            move_to_frag_done_set_avatar()
         }
     }
 
@@ -124,10 +123,12 @@ class frag_show_image_for_chosing_avatar : Fragment(R.layout.frag_show_image_for
             //User want to remove clicking from the image has been clicked
             binding.btnFragShowImageForChoseAvatarCamera.visibility = View.VISIBLE
             binding.btnFragShowImageForChoseAvatarDone.visibility = View.GONE
-            image_path = ""
+            check_image_path = ""
             return
         }
 
+        shareViewModel.photo_user = Compress_image_to_bitmap().compress(path)
+        shareViewModel.photo_user_null = false
 
         binding.btnFragShowImageForChoseAvatarCamera.visibility = View.GONE
         binding.btnFragShowImageForChoseAvatarDone.visibility = View.VISIBLE

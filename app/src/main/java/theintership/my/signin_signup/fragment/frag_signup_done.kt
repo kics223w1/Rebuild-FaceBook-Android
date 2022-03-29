@@ -102,8 +102,6 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done) {
         if (viewmodel.index_of_last_ele_phone_email_account != -1) {
             id = viewmodel.index_of_last_ele_phone_email_account + 1
             viewmodel.index_of_last_ele_phone_email_account = id // Update index
-            val ss = viewmodel.index_of_last_ele_phone_email_account.toString()
-            ss.showToastLong(signup1activity)
         }
 
         var add_user = false

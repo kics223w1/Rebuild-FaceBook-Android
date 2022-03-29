@@ -25,6 +25,7 @@ import theintership.my.model.limit_auth_phone
 import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.fragment.frag_set_avatar
+import theintership.my.signin_signup.fragment.frag_signup_name
 
 
 class Signup1Activity : AppCompatActivity() {
@@ -161,17 +162,17 @@ class Signup1Activity : AppCompatActivity() {
 
     private fun move_to_frag_name() {
         dialogLoading.dismiss()
-        replacefrag(
-            "frag_set_avatar",
-            frag_set_avatar(),
-            supportFragmentManager
-        )
 //        replacefrag(
-//            tag = "frag_signup_name",
-//            frag = frag_signup_name(),
-//            fm = supportFragmentManager
+//            "frag_set_avatar",
+//            frag_set_avatar(),
+//            supportFragmentManager
 //        )
-    }
+        replacefrag(
+            tag = "frag_signup_name",
+            frag = frag_signup_name(),
+            fm = supportFragmentManager
+        )
+   }
 
 
     override fun onBackPressed() {

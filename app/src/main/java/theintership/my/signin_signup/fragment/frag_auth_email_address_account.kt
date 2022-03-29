@@ -96,8 +96,8 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
                 return@setOnClickListener
             }
             if (is_sending_verification_email_sucess) {
-                val s = "Please go to your email and verify it."
-                s.showToastShort(signup1activity)
+                val s = "If you don't see email please wait.\nWe use free firebase so it might be late."
+                s.showToastLong(signup1activity)
                 return@setOnClickListener
             }
             val mUser = Firebase.auth.currentUser

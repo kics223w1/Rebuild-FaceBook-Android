@@ -59,10 +59,8 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name) {
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
-
         googleSignInClient = GoogleSignIn.getClient(signup1Activity, gso)
-        val s = shareViewModel.number_of_auth_phone_number_in_a_day.toString()
-        s.showToastShort(signup1Activity)
+
         if (signup1Activity.signup_with_google) {
             //With this condition ,google sign in just show one times
             //If user return to this fragment from other fragment in signup
