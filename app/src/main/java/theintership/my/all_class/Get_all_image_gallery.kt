@@ -1,11 +1,9 @@
-package theintership.my
+package theintership.my.all_class
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
-import android.widget.MultiAutoCompleteTextView
 import theintership.my.model.image
 
 class get_all_image_gallery(mcontext: Context) {

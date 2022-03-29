@@ -11,23 +11,20 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import theintership.my.MainActivity
-import theintership.my.MyMethod.Companion.check_wifi
-import theintership.my.MyMethod.Companion.isWifi
-import theintership.my.MyMethod.Companion.replacefrag
-import theintership.my.MyMethod.Companion.set_today
-import theintership.my.MyMethod.Companion.showToastLong
-import theintership.my.MyMethod.Companion.showToastShort
+import theintership.my.all_class.MyMethod.Companion.check_wifi
+import theintership.my.all_class.MyMethod.Companion.isWifi
+import theintership.my.all_class.MyMethod.Companion.replacefrag
+import theintership.my.all_class.MyMethod.Companion.set_today
+import theintership.my.all_class.MyMethod.Companion.showToastLong
+import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.R
 import theintership.my.model.limit_auth_phone
 import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.fragment.frag_set_avatar
-import theintership.my.signin_signup.fragment.frag_show_image_for_chosing_avatar
-import theintership.my.signin_signup.fragment.frag_signup_name
 
 
 class Signup1Activity : AppCompatActivity() {

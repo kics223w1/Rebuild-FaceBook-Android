@@ -8,15 +8,9 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 import theintership.my.MainActivity
-import theintership.my.MyMethod
-import theintership.my.MyMethod.Companion.addfrag
-import theintership.my.MyMethod.Companion.hide_soft_key_board
-import theintership.my.MyMethod.Companion.replacefrag
-import theintership.my.MyMethod.Companion.showToastLong
+import theintership.my.all_class.MyMethod.Companion.addfrag
+import theintership.my.all_class.MyMethod.Companion.hide_soft_key_board
 import theintership.my.R
 import theintership.my.databinding.FragSignupPhoneBinding
 import theintership.my.signin_signup.Signup1Activity

@@ -13,10 +13,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
-import theintership.my.MyMethod.Companion.replacefrag
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_showlanguage
-import theintership.my.signin_signup.fragment.frag_show_image_for_chosing_avatar
 
 
 class MainActivity : AppCompatActivity() {

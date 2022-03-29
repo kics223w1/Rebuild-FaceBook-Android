@@ -15,14 +15,17 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import theintership.my.MyMethod.Companion.replacefrag_by_silde_in_left
-import theintership.my.MyMethod.Companion.showToastLong
-import theintership.my.MyMethod.Companion.showToastShort
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
+import theintership.my.all_class.MyMethod.Companion.check_wifi
+import theintership.my.all_class.MyMethod.Companion.replacefrag_by_silde_in_left
+import theintership.my.all_class.MyMethod.Companion.showToastLong
+import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.R
 import theintership.my.databinding.FragSetAvatarBinding
 import theintership.my.signin_signup.Signup1Activity
 import theintership.my.signin_signup.shareViewModel
-import kotlin.math.sign
+import theintership.my.all_class.upload_image_by_putBytes_to_firebase
 
 
 class frag_set_avatar : Fragment(R.layout.frag_set_avatar) {
@@ -49,6 +52,9 @@ class frag_set_avatar : Fragment(R.layout.frag_set_avatar) {
         }
 
         binding.btnFragSetAvatarTakeAPhoto.setOnClickListener {
+            if (!check_wifi(signup1activity)){
+                return@setOnClickListener
+            }
             dispatchTakePictureIntent()
         }
 
@@ -68,9 +74,17 @@ class frag_set_avatar : Fragment(R.layout.frag_set_avatar) {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
-            shareViewmodel.photo_user = imageBitmap
-            shareViewmodel.photo_user_null = false
-            move_to_frag_done_set_avatar()
+            val account_ref = shareViewmodel.account_user
+            val path_ref = "avatar_user/$account_ref"
+            val upload2 = upload_image_by_putBytes_to_firebase()
+                .upload(bitmap = imageBitmap ,path_ref = path_ref )
+
+            upload2.addOnSuccessListener {
+                move_to_frag_done_set_avatar()
+            }.addOnFailureListener{
+                val s= "Please take a photo again. My sever went wrong."
+                s.showToastShort(signup1activity)
+            }
         }
     }
 
@@ -84,8 +98,6 @@ class frag_set_avatar : Fragment(R.layout.frag_set_avatar) {
                 move_to_frag_show_image()
             }
             else -> {
-                val s = "You should accpect permission for chosing image from gallery"
-                s.showToastLong(signup1activity)
                 signup1activity.requestPermissions(
                     arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                     REQUEST_CODE
@@ -103,6 +115,7 @@ class frag_set_avatar : Fragment(R.layout.frag_set_avatar) {
         when (requestCode) {
             REQUEST_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    println("debug vao grandResult ne")
                     move_to_frag_show_image()
                 } else {
                     val s = "You should accpect permission for chosing image from gallery"

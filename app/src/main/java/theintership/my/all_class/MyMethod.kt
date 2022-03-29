@@ -1,4 +1,4 @@
-package theintership.my
+package theintership.my.all_class
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -8,6 +8,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import theintership.my.R
 import java.util.*
 
 class MyMethod {
@@ -61,13 +62,13 @@ class MyMethod {
             fm.beginTransaction()
                 .setCustomAnimations(android.R.anim.fade_in , android.R.anim.fade_out)
                 .addToBackStack(tag)
-                .add(R.id.layout_Signup1Activity , frag , tag)
+                .add(R.id.layout_Signup1Activity, frag , tag)
                 .commit()
         }
 
         fun replacefrag_by_silde_in_left(tag: String, frag: Fragment, fm: FragmentManager) {
             fm.beginTransaction()
-                .setCustomAnimations(R.anim.slide_in_right , R.anim.slide_out_left)
+                .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
                 .addToBackStack(tag)
                 .replace(R.id.layout_Signup1Activity, frag)
                 .commit()
