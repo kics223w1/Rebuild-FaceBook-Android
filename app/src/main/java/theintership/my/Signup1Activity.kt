@@ -1,4 +1,4 @@
-package theintership.my.signin_signup
+package theintership.my
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,19 +13,18 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
-import theintership.my.MainActivity
 import theintership.my.all_class.MyMethod.Companion.check_wifi
 import theintership.my.all_class.MyMethod.Companion.isWifi
 import theintership.my.all_class.MyMethod.Companion.replacefrag
 import theintership.my.all_class.MyMethod.Companion.set_today
 import theintership.my.all_class.MyMethod.Companion.showToastLong
 import theintership.my.all_class.MyMethod.Companion.showToastShort
-import theintership.my.R
 import theintership.my.model.limit_auth_phone
 import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.fragment.frag_set_avatar
 import theintership.my.signin_signup.fragment.frag_signup_name
+import theintership.my.signin_signup.shareViewModel
 
 
 class Signup1Activity : AppCompatActivity() {
@@ -162,16 +161,16 @@ class Signup1Activity : AppCompatActivity() {
 
     private fun move_to_frag_name() {
         dialogLoading.dismiss()
-//        replacefrag(
-//            "frag_set_avatar",
-//            frag_set_avatar(),
-//            supportFragmentManager
-//        )
         replacefrag(
-            tag = "frag_signup_name",
-            frag = frag_signup_name(),
-            fm = supportFragmentManager
+            "frag_set_avatar",
+            frag_set_avatar(),
+            supportFragmentManager
         )
+//        replacefrag(
+//            tag = "frag_signup_name",
+//            frag = frag_signup_name(),
+//            fm = supportFragmentManager
+//        )
    }
 
 

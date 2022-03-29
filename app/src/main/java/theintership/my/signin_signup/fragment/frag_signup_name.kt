@@ -24,10 +24,9 @@ import theintership.my.MainActivity
 import theintership.my.all_class.MyMethod.Companion.hide_soft_key_board
 import theintership.my.all_class.MyMethod.Companion.replacefrag
 import theintership.my.all_class.MyMethod.Companion.showToastLong
-import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.R
 import theintership.my.databinding.FragSignupNameBinding
-import theintership.my.signin_signup.Signup1Activity
+import theintership.my.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.shareViewModel

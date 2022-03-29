@@ -11,7 +11,7 @@ import theintership.my.MainActivity
 import theintership.my.all_class.MyMethod.Companion.replacefrag
 import theintership.my.R
 import theintership.my.databinding.FragSignupBirthdayBinding
-import theintership.my.signin_signup.Signup1Activity
+import theintership.my.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.shareViewModel
 import java.util.*

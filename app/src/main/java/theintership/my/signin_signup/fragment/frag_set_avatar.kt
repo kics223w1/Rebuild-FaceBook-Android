@@ -12,25 +12,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.createBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
+import theintership.my.MainActivity
+import theintership.my.Main_Interface_Activity
 import theintership.my.all_class.MyMethod.Companion.check_wifi
 import theintership.my.all_class.MyMethod.Companion.replacefrag_by_silde_in_left
 import theintership.my.all_class.MyMethod.Companion.showToastLong
 import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.R
-import theintership.my.all_class.Compress_image_to_bitmap
 import theintership.my.all_class.MyMethod.Companion.replacefrag
 import theintership.my.databinding.FragSetAvatarBinding
-import theintership.my.signin_signup.Signup1Activity
+import theintership.my.Signup1Activity
 import theintership.my.signin_signup.shareViewModel
 import theintership.my.all_class.upload_image_by_putBytes_to_firebase
-import theintership.my.signin_signup.dialog.dialog_loading
 
 
 class frag_set_avatar : Fragment(R.layout.frag_set_avatar) {
@@ -94,13 +91,12 @@ class frag_set_avatar : Fragment(R.layout.frag_set_avatar) {
                 R.drawable.default_male_avatar
             )
         }
-        val path_ref = "avatar/${shareViewmodel.account_user}"
+        val path_ref = "avatar_user/${shareViewmodel.account_user}"
         upload_image_by_putBytes_to_firebase().upload(
             bitmap = bitmap_image,
             path_ref = path_ref
         ).addOnSuccessListener {
-            val s = "Upload Success."
-            s.showToastShort(signup1activity)
+            go_to_main_interface()
         }.addOnFailureListener {
             binding.btnFragSetAvatarSkip.visibility = View.VISIBLE
             binding.progressFragSetAvatar.visibility = View.GONE
@@ -172,6 +168,16 @@ class frag_set_avatar : Fragment(R.layout.frag_set_avatar) {
             }
         }
     }
+
+    private fun go_to_main_interface(){
+        startActivity(Intent(signup1activity, Main_Interface_Activity::class.java))
+        signup1activity.overridePendingTransition(
+            R.anim.slide_in_right,
+            R.anim.slide_out_left
+        )
+        signup1activity.finish()
+    }
+
 
     private fun move_to_frag_done_set_avatar() {
         replacefrag(

@@ -18,7 +18,7 @@ import theintership.my.all_class.MyMethod.Companion.replacefrag
 import theintership.my.all_class.MyMethod.Companion.showToastLong
 import theintership.my.R
 import theintership.my.databinding.FragChangeEmailWhenAuthBinding
-import theintership.my.signin_signup.Signup1Activity
+import theintership.my.Signup1Activity
 import theintership.my.signin_signup.shareViewModel
 
 class frag_change_email_when_auth : Fragment(R.layout.frag_change_email_when_auth) {

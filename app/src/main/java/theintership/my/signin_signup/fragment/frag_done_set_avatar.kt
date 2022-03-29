@@ -1,25 +1,22 @@
 package theintership.my.signin_signup.fragment
-import android.net.Uri
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import theintership.my.MainActivity
+import theintership.my.Main_Interface_Activity
 import theintership.my.R
 import theintership.my.all_class.MyMethod.Companion.check_wifi
 import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.all_class.upload_image_by_putBytes_to_firebase
 import theintership.my.all_class.upload_image_by_putFile_to_firebase
 import theintership.my.databinding.FragDoneSetAvatarBinding
-import theintership.my.signin_signup.Signup1Activity
+import theintership.my.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.shareViewModel
-import kotlin.math.sign
 
 
 class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
@@ -80,6 +77,7 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
             dialogLoading.dismiss()
             val s = "Upload Success."
             s.showToastShort(signup1activity)
+            go_to_main_interface()
         }.addOnFailureListener {
             dialogLoading.dismiss()
             val s = "Please click again. My sever went wrong."
@@ -104,11 +102,21 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
             dialogLoading.dismiss()
             val s = "Upload Success."
             s.showToastShort(signup1activity)
+            go_to_main_interface()
         }.addOnFailureListener {
             dialogLoading.dismiss()
             val s = "Please take a photo again. My sever went wrong."
             s.showToastShort(signup1activity)
         }
+    }
+
+    private fun go_to_main_interface(){
+        startActivity(Intent(signup1activity, Main_Interface_Activity::class.java))
+        signup1activity.overridePendingTransition(
+            R.anim.slide_in_right,
+            R.anim.slide_out_left
+        )
+        signup1activity.finish()
     }
 
 }

@@ -19,7 +19,7 @@ import theintership.my.all_class.MyMethod.Companion.replacefrag
 import theintership.my.all_class.MyMethod.Companion.showToastLong
 import theintership.my.R
 import theintership.my.databinding.FragSignupCreatingAccountBinding
-import theintership.my.signin_signup.Signup1Activity
+import theintership.my.Signup1Activity
 import theintership.my.signin_signup.shareViewModel
 
 

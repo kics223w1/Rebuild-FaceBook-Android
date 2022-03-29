@@ -1,4 +1,4 @@
-package theintership.my.signin_signup
+package theintership.my
 
 import android.os.Bundle
 import android.widget.ImageView

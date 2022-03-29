@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -19,12 +18,10 @@ import theintership.my.all_class.*
 import theintership.my.all_class.MyMethod.Companion.check_wifi
 import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.databinding.FragShowImageForChosingAvatarBinding
-import theintership.my.signin_signup.Signup1Activity
+import theintership.my.Signup1Activity
 import theintership.my.signin_signup.adapter.IClickImage
 import theintership.my.signin_signup.adapter.adapter_image
-import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.shareViewModel
-import kotlin.math.sign
 
 
 class frag_show_image_for_chosing_avatar : Fragment(R.layout.frag_show_image_for_chosing_avatar),

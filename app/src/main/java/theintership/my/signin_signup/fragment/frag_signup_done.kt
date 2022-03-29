@@ -23,7 +23,7 @@ import theintership.my.all_class.MyMethod.Companion.showToastLong
 import theintership.my.R
 import theintership.my.databinding.FragSignupDoneBinding
 import theintership.my.model.Phone_and_Email_Account
-import theintership.my.signin_signup.Signup1Activity
+import theintership.my.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.shareViewModel
 import java.util.*

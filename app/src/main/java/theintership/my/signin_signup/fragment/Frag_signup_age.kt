@@ -14,7 +14,7 @@ import theintership.my.all_class.MyMethod.Companion.hide_soft_key_board
 import theintership.my.all_class.MyMethod.Companion.replacefrag
 import theintership.my.R
 import theintership.my.databinding.FragSignupAgeBinding
-import theintership.my.signin_signup.Signup1Activity
+import theintership.my.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_signup_age
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.shareViewModel
