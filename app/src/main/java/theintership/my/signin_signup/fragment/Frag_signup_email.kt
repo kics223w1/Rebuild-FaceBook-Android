@@ -84,11 +84,12 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email) {
             val dialog = dialog_stop_signup(signup1activity)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
-                startActivity(Intent(signup1activity, MainActivity::class.java))
-                signup1activity.overridePendingTransition(
+                startActivity(Intent(activity, MainActivity::class.java))
+                activity?.overridePendingTransition(
                     R.anim.slide_in_left,
                     R.anim.slide_out_right
                 )
+                activity?.finish()
                 dialog.dismiss()
             }
         }

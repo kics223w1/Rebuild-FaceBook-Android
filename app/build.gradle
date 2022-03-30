@@ -37,7 +37,7 @@ android {
     sourceSets {
         main {
             res {
-                srcDirs 'src\\main\\res', 'src\\main\\res\\layouts\\chat', 'src\\main\\res\\layouts\\home', 'src\\main\\res\\layouts\\signin_signup', 'src\\main\\res\\layouts\\rcv_item', 'src\\main\\res\\dialog', 'src\\main\\res\\layouts\\dialog', 'src\\main\\res\\layouts\\activity', 'src/main/res', 'src/main/res/layouts/snipper_items'
+                srcDirs 'src\\main\\res', 'src\\main\\res\\layout\\chat', 'src\\main\\res\\layout\\home', 'src\\main\\res\\layout\\signin_signup', 'src\\main\\res\\layout\\rcv_item', 'src\\main\\res\\dialog', 'src\\main\\res\\layout\\dialog', 'src\\main\\res\\layout\\activity', 'src/main/res', 'src/main/res/layout/snipper_items', 'src/main/res/layout/spinner_item'
                 srcDirs
             }
         }

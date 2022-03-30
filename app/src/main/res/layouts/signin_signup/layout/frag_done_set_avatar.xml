@@ -45,55 +45,20 @@
         android:layout_marginTop="10dp"
         android:background="@android:color/darker_gray" />
 
-    <LinearLayout
-        android:id="@+id/layout3"
-        android:layout_below="@id/layout2"
+
+    <Spinner
+        android:background="@android:color/transparent"
         android:layout_marginTop="10dp"
-        android:orientation="horizontal"
+        android:layout_marginEnd="60dp"
+        android:layout_marginStart="20dp"
+        android:layout_below="@+id/layout2"
+        android:id="@+id/spinner_done_set_avatar"
         android:layout_width="match_parent"
-        android:layout_height="25dp">
-
-        <TextView
-            android:layout_marginStart="20dp"
-            android:gravity="center_vertical"
-            android:textColor="@color/light_grey"
-            android:text="Setting: "
-            android:textSize="14sp"
-            android:layout_weight="0.16"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"/>
-
-        <LinearLayout
-            android:id="@+id/spinner_set_privacy_avatar"
-            android:orientation="horizontal"
-            android:layout_weight="0.9"
-            android:layout_width="0dp"
-            android:layout_height="25dp">
-
-            <ImageView
-                android:src="@drawable/all_people"
-                android:layout_weight="0.1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"/>
-
-            <TextView
-                android:textColor="@color/light_grey"
-                android:layout_marginStart="5dp"
-                android:gravity="center_vertical"
-                android:textSize="14sp"
-                android:text="Public"
-                android:layout_weight="0.9"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"/>
-
-        </LinearLayout>
-
-
-    </LinearLayout>
+        android:layout_height="40dp"/>
 
 
     <LinearLayout
-        android:layout_below="@id/layout3"
+        android:layout_below="@id/spinner_done_set_avatar"
         android:background="@drawable/bg_rectangle_grey"
         android:orientation="vertical"
         android:layout_marginTop="10dp"

@@ -9,6 +9,7 @@ import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.firebase.auth.ktx.actionCodeSettings
 import theintership.my.MainActivity
 import theintership.my.all_class.MyMethod.Companion.hide_soft_key_board
 import theintership.my.all_class.MyMethod.Companion.replacefrag
@@ -112,11 +113,12 @@ class frag_signup_age : Fragment(R.layout.frag_signup_age) {
             val dialog = dialog_stop_signup(signup1Activity)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
-                startActivity(Intent(signup1Activity, MainActivity::class.java))
-                signup1Activity.overridePendingTransition(
+                startActivity(Intent(activity, MainActivity::class.java))
+                activity?.overridePendingTransition(
                     R.anim.slide_in_left,
                     R.anim.slide_out_right
                 )
+                activity?.finish()
                 dialog.dismiss()
             }
         }

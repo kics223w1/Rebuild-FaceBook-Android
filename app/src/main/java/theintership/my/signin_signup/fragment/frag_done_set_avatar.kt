@@ -1,11 +1,17 @@
 package theintership.my.signin_signup.fragment
+
 import android.content.Intent
+import android.media.Image
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Adapter
+import android.widget.AdapterView
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.google.firebase.auth.ktx.actionCodeSettings
 import theintership.my.MainActivity
 import theintership.my.Main_Interface_Activity
 import theintership.my.R
@@ -15,6 +21,8 @@ import theintership.my.all_class.upload_image_by_putBytes_to_firebase
 import theintership.my.all_class.upload_image_by_putFile_to_firebase
 import theintership.my.databinding.FragDoneSetAvatarBinding
 import theintership.my.Signup1Activity
+import theintership.my.model.category_privacy_avatar
+import theintership.my.signin_signup.adapter.adapter_category_privacy_avatar
 import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.shareViewModel
 
@@ -34,8 +42,28 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
     ): View {
         _binding = FragDoneSetAvatarBinding.inflate(inflater, container, false)
         signup1activity = activity as Signup1Activity
+        var privacy = ""
 
-        if (!shareViewmodel.photo_user_null){
+        val adapter = adapter_category_privacy_avatar(
+            signup1activity,
+            R.layout.select_category_privacy_avatar,
+            getList_category()
+        )
+        binding.spinnerDoneSetAvatar.adapter = adapter
+        binding.spinnerDoneSetAvatar.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                privacy = adapter.getItem(p2)?.name.toString()
+                println("debug $privacy")
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+
+        }
+
+
+        if (!shareViewmodel.photo_user_null) {
             binding.imageAvatarInDoneSetAvatar.setImageBitmap(shareViewmodel.photo_user)
         }
 
@@ -44,16 +72,16 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
         }
 
         binding.btnDoneSetAvatarSave.setOnClickListener {
-            if (!check_wifi(signup1activity)){
+            if (!check_wifi(signup1activity)) {
                 return@setOnClickListener
             }
             val check = shareViewmodel.image_is_local_or_bitmap
             //true is user use local image
             //false is user use take photo
-            if (check == "local"){
+            if (check == "local") {
                 upload_image_from_local()
             }
-            if (check == "bitmap"){
+            if (check == "bitmap") {
                 upload_image_from_take_photo()
             }
         }
@@ -61,7 +89,21 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
         return binding.root
     }
 
-    private fun upload_image_from_local(){
+
+    private fun getList_category(): MutableList<category_privacy_avatar> {
+        var list = mutableListOf<category_privacy_avatar>()
+        val a = category_privacy_avatar("Everyone", R.drawable.default_male_avatar)
+        val b = category_privacy_avatar("Everyone1", R.drawable.default_male_avatar)
+        val c = category_privacy_avatar("Everyone2", R.drawable.default_male_avatar)
+        list.add(a)
+        list.add(b)
+        list.add(c)
+
+        return list
+    }
+
+
+    private fun upload_image_from_local() {
         val account_ref = shareViewmodel.account_user
         val image_path = shareViewmodel.image_path_from_local
 
@@ -86,7 +128,7 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
 
     }
 
-    private fun upload_image_from_take_photo(){
+    private fun upload_image_from_take_photo() {
         val imageBitmap = shareViewmodel.photo_user
 
         val dialogLoading = dialog_loading(signup1activity)
@@ -110,13 +152,13 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
         }
     }
 
-    private fun go_to_main_interface(){
-        startActivity(Intent(signup1activity, Main_Interface_Activity::class.java))
-        signup1activity.overridePendingTransition(
+    private fun go_to_main_interface() {
+        startActivity(Intent(activity, Main_Interface_Activity::class.java))
+        activity?.overridePendingTransition(
             R.anim.slide_in_right,
             R.anim.slide_out_left
         )
-        signup1activity.finish()
+        activity?.finish()
     }
 
 }

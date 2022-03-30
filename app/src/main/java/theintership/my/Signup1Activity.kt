@@ -22,6 +22,7 @@ import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.model.limit_auth_phone
 import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.dialog.dialog_stop_signup
+import theintership.my.signin_signup.fragment.frag_done_set_avatar
 import theintership.my.signin_signup.fragment.frag_set_avatar
 import theintership.my.signin_signup.fragment.frag_signup_name
 import theintership.my.signin_signup.shareViewModel
@@ -162,10 +163,16 @@ class Signup1Activity : AppCompatActivity() {
     private fun move_to_frag_name() {
         dialogLoading.dismiss()
         replacefrag(
-            "frag_set_avatar",
-            frag_set_avatar(),
-            supportFragmentManager
+            tag = "frag_done_set_avatar",
+            frag = frag_done_set_avatar(),
+            fm = supportFragmentManager
         )
+
+//        replacefrag(
+//            "frag_set_avatar",
+//            frag_set_avatar(),
+//            supportFragmentManager
+//        )
 //        replacefrag(
 //            tag = "frag_signup_name",
 //            frag = frag_signup_name(),
@@ -183,6 +190,7 @@ class Signup1Activity : AppCompatActivity() {
             dialog.btn_cancel.setOnClickListener {
                 startActivity(Intent(this, MainActivity::class.java))
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+                this.finish()
                 dialog.dismiss()
             }
             return
@@ -191,6 +199,7 @@ class Signup1Activity : AppCompatActivity() {
             //User want to return to signin , and sign in is in MainActivity
             startActivity(Intent(this, MainActivity::class.java))
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            this.finish()
             return
         }
         val frag_last = supportFragmentManager.getBackStackEntryAt(size - 1)

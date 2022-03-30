@@ -53,6 +53,7 @@ class frag_set_avatar : Fragment(R.layout.frag_set_avatar) {
             check_permission_read_image()
         }
 
+
         binding.btnFragSetAvatarTakeAPhoto.setOnClickListener {
             if (!check_wifi(signup1activity)) {
                 return@setOnClickListener
@@ -170,12 +171,12 @@ class frag_set_avatar : Fragment(R.layout.frag_set_avatar) {
     }
 
     private fun go_to_main_interface(){
-        startActivity(Intent(signup1activity, Main_Interface_Activity::class.java))
-        signup1activity.overridePendingTransition(
+        startActivity(Intent(activity, Main_Interface_Activity::class.java))
+        activity?.overridePendingTransition(
             R.anim.slide_in_right,
             R.anim.slide_out_left
         )
-        signup1activity.finish()
+        activity?.finish()
     }
 
 
