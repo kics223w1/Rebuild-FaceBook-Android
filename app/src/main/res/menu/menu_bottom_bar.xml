@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title=""
+        android:id="@+id/bottom_bar_home"
+        android:icon="@drawable/home"/>
+    <item
+        android:title=""
+        android:id="@+id/bottom_bar_group"
+        android:icon="@drawable/group"/>
+    <item
+        android:title=""
+        android:id="@+id/bottom_bar_play_video"
+        android:icon="@drawable/play_video"/>
+    <item
+        android:title=""
+        android:id="@+id/bottom_bar_heart"
+        android:icon="@drawable/heart"/>
+    <item
+        android:title=""
+        android:id="@+id/bottom_bar_notification"
+        android:icon="@drawable/bell"/>
+
+
+</menu>

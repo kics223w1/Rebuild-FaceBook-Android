@@ -1,4 +1,5 @@
 package theintership.my.signin_signup.fragment
+
 import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.ActivityNotFoundException
@@ -16,6 +17,9 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.createBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import theintership.my.MainActivity
 import theintership.my.Main_Interface_Activity
 import theintership.my.all_class.MyMethod.Companion.check_wifi
@@ -93,16 +97,29 @@ class frag_set_avatar : Fragment(R.layout.frag_set_avatar) {
             )
         }
         val path_ref = "avatar_user/${shareViewmodel.account_user}"
-        upload_image_by_putBytes_to_firebase().upload(
-            bitmap = bitmap_image,
-            path_ref = path_ref
-        ).addOnSuccessListener {
-            go_to_main_interface()
-        }.addOnFailureListener {
-            binding.btnFragSetAvatarSkip.visibility = View.VISIBLE
-            binding.progressFragSetAvatar.visibility = View.GONE
-            val s = "Please click again. My sever went wrong."
-            s.showToastShort(signup1activity)
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            withContext(Dispatchers.IO) {
+                upload_image_by_putBytes_to_firebase().upload(
+                    bitmap = bitmap_image,
+                    path_ref = path_ref
+                ).addOnSuccessListener {
+                    go_to_main_interface()
+                }.addOnFailureListener {
+                    remove_progress()
+                    val s = "Please click again. My sever went wrong."
+                    s.showToastShort(signup1activity)
+                }
+            }
+        }
+
+    }
+
+    private fun remove_progress() {
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            withContext(Dispatchers.Main) {
+                binding.btnFragSetAvatarSkip.visibility = View.VISIBLE
+                binding.progressFragSetAvatar.visibility = View.GONE
+            }
         }
     }
 
@@ -170,7 +187,7 @@ class frag_set_avatar : Fragment(R.layout.frag_set_avatar) {
         }
     }
 
-    private fun go_to_main_interface(){
+    private fun go_to_main_interface() {
         startActivity(Intent(activity, Main_Interface_Activity::class.java))
         activity?.overridePendingTransition(
             R.anim.slide_in_right,

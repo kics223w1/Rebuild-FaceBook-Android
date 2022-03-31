@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:layout_marginTop="15dp"
+    android:background="@drawable/bg_white_ripple"
+    android:layout_width="250dp"
     android:layout_height="35dp">
 
     <LinearLayout
@@ -13,17 +15,18 @@
 
         <ImageView
             android:id="@+id/image_view_item_category_privacy_avatar"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.3" />
+            android:scaleType="fitEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
 
         <TextView
+            android:layout_marginStart="5dp"
             android:id="@+id/tv_item_category_privacy_avatar"
             android:textStyle="normal"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
-            android:layout_weight="0.7"
+            android:layout_weight="0.8"
             android:textColor="@color/black"
             android:textSize="20sp" />
 
@@ -34,6 +37,6 @@
         android:layout_marginTop="5dp"
         android:background="@android:color/darker_gray"
         android:layout_width="match_parent"
-        android:layout_height="2dp"/>
+        android:layout_height="20dp"/>
 
 </LinearLayout>

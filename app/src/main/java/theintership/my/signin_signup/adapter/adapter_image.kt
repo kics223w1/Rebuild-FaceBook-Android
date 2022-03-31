@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
@@ -46,15 +47,28 @@ class adapter_image(
         val path1 = image.path1
         val path2 = image.path2
         val path3 = image.path3
+
         if (path1 != "") {
             Glide.with(context).load(path1).error(R.drawable.error_image).into(holder.image1)
+        } else {
+            holder.layout_item_image1.visibility = View.INVISIBLE
+            holder.image1.visibility = View.GONE
         }
+
         if (path2 != "") {
             Glide.with(context).load(path2).error(R.drawable.error_image).into(holder.image2)
+        } else {
+            holder.layout_item_image2.visibility = View.INVISIBLE
+            holder.image2.visibility = View.GONE
         }
+
         if (path3 != "") {
             Glide.with(context).load(path3).error(R.drawable.error_image).into(holder.image3)
+        } else {
+            holder.layout_item_image3.visibility = View.INVISIBLE
+            holder.image3.visibility = View.GONE
         }
+
         holder.image1.setOnClickListener {
             iClickImage.onClickImage(path1)
             check_layout_clicking_image(holder.adapterPosition, "image1")
@@ -141,13 +155,16 @@ class adapter_image(
             remove_layout_click(image_click, index_click)
             image_click = image1
             index_click = position
-            add_layout_click(image_click = image_click , index = index_click)
+            add_layout_click(image_click = image_click, index = index_click)
             return
         }
     }
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var layout_item_image1 : FrameLayout
+        var layout_item_image2 : FrameLayout
+        var layout_item_image3 : FrameLayout
         var image1: ImageView
         var image2: ImageView
         var image3: ImageView
@@ -156,6 +173,9 @@ class adapter_image(
         var checkbox_image3: CheckBox
 
         init {
+            layout_item_image1 = itemView.findViewById(R.id.layout_item_image1)
+            layout_item_image2 = itemView.findViewById(R.id.layout_item_image2)
+            layout_item_image3 = itemView.findViewById(R.id.layout_item_image3)
             image1 = itemView.findViewById(R.id.item_image1)
             image2 = itemView.findViewById(R.id.item_image2)
             image3 = itemView.findViewById(R.id.item_image3)

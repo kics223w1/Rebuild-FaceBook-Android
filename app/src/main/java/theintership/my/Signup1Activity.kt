@@ -162,23 +162,18 @@ class Signup1Activity : AppCompatActivity() {
 
     private fun move_to_frag_name() {
         dialogLoading.dismiss()
-        replacefrag(
-            tag = "frag_done_set_avatar",
-            frag = frag_done_set_avatar(),
-            fm = supportFragmentManager
-        )
-
 //        replacefrag(
-//            "frag_set_avatar",
-//            frag_set_avatar(),
-//            supportFragmentManager
-//        )
-//        replacefrag(
-//            tag = "frag_signup_name",
-//            frag = frag_signup_name(),
+//            tag = "frag_set_avatar",
+//            frag = frag_set_avatar(),
 //            fm = supportFragmentManager
 //        )
-   }
+
+        replacefrag(
+            tag = "frag_signup_name",
+            frag = frag_signup_name(),
+            fm = supportFragmentManager
+        )
+    }
 
 
     override fun onBackPressed() {
@@ -250,7 +245,8 @@ class Signup1Activity : AppCompatActivity() {
     private fun delete_phone_email_account_of_user() {
         //Delete phone and email and account
         val s = "Delete user success"
-        val index_of_last_element_phone_email_account = shareViewModel.index_of_last_ele_phone_email_account
+        val index_of_last_element_phone_email_account =
+            shareViewModel.index_of_last_ele_phone_email_account
         if (index_of_last_element_phone_email_account == -1) {
             return
         }

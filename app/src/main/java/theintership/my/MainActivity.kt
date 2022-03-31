@@ -20,7 +20,6 @@ import theintership.my.all_class.MyMethod.Companion.hide_soft_key_board
 import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.signin_signup.dialog.dialog_showlanguage
 
-
 class MainActivity : AppCompatActivity() {
 
     private val REQUEST_CODE = 100

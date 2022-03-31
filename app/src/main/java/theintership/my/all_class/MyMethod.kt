@@ -50,6 +50,14 @@ class MyMethod {
             return true
         }
 
+//        fun replaceFrag_in_main_interface(tag: String, frag: Fragment, fm: FragmentManager){
+//            fm.beginTransaction()
+//                .setCustomAnimations(android.R.anim.fade_in , android.R.anim.fade_out)
+//                .addToBackStack(tag)
+//                .replace(R.id.main_interface_layout_frag, frag)
+//                .commit()
+//        }
+
         fun replacefrag(tag: String, frag: Fragment, fm: FragmentManager) {
             fm.beginTransaction()
                 .setCustomAnimations(android.R.anim.fade_in , android.R.anim.fade_out)

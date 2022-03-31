@@ -7,6 +7,7 @@
     android:layout_height="100dp">
 
    <FrameLayout
+       android:id="@+id/layout_item_image1"
        android:background="@drawable/boder_light_blue"
        android:layout_weight="0.33"
        android:layout_width="0dp"
@@ -31,6 +32,7 @@
    </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/layout_item_image2"
         android:background="@drawable/boder_light_blue"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
@@ -57,7 +59,8 @@
 
     </FrameLayout>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <FrameLayout
+        android:id="@+id/layout_item_image3"
         android:background="@drawable/boder_light_blue"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
@@ -82,8 +85,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
+    </FrameLayout>
 
 
 
