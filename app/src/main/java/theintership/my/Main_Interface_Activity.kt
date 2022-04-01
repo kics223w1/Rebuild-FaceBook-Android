@@ -46,7 +46,7 @@ class Main_Interface_Activity : AppCompatActivity() {
             }
         })
 
-        tabLayout.getTabAt(2)?.setCustomView(adapter.get_view())
+        tabLayout.getTabAt(4)?.setCustomView(adapter.set_custom_icon_notificaion())
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {

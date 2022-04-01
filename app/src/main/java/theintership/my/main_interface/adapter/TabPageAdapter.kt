@@ -25,8 +25,8 @@ class TabPageAdapter(activity: FragmentActivity, private val tab_count: Int) :
         }
     }
 
-    fun get_view() : View {
-        val v = LayoutInflater.from(context).inflate(R.layout.custom_tab , null)
+    fun set_custom_icon_notificaion() : View {
+        val v = LayoutInflater.from(context).inflate(R.layout.custom_icon_notification , null)
         return v
     }
 }

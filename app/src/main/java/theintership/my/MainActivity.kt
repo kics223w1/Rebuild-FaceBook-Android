@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 import com.google.firebase.auth.FirebaseAuth
@@ -126,6 +127,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun signin_user(account: String, password: String) {
+        println("debug vao signin user")
         auth.signInWithEmailAndPassword(account, password)
             .addOnSuccessListener {
                 go_to_main_interface()

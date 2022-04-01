@@ -37,7 +37,7 @@ android {
     sourceSets {
         main {
             res {
-                srcDirs 'src\\main\\res', 'src\\main\\res\\layout\\chat', 'src\\main\\res\\layout\\home', 'src\\main\\res\\layout\\signin_signup', 'src\\main\\res\\layout\\rcv_item', 'src\\main\\res\\dialog', 'src\\main\\res\\layout\\dialog', 'src\\main\\res\\layout\\activity', 'src/main/res', 'src/main/res/layout/spinner_item', 'src/main/res/layouts/activitys', 'src/main/res/layouts/dialog', 'src/main/res/layouts/rcv_item', 'src/main/res/layouts/signin_signup', 'src/main/res/layouts/spinner_item', 'src/main/res/layouts/rcv_items', 'src/main/res/layouts/main_interface'
+                srcDirs 'src\\main\\res', 'src\\main\\res\\layout\\chat', 'src\\main\\res\\layout\\home', 'src\\main\\res\\layout\\signin_signup', 'src\\main\\res\\layout\\rcv_item', 'src\\main\\res\\dialog', 'src\\main\\res\\layout\\dialog', 'src\\main\\res\\layout\\activity', 'src/main/res', 'src/main/res/layout/spinner_item', 'src/main/res/layouts/activitys', 'src/main/res/layouts/dialog', 'src/main/res/layouts/rcv_item', 'src/main/res/layouts/signin_signup', 'src/main/res/layouts/spinner_item', 'src/main/res/layouts/rcv_items', 'src/main/res/layouts/main_interface', 'src/main/res/layouts/custom_item'
                 srcDirs
             }
         }
