@@ -3,9 +3,15 @@ package theintership.my.all_class
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import theintership.my.R
@@ -19,6 +25,26 @@ class MyMethod {
 
         fun String.showToastLong(context: Context) {
             Toast.makeText(context, this, Toast.LENGTH_LONG).show()
+        }
+
+        fun TextView.colorize(subStringToColorize: String, @ColorRes colorResId: Int) {
+
+            val spannable: Spannable = SpannableString(text)
+
+            val startIndex = text.indexOf(subStringToColorize, startIndex = 0, ignoreCase = false)
+            val endIndex = startIndex + subStringToColorize.length
+
+            val color: Int = ContextCompat.getColor(context, colorResId)
+
+            if (startIndex != -1) {
+                spannable.setSpan(
+                    ForegroundColorSpan(color),
+                    startIndex,
+                    endIndex,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                setText(spannable, TextView.BufferType.SPANNABLE)
+            }
         }
 
         fun isWifi(context: Context): Boolean {
@@ -41,7 +67,7 @@ class MyMethod {
             return false
         }
 
-        fun check_wifi(context: Context) : Boolean{
+        fun check_wifi(context: Context): Boolean {
             if (!isWifi(context)) {
                 val s = "Please connect wifi to continue"
                 s.showToastLong(context)
@@ -52,7 +78,7 @@ class MyMethod {
 
         fun replacefrag(tag: String, frag: Fragment, fm: FragmentManager) {
             fm.beginTransaction()
-                .setCustomAnimations(android.R.anim.fade_in , android.R.anim.fade_out)
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                 .addToBackStack(tag)
                 .replace(R.id.layout_Signup1Activity, frag)
                 .commit()
@@ -60,9 +86,9 @@ class MyMethod {
 
         fun addfrag(tag: String, frag: Fragment, fm: FragmentManager) {
             fm.beginTransaction()
-                .setCustomAnimations(android.R.anim.fade_in , android.R.anim.fade_out)
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                 .addToBackStack(tag)
-                .add(R.id.layout_Signup1Activity, frag , tag)
+                .add(R.id.layout_Signup1Activity, frag, tag)
                 .commit()
         }
 
