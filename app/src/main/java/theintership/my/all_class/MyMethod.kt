@@ -1,11 +1,13 @@
 package theintership.my.all_class
 
 import android.content.Context
+import android.graphics.Typeface
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
@@ -15,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import theintership.my.R
+import java.lang.Math.ceil
 import java.util.*
 
 class MyMethod {
@@ -27,24 +30,17 @@ class MyMethod {
             Toast.makeText(context, this, Toast.LENGTH_LONG).show()
         }
 
-        fun TextView.colorize(subStringToColorize: String, @ColorRes colorResId: Int) {
 
-            val spannable: Spannable = SpannableString(text)
-
-            val startIndex = text.indexOf(subStringToColorize, startIndex = 0, ignoreCase = false)
-            val endIndex = startIndex + subStringToColorize.length
-
-            val color: Int = ContextCompat.getColor(context, colorResId)
-
-            if (startIndex != -1) {
-                spannable.setSpan(
-                    ForegroundColorSpan(color),
-                    startIndex,
-                    endIndex,
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-                )
-                setText(spannable, TextView.BufferType.SPANNABLE)
+        fun blackout_char(text : String , list : MutableList<String>) : SpannableString{
+            var span = SpannableString(text)
+            for (word in list){
+                val startIndex = text.indexOf(word)
+                val endIndex = startIndex + word.length
+                if (startIndex != -1){
+                    span.setSpan(StyleSpan(Typeface.BOLD) , startIndex , endIndex , Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                }
             }
+            return span
         }
 
         fun isWifi(context: Context): Boolean {

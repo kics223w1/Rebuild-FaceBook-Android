@@ -31,7 +31,7 @@
         <entry key="app/src/main/res/layouts/main_interface/layout/frag_video.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/rcv_item/layout/item_rcv_language.xml" value="0.1203125" />
         <entry key="app/src/main/res/layouts/rcv_items/layout/item_rcv_image_for_selecting_avatar.xml" value="0.15416666666666667" />
-        <entry key="app/src/main/res/layouts/rcv_items/layout/item_rcv_notification.xml" value="0.25" />
+        <entry key="app/src/main/res/layouts/rcv_items/layout/item_rcv_notification.xml" value="0.22083501255294363" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_auth_email_address_account.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_auth_phone_number_account.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_change_email_when_auth.xml" value="0.15070921985815602" />
