@@ -24,7 +24,7 @@ class frag_notifications : Fragment() {
         val view = inflater.inflate(R.layout.frag_notifications , container ,false)
         val layout = view.findViewById<SwipeRefreshLayout>(R.id.frag_notificaions_swipelayout)
         val new = view.findViewById<TextView>(R.id.frag_notifications_tv_new)
-
+        //okok
         new.setOnClickListener {
             layout.isRefreshing = false
         }
