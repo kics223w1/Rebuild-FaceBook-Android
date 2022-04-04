@@ -39,3 +39,7 @@ jobs:
 
       - name: Download Dependencies
         run: ./gradlew androidDependencies
+
+      - name: Run All Test
+        run: ./gradlew connectedAndroidTest
+
