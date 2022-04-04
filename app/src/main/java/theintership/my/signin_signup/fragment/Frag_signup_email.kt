@@ -11,16 +11,14 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import theintership.my.MainActivity
-import theintership.my.MyMethod.Companion.hide_soft_key_board
-import theintership.my.MyMethod.Companion.isWifi
-import theintership.my.MyMethod.Companion.replacefrag
-import theintership.my.MyMethod.Companion.showToastLong
+import theintership.my.all_class.MyMethod.Companion.hide_soft_key_board
+import theintership.my.all_class.MyMethod.Companion.replacefrag
+import theintership.my.all_class.MyMethod.Companion.showToastLong
 import theintership.my.R
 import theintership.my.databinding.FragSignupEmailBinding
-import theintership.my.signin_signup.Signup1Activity
+import theintership.my.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.shareViewModel
-import kotlin.math.sign
 
 
 class frag_signup_email : Fragment(R.layout.frag_signup_email) {
@@ -86,11 +84,12 @@ class frag_signup_email : Fragment(R.layout.frag_signup_email) {
             val dialog = dialog_stop_signup(signup1activity)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
-                startActivity(Intent(signup1activity, MainActivity::class.java))
-                signup1activity.overridePendingTransition(
+                startActivity(Intent(activity, MainActivity::class.java))
+                activity?.overridePendingTransition(
                     R.anim.slide_in_left,
                     R.anim.slide_out_right
                 )
+                activity?.finish()
                 dialog.dismiss()
             }
         }

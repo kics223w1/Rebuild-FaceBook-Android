@@ -11,15 +11,14 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
-import theintership.my.MyMethod
-import theintership.my.MyMethod.Companion.check_wifi
-import theintership.my.MyMethod.Companion.hide_soft_key_board
-import theintership.my.MyMethod.Companion.replacefrag
-import theintership.my.MyMethod.Companion.showToastLong
+import theintership.my.all_class.MyMethod
+import theintership.my.all_class.MyMethod.Companion.check_wifi
+import theintership.my.all_class.MyMethod.Companion.hide_soft_key_board
+import theintership.my.all_class.MyMethod.Companion.replacefrag
+import theintership.my.all_class.MyMethod.Companion.showToastLong
 import theintership.my.R
-import theintership.my.databinding.FragAuthPhoneNumberAccountBinding
 import theintership.my.databinding.FragChangeEmailWhenAuthBinding
-import theintership.my.signin_signup.Signup1Activity
+import theintership.my.Signup1Activity
 import theintership.my.signin_signup.shareViewModel
 
 class frag_change_email_when_auth : Fragment(R.layout.frag_change_email_when_auth) {

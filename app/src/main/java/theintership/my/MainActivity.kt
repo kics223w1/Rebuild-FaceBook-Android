@@ -11,17 +11,20 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
-import theintership.my.MyMethod.Companion.replacefrag
-import theintership.my.signin_signup.Signup1Activity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import theintership.my.all_class.MyMethod.Companion.hide_soft_key_board
+import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.signin_signup.dialog.dialog_showlanguage
-import theintership.my.signin_signup.fragment.frag_show_image_for_chosing_avatar
-
 
 class MainActivity : AppCompatActivity() {
 
     private val REQUEST_CODE = 100
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +37,7 @@ class MainActivity : AppCompatActivity() {
         val icon_password_see = findViewById<ImageView>(R.id.password_see)
         val btn_signin = findViewById<TextView>(R.id.btn_signin_go)
         val btn_showlanguage = findViewById<TextView>(R.id.btn_signin_showlanguage)
+        auth = Firebase.auth
 
         val sharedPref = getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
@@ -49,8 +53,43 @@ class MainActivity : AppCompatActivity() {
             dialog.show()
         }
 
-        btn_signin.setOnClickListener {
 
+        edt_signin_password.setOnEditorActionListener{
+            textView , i, Keyevent ->
+            hide_soft_key_board(this , btn_signin)
+            var account = edt_signin_account.text.toString()
+            val password = edt_signin_password.text.toString()
+            if (account == "") {
+                val s = "Please enter account."
+                s.showToastShort(this)
+                false
+            }else if (password == "") {
+                val s = "Please enter password."
+                s.showToastShort(this)
+                false
+            }else{
+                account += "@gmail.com"
+                signin_user(account = account , password = password)
+                true
+            }
+        }
+
+        btn_signin.setOnClickListener {
+            hide_soft_key_board(this , btn_signin)
+            var account = edt_signin_account.text.toString()
+            val password = edt_signin_password.text.toString()
+            if (account == "") {
+                val s = "Please enter account."
+                s.showToastShort(this)
+                return@setOnClickListener
+            }
+            if (password == "") {
+                val s = "Please enter password."
+                s.showToastShort(this)
+                return@setOnClickListener
+            }
+            account += "@gmail.com"
+            signin_user(account = account , password = password)
         }
 
         edt_signin_password.doAfterTextChanged {
@@ -82,8 +121,30 @@ class MainActivity : AppCompatActivity() {
         btn_create_account.setOnClickListener {
             startActivity(Intent(this, Signup1Activity::class.java))
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+            this.finish()
         }
 
+    }
+
+    private fun signin_user(account: String, password: String) {
+        println("debug vao signin user")
+        auth.signInWithEmailAndPassword(account, password)
+            .addOnSuccessListener {
+                go_to_main_interface()
+            }.addOnFailureListener{
+                val s = "Password or Account is incorrect."
+                s.showToastShort(this)
+            }
+    }
+
+
+    private fun go_to_main_interface(){
+        startActivity(Intent(this, Main_Interface_Activity::class.java))
+        this.overridePendingTransition(
+            R.anim.slide_in_right,
+            R.anim.slide_out_left
+        )
+        this.finish()
     }
 
 

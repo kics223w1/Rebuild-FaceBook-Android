@@ -13,23 +13,19 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import theintership.my.MyMethod.Companion.check_wifi
-import theintership.my.MyMethod.Companion.hide_soft_key_board
-import theintership.my.MyMethod.Companion.isWifi
-import theintership.my.MyMethod.Companion.replacefrag
-import theintership.my.MyMethod.Companion.replacefrag_by_silde_in_left
-import theintership.my.MyMethod.Companion.showToastLong
-import theintership.my.MyMethod.Companion.showToastShort
+import theintership.my.all_class.MyMethod.Companion.check_wifi
+import theintership.my.all_class.MyMethod.Companion.hide_soft_key_board
+import theintership.my.all_class.MyMethod.Companion.replacefrag
+import theintership.my.all_class.MyMethod.Companion.showToastLong
+import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.R
 import theintership.my.databinding.FragAuthPhoneNumberAccountBinding
-import theintership.my.signin_signup.Signup1Activity
+import theintership.my.Signup1Activity
 import theintership.my.signin_signup.shareViewModel
 import java.util.concurrent.TimeUnit
-import kotlin.math.acos
 
 
 class frag_auth_phone_number_account : Fragment(R.layout.frag_auth_phone_number_account) {

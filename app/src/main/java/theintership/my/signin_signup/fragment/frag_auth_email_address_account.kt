@@ -13,16 +13,15 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
-import theintership.my.MyMethod.Companion.check_wifi
-import theintership.my.MyMethod.Companion.hide_soft_key_board
-import theintership.my.MyMethod.Companion.isWifi
-import theintership.my.MyMethod.Companion.replacefrag
-import theintership.my.MyMethod.Companion.replacefrag_by_silde_in_left
-import theintership.my.MyMethod.Companion.showToastLong
-import theintership.my.MyMethod.Companion.showToastShort
+import theintership.my.all_class.MyMethod.Companion.check_wifi
+import theintership.my.all_class.MyMethod.Companion.hide_soft_key_board
+import theintership.my.all_class.MyMethod.Companion.isWifi
+import theintership.my.all_class.MyMethod.Companion.replacefrag
+import theintership.my.all_class.MyMethod.Companion.showToastLong
+import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.R
 import theintership.my.databinding.FragAuthEmailAddressAccountBinding
-import theintership.my.signin_signup.Signup1Activity
+import theintership.my.Signup1Activity
 import theintership.my.signin_signup.shareViewModel
 
 
@@ -97,8 +96,8 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
                 return@setOnClickListener
             }
             if (is_sending_verification_email_sucess) {
-                val s = "Please go to your email and verify it."
-                s.showToastShort(signup1activity)
+                val s = "If you don't see email please wait.\nWe use free firebase so it might be late."
+                s.showToastLong(signup1activity)
                 return@setOnClickListener
             }
             val mUser = Firebase.auth.currentUser

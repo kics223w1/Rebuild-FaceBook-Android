@@ -11,20 +11,19 @@ import androidx.lifecycle.lifecycleScope
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import theintership.my.MainActivity
-import theintership.my.MyMethod
-import theintership.my.MyMethod.Companion.isWifi
-import theintership.my.MyMethod.Companion.replacefrag
-import theintership.my.MyMethod.Companion.set_today
-import theintership.my.MyMethod.Companion.showToastLong
+import theintership.my.all_class.MyMethod
+import theintership.my.all_class.MyMethod.Companion.isWifi
+import theintership.my.all_class.MyMethod.Companion.replacefrag
+import theintership.my.all_class.MyMethod.Companion.set_today
+import theintership.my.all_class.MyMethod.Companion.showToastLong
 import theintership.my.R
 import theintership.my.databinding.FragSignupDoneBinding
 import theintership.my.model.Phone_and_Email_Account
-import theintership.my.signin_signup.Signup1Activity
+import theintership.my.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.shareViewModel
 import java.util.*
@@ -67,11 +66,12 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done) {
             val dialog = dialog_stop_signup(signup1activity)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
-                startActivity(Intent(signup1activity, MainActivity::class.java))
-                signup1activity.overridePendingTransition(
+                startActivity(Intent(activity, MainActivity::class.java))
+                activity?.overridePendingTransition(
                     R.anim.slide_in_left,
                     R.anim.slide_out_right
                 )
+                activity?.finish()
                 dialog.dismiss()
             }
         }
@@ -103,8 +103,6 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done) {
         if (viewmodel.index_of_last_ele_phone_email_account != -1) {
             id = viewmodel.index_of_last_ele_phone_email_account + 1
             viewmodel.index_of_last_ele_phone_email_account = id // Update index
-            val ss = viewmodel.index_of_last_ele_phone_email_account.toString()
-            ss.showToastLong(signup1activity)
         }
 
         var add_user = false

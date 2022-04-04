@@ -15,9 +15,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TheIntership">
-        <activity android:name=".signin_signup.TestActivity" />
+        <activity android:name=".TestActivity" />
+        <activity android:name=".Signup1Activity" />
+        <activity android:name=".MainActivity"/>
         <activity
-            android:name=".MainActivity"
+            android:name=".Main_Interface_Activity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -26,6 +28,5 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".signin_signup.Signup1Activity" />
     </application>
 </manifest>

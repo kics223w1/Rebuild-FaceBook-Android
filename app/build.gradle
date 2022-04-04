@@ -37,7 +37,7 @@ android {
     sourceSets {
         main {
             res {
-                srcDirs 'src\\main\\res', 'src\\main\\res\\layouts\\chat', 'src\\main\\res\\layouts\\home', 'src\\main\\res\\layouts\\signin_signup', 'src\\main\\res\\layouts\\rcv_item', 'src\\main\\res\\dialog', 'src\\main\\res\\layouts\\dialog', 'src\\main\\res\\layouts\\activity', 'src/main/res', 'src/main/res/layouts/snipper_items'
+                srcDirs 'src\\main\\res', 'src\\main\\res\\layout\\chat', 'src\\main\\res\\layout\\home', 'src\\main\\res\\layout\\signin_signup', 'src\\main\\res\\layout\\rcv_item', 'src\\main\\res\\dialog', 'src\\main\\res\\layout\\dialog', 'src\\main\\res\\layout\\activity', 'src/main/res', 'src/main/res/layout/spinner_item', 'src/main/res/layouts/activitys', 'src/main/res/layouts/dialog', 'src/main/res/layouts/rcv_item', 'src/main/res/layouts/signin_signup', 'src/main/res/layouts/spinner_item', 'src/main/res/layouts/rcv_items', 'src/main/res/layouts/main_interface', 'src/main/res/layouts/custom_item'
                 srcDirs
             }
         }
@@ -56,6 +56,7 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    apply plugin: 'kotlin-android-extensions'
 
     //FireBase
     implementation platform('com.google.firebase:firebase-bom:29.0.4')
@@ -63,6 +64,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.android.gms:play-services-auth:20.1.0'
     implementation 'com.google.firebase:firebase-database-ktx'
+    implementation 'com.google.firebase:firebase-storage-ktx'
+
 
 
     //Coroutine
@@ -84,5 +87,7 @@ dependencies {
 
     //Circle Image
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+
 
 }

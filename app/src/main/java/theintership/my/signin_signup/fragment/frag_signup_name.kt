@@ -17,18 +17,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.actionCodeSettings
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import theintership.my.MainActivity
-import theintership.my.MyMethod.Companion.hide_soft_key_board
-import theintership.my.MyMethod.Companion.replacefrag
-import theintership.my.MyMethod.Companion.replacefrag_by_silde_in_left
-import theintership.my.MyMethod.Companion.showToastLong
-import theintership.my.MyMethod.Companion.showToastShort
+import theintership.my.all_class.MyMethod.Companion.hide_soft_key_board
+import theintership.my.all_class.MyMethod.Companion.replacefrag
+import theintership.my.all_class.MyMethod.Companion.showToastLong
 import theintership.my.R
 import theintership.my.databinding.FragSignupNameBinding
-import theintership.my.signin_signup.Signup1Activity
+import theintership.my.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.shareViewModel
@@ -60,10 +59,8 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name) {
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
-
         googleSignInClient = GoogleSignIn.getClient(signup1Activity, gso)
-        val s = shareViewModel.number_of_auth_phone_number_in_a_day.toString()
-        s.showToastShort(signup1Activity)
+
         if (signup1Activity.signup_with_google) {
             //With this condition ,google sign in just show one times
             //If user return to this fragment from other fragment in signup
@@ -135,11 +132,12 @@ class frag_signup_name : Fragment(R.layout.frag_signup_name) {
             val dialog = dialog_stop_signup(signup1Activity)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
-                startActivity(Intent(signup1Activity, MainActivity::class.java))
-                signup1Activity.overridePendingTransition(
+                startActivity(Intent(activity, MainActivity::class.java))
+                 activity?.overridePendingTransition(
                     R.anim.slide_in_left,
                     R.anim.slide_out_right
                 )
+                activity?.finish()
                 dialog.dismiss()
             }
         }

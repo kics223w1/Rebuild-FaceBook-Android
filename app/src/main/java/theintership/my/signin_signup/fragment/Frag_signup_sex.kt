@@ -13,11 +13,11 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import theintership.my.MainActivity
-import theintership.my.MyMethod.Companion.hide_soft_key_board
-import theintership.my.MyMethod.Companion.replacefrag
+import theintership.my.all_class.MyMethod.Companion.hide_soft_key_board
+import theintership.my.all_class.MyMethod.Companion.replacefrag
 import theintership.my.R
 import theintership.my.databinding.FragSignupSexBinding
-import theintership.my.signin_signup.Signup1Activity
+import theintership.my.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_bottom_sex
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.shareViewModel
@@ -42,11 +42,12 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex) {
             val dialog = dialog_stop_signup(signup1Activity)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
-                startActivity(Intent(signup1Activity, MainActivity::class.java))
-                signup1Activity.overridePendingTransition(
+                startActivity(Intent(activity, MainActivity::class.java))
+                activity?.overridePendingTransition(
                     R.anim.slide_in_left,
                     R.anim.slide_out_right
                 )
+                activity?.finish()
                 dialog.dismiss()
             }
         }

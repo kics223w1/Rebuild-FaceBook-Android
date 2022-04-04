@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import theintership.my.MainActivity
-import theintership.my.MyMethod.Companion.replacefrag
+import theintership.my.all_class.MyMethod.Companion.replacefrag
 import theintership.my.R
 import theintership.my.databinding.FragSignupBirthdayBinding
-import theintership.my.signin_signup.Signup1Activity
+import theintership.my.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.shareViewModel
 import java.util.*
@@ -74,11 +74,12 @@ class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday) {
             val dialog = dialog_stop_signup(signup1Activity)
             dialog.show()
             dialog.btn_cancel.setOnClickListener {
-                startActivity(Intent(signup1Activity, MainActivity::class.java))
-                signup1Activity.overridePendingTransition(
+                startActivity(Intent(activity, MainActivity::class.java))
+                activity?.overridePendingTransition(
                     R.anim.slide_in_left,
                     R.anim.slide_out_right
                 )
+                activity?.finish()
                 dialog.dismiss()
             }
         }
