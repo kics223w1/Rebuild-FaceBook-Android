@@ -40,8 +40,8 @@ jobs:
       - name: Download Dependencies
         run: ./gradlew androidDependencies
 
-      - name: Run UI Test
-        run: ./gradlew connectedAndroidTest
+#      - name: Run UI Test
+#        run: ./gradlew connectedAndroidTest
 
       - name: Run Instrusment Test and Unit Test
         run: ./gradlew test
