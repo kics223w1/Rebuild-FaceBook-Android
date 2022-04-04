@@ -38,5 +38,5 @@ jobs:
 
 
       - name: Download Dependencies
-        run:
+        run: echo Hello
         command: ["./gradlew androidDependencies"]
