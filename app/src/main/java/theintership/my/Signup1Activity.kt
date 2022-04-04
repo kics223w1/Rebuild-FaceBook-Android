@@ -159,6 +159,7 @@ class Signup1Activity : AppCompatActivity() {
             s.showToastShort(this)
         }
     }
+    //ok
 
     private fun move_to_frag_name() {
         dialogLoading.dismiss()
