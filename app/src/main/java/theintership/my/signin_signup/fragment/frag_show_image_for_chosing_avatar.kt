@@ -34,7 +34,7 @@ class frag_show_image_for_chosing_avatar : Fragment(R.layout.frag_show_image_for
     private val REQUEST_IMAGE_CAPTURE = 1
     private var image_path = ""
     private var check_image_path = ""
-
+    //ok
 
     override fun onCreateView(
         inflater: LayoutInflater,
