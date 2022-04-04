@@ -38,4 +38,5 @@ jobs:
 
 
       - name: Download Dependencies
+        run:
         command: ["./gradlew androidDependencies"]
