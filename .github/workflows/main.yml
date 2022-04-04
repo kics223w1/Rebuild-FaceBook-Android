@@ -36,8 +36,8 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
 
-
-      - name: Download Dependencies
+      - uses:
+        name: Download Dependencies
         command: ["./gradlew androidDependencies" ,"-c"]
 
 
