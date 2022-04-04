@@ -8,15 +8,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: action/checkout@v1
-
-      - name: Set up JDK
-        uses: action/setup-java@v1
-        with:
-          java-version: 1.8
 
       - name: Run test
-        run: ./gradlew test
+        run: ./gradlew testVariantNameUnitTest --tests '*.ExampleInstrumentedTest'
 
       - name: Build Project
         run: ./gradlew assemble
+
+
