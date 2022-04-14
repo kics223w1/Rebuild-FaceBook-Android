@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import theintership.my.R
-import theintership.my.model.Language
+import theintership.my.signin_signup.model.Language
 
 class adapter_language(private val interaction: Interaction? = null) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {

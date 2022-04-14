@@ -2,7 +2,7 @@ package theintership.my.signin_signup
 
 import androidx.core.graphics.createBitmap
 import androidx.lifecycle.ViewModel
-import theintership.my.model.user_info
+import theintership.my.signin_signup.model.user_info
 
 class shareViewModel : ViewModel() {
 

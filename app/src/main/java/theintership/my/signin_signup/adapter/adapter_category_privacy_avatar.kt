@@ -9,8 +9,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import theintership.my.R
-import theintership.my.model.category_privacy_avatar
-import theintership.my.model.image
+import theintership.my.signin_signup.model.category_privacy_avatar
+import theintership.my.signin_signup.model.image
 
 class adapter_category_privacy_avatar(
     context: Context,

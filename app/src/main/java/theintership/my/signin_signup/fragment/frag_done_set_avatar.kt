@@ -22,7 +22,7 @@ import theintership.my.all_class.upload_image_by_putBytes_to_firebase
 import theintership.my.all_class.upload_image_by_putFile_to_firebase
 import theintership.my.Signup1Activity
 import theintership.my.databinding.FragDoneSetAvatarBinding
-import theintership.my.model.category_privacy_avatar
+import theintership.my.signin_signup.model.category_privacy_avatar
 import theintership.my.signin_signup.adapter.adapter_category_privacy_avatar
 import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.shareViewModel
@@ -57,7 +57,6 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                     privacy = adapter.getItem(p2)?.name.toString()
-                    println("debug $privacy")
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -85,7 +84,7 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
             val account_ref = shareViewmodel.account_user
             val ref_privacy_avatar = database
                 .child("User")
-                .child("1122")
+                .child("huy1")
                 .child("user info")
                 .child("privacy_avatar")
             viewLifecycleOwner.lifecycleScope.launchWhenCreated {
@@ -134,21 +133,22 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
         val account_ref = shareViewmodel.account_user
         val image_path = shareViewmodel.image_path_from_local
 
-        val dialogLoading = dialog_loading(signup1activity)
-        dialogLoading.setCancelable(true)
-        dialogLoading.show()
+        binding.btnDoneSetAvatarSave.visibility = View.INVISIBLE
+        binding.progressDoneSetAvatarSave.visibility = View.VISIBLE
 
-        val path_ref = "avatar_user/$account_ref"
+        val path_ref = "avatar_user/huy4"
         val upload2 = upload_image_by_putFile_to_firebase()
             .upload(path_image = image_path, path_ref = path_ref)
 
         upload2.addOnSuccessListener {
-            dialogLoading.dismiss()
+            binding.btnDoneSetAvatarSave.visibility = View.VISIBLE
+            binding.progressDoneSetAvatarSave.visibility = View.INVISIBLE
             val s = "Upload Success."
             s.showToastShort(signup1activity)
             go_to_main_interface()
         }.addOnFailureListener {
-            dialogLoading.dismiss()
+            binding.btnDoneSetAvatarSave.visibility = View.VISIBLE
+            binding.progressDoneSetAvatarSave.visibility = View.INVISIBLE
             val s = "Please click again. My sever went wrong."
             s.showToastShort(signup1activity)
         }
@@ -158,9 +158,8 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
     private fun upload_image_from_take_photo() {
         val imageBitmap = shareViewmodel.photo_user
 
-        val dialogLoading = dialog_loading(signup1activity)
-        dialogLoading.setCancelable(true)
-        dialogLoading.show()
+        binding.btnDoneSetAvatarSave.visibility = View.INVISIBLE
+        binding.progressDoneSetAvatarSave.visibility = View.VISIBLE
 
         val account_ref = shareViewmodel.account_user
         val path_ref = "avatar_user/$account_ref"
@@ -168,24 +167,26 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
             .upload(bitmap = imageBitmap, path_ref = path_ref)
 
         upload2.addOnSuccessListener {
-            dialogLoading.dismiss()
+            binding.btnDoneSetAvatarSave.visibility = View.VISIBLE
+            binding.progressDoneSetAvatarSave.visibility = View.INVISIBLE
             val s = "Upload Success."
             s.showToastShort(signup1activity)
             go_to_main_interface()
         }.addOnFailureListener {
-            dialogLoading.dismiss()
+            binding.btnDoneSetAvatarSave.visibility = View.VISIBLE
+            binding.progressDoneSetAvatarSave.visibility = View.INVISIBLE
             val s = "Please take a photo again. My sever went wrong."
             s.showToastShort(signup1activity)
         }
     }
 
     private fun go_to_main_interface() {
-        startActivity(Intent(activity, Main_Interface_Activity::class.java))
-        activity?.overridePendingTransition(
-            R.anim.slide_in_right,
-            R.anim.slide_out_left
-        )
-        activity?.finish()
+//        startActivity(Intent(activity, Main_Interface_Activity::class.java))
+//        activity?.overridePendingTransition(
+//            R.anim.slide_in_right,
+//            R.anim.slide_out_left
+//        )
+//        activity?.finish()
     }
 
 }

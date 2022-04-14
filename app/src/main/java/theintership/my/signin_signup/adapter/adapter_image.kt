@@ -1,6 +1,9 @@
 package theintership.my.signin_signup.adapter
 
 import android.content.Context
+import android.graphics.drawable.Drawable
+import android.icu.number.NumberFormatter.with
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,8 +13,15 @@ import android.widget.ImageView
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import theintership.my.R
-import theintership.my.model.image
+import theintership.my.all_class.MyMethod.Companion.showToastShort
+import theintership.my.signin_signup.model.image
+import java.io.File
 
 
 interface IClickImage {
@@ -28,6 +38,8 @@ class adapter_image(
     private var index_click = -1
     private var image_click = ""
     private var list_holder = mutableListOf<adapter_image.ViewHolder>()
+    private var list_holder_load_image_fail =
+        mutableMapOf<adapter_image.ViewHolder, MutableList<String>>()
 
     fun submitList(list: MutableList<image>) {
         list_image = list
@@ -43,41 +55,130 @@ class adapter_image(
     override fun onBindViewHolder(holder: adapter_image.ViewHolder, position: Int) {
         val image = list_image.get(position)
         list_holder.add(holder)
+        list_holder_load_image_fail[holder] = mutableListOf()
 
         val path1 = image.path1
         val path2 = image.path2
         val path3 = image.path3
 
         if (path1 != "") {
-            Glide.with(context).load(path1).error(R.drawable.error_image).into(holder.image1)
+            Glide.with(context.applicationContext).load(path1)
+                .placeholder(R.drawable.icon_loading_image)
+                .apply(RequestOptions())
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        list_holder_load_image_fail[holder]?.add("image1")
+                        return false
+                    }
+
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        return false
+                    }
+
+                }).error(R.drawable.error_image).into(holder.image1)
         } else {
             holder.layout_item_image1.visibility = View.INVISIBLE
             holder.image1.visibility = View.GONE
         }
 
         if (path2 != "") {
-            Glide.with(context).load(path2).error(R.drawable.error_image).into(holder.image2)
+            Glide.with(context.applicationContext).load(path2)
+                .placeholder(R.drawable.icon_loading_image)
+                .apply(RequestOptions())
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        list_holder_load_image_fail[holder]?.add("image2")
+                        return false
+                    }
+
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        return false
+                    }
+
+                }).error(R.drawable.error_image).into(holder.image2)
         } else {
             holder.layout_item_image2.visibility = View.INVISIBLE
             holder.image2.visibility = View.GONE
         }
 
         if (path3 != "") {
-            Glide.with(context).load(path3).error(R.drawable.error_image).into(holder.image3)
+            Glide.with(context.applicationContext).load(path3)
+                .placeholder(R.drawable.icon_loading_image)
+                .apply(RequestOptions())
+                .listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        list_holder_load_image_fail[holder]?.add("image3")
+                        return false
+                    }
+
+                    override fun onResourceReady(
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        return false
+                    }
+
+                }).error(R.drawable.error_image).into(holder.image3)
         } else {
             holder.layout_item_image3.visibility = View.INVISIBLE
             holder.image3.visibility = View.GONE
         }
 
+        //If user click image has loaded fail , app will crash
         holder.image1.setOnClickListener {
+            if (list_holder_load_image_fail[holder]?.contains("image1") == true) {
+                val s = "This image is fail loaded."
+                s.showToastShort(context.applicationContext)
+                return@setOnClickListener
+            }
             iClickImage.onClickImage(path1)
             check_layout_clicking_image(holder.adapterPosition, "image1")
         }
         holder.image2.setOnClickListener {
+            if (list_holder_load_image_fail[holder]?.contains("image2") == true) {
+                val s = "This image is fail loaded."
+                s.showToastShort(context.applicationContext)
+                return@setOnClickListener
+            }
             iClickImage.onClickImage(path2)
             check_layout_clicking_image(holder.adapterPosition, "image2")
         }
         holder.image3.setOnClickListener {
+            if (list_holder_load_image_fail[holder]?.contains("image3") == true) {
+                val s = "This image is fail loaded."
+                s.showToastShort(context.applicationContext)
+                return@setOnClickListener
+            }
             iClickImage.onClickImage(path3)
             check_layout_clicking_image(holder.adapterPosition, "image3")
         }
@@ -150,21 +251,18 @@ class adapter_image(
             image_click = ""
             return
         }
-        if (index_click != -1) {
-            //One image has been clicked and user click new image
-            remove_layout_click(image_click, index_click)
-            image_click = image1
-            index_click = position
-            add_layout_click(image_click = image_click, index = index_click)
-            return
-        }
+        //One image has been clicked and user click new image
+        remove_layout_click(image_click, index_click)
+        image_click = image1
+        index_click = position
+        add_layout_click(image_click = image_click, index = index_click)
     }
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var layout_item_image1 : FrameLayout
-        var layout_item_image2 : FrameLayout
-        var layout_item_image3 : FrameLayout
+        var layout_item_image1: FrameLayout
+        var layout_item_image2: FrameLayout
+        var layout_item_image3: FrameLayout
         var image1: ImageView
         var image2: ImageView
         var image3: ImageView

@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import theintership.my.R
-import theintership.my.model.Language
+import theintership.my.signin_signup.model.Language
 import theintership.my.signin_signup.adapter.adapter_language
 
 class dialog_showlanguage(context: Context) : Dialog(context) , adapter_language.Interaction {

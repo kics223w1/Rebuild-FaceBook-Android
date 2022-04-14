@@ -19,7 +19,7 @@ import theintership.my.all_class.MyMethod.Companion.replacefrag
 import theintership.my.all_class.MyMethod.Companion.set_today
 import theintership.my.all_class.MyMethod.Companion.showToastLong
 import theintership.my.all_class.MyMethod.Companion.showToastShort
-import theintership.my.model.limit_auth_phone
+import theintership.my.signin_signup.model.limit_auth_phone
 import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.fragment.frag_done_set_avatar
@@ -163,17 +163,17 @@ class Signup1Activity : AppCompatActivity() {
 
     private fun move_to_frag_name() {
         dialogLoading.dismiss()
-//        replacefrag(
-//            tag = "frag_set_avatar",
-//            frag = frag_set_avatar(),
-//            fm = supportFragmentManager
-//        )
-
         replacefrag(
-            tag = "frag_signup_name",
-            frag = frag_signup_name(),
+            tag = "frag_set_avatar",
+            frag = frag_set_avatar(),
             fm = supportFragmentManager
         )
+
+//        replacefrag(
+//            tag = "frag_signup_name",
+//            frag = frag_signup_name(),
+//            fm = supportFragmentManager
+//        )
     }
 
 

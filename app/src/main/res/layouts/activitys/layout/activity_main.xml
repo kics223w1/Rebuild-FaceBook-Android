@@ -21,73 +21,21 @@
         <ImageView
             android:id="@+id/one"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:scaleType="fitXY"
+            android:layout_height="180dp"
             android:background="#053d87"
-            android:src="@drawable/world_icon" />
+            android:src="@drawable/background_facebook" />
 
 
-        <LinearLayout
-            android:id="@+id/layout_one"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_below="@+id/one"
-            android:layout_marginStart="55dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:gravity="end"
-                android:maxLines="1"
-                android:text="English"
-                android:textColor="#a9a9ab"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="0.05"
-                android:src="@drawable/one" />
-
-            <TextView
-                android:layout_width='wrap_content'
-                android:layout_height="match_parent"
-                android:gravity="end"
-                android:maxLines="1"
-                android:text="VietNamese"
-                android:textColor="#a9a9ab"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_weight="0.05"
-                android:src="@drawable/one" />
-
-            <TextView
-                android:id="@+id/btn_signin_showlanguage"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2"
-                android:maxLines="1"
-                android:text="More...    "
-                android:textColor="#7ba5e2"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-        </LinearLayout>
 
         <EditText
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
             android:id="@+id/edt_signin_account"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_below="@+id/layout_one"
+            android:layout_below="@+id/one"
             android:drawableBottom="@color/light_blue"
             android:hint="Phone number or email address"
             android:imeOptions="actionNext"
@@ -103,8 +51,8 @@
             android:id="@+id/layout_two"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
             android:layout_marginTop="5dp"
             android:layout_below="@id/edt_signin_account">
 
@@ -149,9 +97,9 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_below="@id/layout_two"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="40dp"
             android:layout_marginTop="15dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="40dp"
             android:background="@drawable/bg_8dp_all_lightblue_ripple"
             android:gravity="center"
             android:text="Sign in"
@@ -217,15 +165,15 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_below="@id/layout_four"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="40dp"
             android:background="@drawable/bg_8dp_all_green_ripple"
             android:gravity="center"
             android:text="Create new account"
             android:textColor="#d9f1e0"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="normal" />
 
         <TextView
             android:textColor="#767676"

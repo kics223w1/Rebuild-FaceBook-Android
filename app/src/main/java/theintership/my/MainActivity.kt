@@ -17,6 +17,7 @@ import androidx.core.widget.doAfterTextChanged
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import theintership.my.all_class.MyMethod.Companion.get_day_of_week
 import theintership.my.all_class.MyMethod.Companion.hide_soft_key_board
 import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.signin_signup.dialog.dialog_showlanguage
@@ -36,22 +37,16 @@ class MainActivity : AppCompatActivity() {
         val icon_password_nosee = findViewById<ImageView>(R.id.password_nosee)
         val icon_password_see = findViewById<ImageView>(R.id.password_see)
         val btn_signin = findViewById<TextView>(R.id.btn_signin_go)
-        val btn_showlanguage = findViewById<TextView>(R.id.btn_signin_showlanguage)
         auth = Firebase.auth
 
         val sharedPref = getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
 
+        println("debug ${get_day_of_week()}")
 
         val check_user_save_password = sharedPref.getBoolean("User save password", false)
         println("debug check user save password : $check_user_save_password")
-
-
-        btn_showlanguage.setOnClickListener {
-            val dialog = dialog_showlanguage(this)
-            dialog.show()
-        }
 
 
         edt_signin_password.setOnEditorActionListener{

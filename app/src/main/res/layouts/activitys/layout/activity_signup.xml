@@ -49,15 +49,16 @@
         android:id="@+id/layout_top2"
         android:layout_width="match_parent"
         android:layout_height="170dp"
+        android:scaleType="fitXY"
         android:layout_below="@id/layout_top1"
-        android:src="@drawable/world_icon" />
+        android:src="@drawable/background_facebook" />
 
     <TextView
         android:id="@+id/layout_top4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout_top2"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="Join facebook"
         android:textColor="#050505"
