@@ -53,9 +53,9 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex) {
         }
 
         binding.layoutSignupSexFemale.setOnClickListener {
-            binding.radioSignupSexFemale.isChecked = true
             binding.radioSignupSexMale.isChecked = false
             binding.radioSignupSexCustom.isChecked = false
+            binding.radioSignupSexFemale.isChecked = true
 
             //remove layout custom
             binding.tvCustom2.visibility = View.VISIBLE
@@ -66,9 +66,9 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex) {
         }
 
         binding.layoutSignupSexMale.setOnClickListener {
-            binding.radioSignupSexMale.isChecked = true
             binding.radioSignupSexFemale.isChecked = false
             binding.radioSignupSexCustom.isChecked = false
+            binding.radioSignupSexMale.isChecked = true
 
             //remove layout custom
             binding.tvCustom2.visibility = View.VISIBLE
@@ -79,9 +79,9 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex) {
         }
 
         binding.layoutSignupSexCustom.setOnClickListener {
-            binding.radioSignupSexCustom.isChecked = true
             binding.radioSignupSexFemale.isChecked = false
             binding.radioSignupSexMale.isChecked = false
+            binding.radioSignupSexCustom.isChecked = true
 
             //show layout custom
             binding.tvCustom2.visibility = View.GONE
@@ -141,7 +141,7 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex) {
             val sex = take_sex()
             val pronoun = take_pronoun()
             val gender = binding.edtGenderCustom.text.toString()
-            move_to_frag_phone(sex, pronoun, gender, binding.btnSignupSexGo)
+            move_to_frag_email(sex, pronoun, gender, binding.btnSignupSexGo)
         }
 
         binding.btnSignupSexBack.setOnClickListener {
@@ -211,7 +211,7 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex) {
         return ""
     }
 
-    private fun move_to_frag_phone(
+    private fun move_to_frag_email(
         sex: String,
         pronoun: String,
         gender: String,
@@ -222,8 +222,8 @@ class frag_signup_sex : Fragment(R.layout.frag_signup_sex) {
         shareViewModel.set_user_info_gender(gender)
         hide_soft_key_board(signup1Activity, view)
         replacefrag(
-            "frag_signup_phone",
-            frag_signup_phone(),
+            "frag_signup_email",
+            frag_signup_email(),
             signup1Activity.supportFragmentManager
         )
     }

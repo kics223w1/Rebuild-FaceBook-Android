@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -93,7 +94,7 @@ class frag_change_email_when_auth : Fragment(R.layout.frag_change_email_when_aut
         val list_email_address = shareViewModel.list_email_address
         val old_email_address = shareViewModel.user_info.email.toString()
         if (old_email_address == email) {
-            set_error_text_view("You just entered the emaill address which you enter when sign up.")
+            set_error_text_view("You just entered the emaill address which you entered when sign up.")
             return false
         }
         if (list_email_address.contains(email)) {
@@ -115,6 +116,7 @@ class frag_change_email_when_auth : Fragment(R.layout.frag_change_email_when_aut
         shareViewModel.is_email_address_change = true
 
         set_loading_process()
+        println("debug index last: ${shareViewModel.index_of_last_ele_email_account}")
 
         var done_ref_phone_email_account = false
         var done_ref_user_info_email = false
@@ -123,8 +125,8 @@ class frag_change_email_when_auth : Fragment(R.layout.frag_change_email_when_aut
         viewLifecycleOwner.lifecycleScope.launch {
             withContext(Dispatchers.IO){
                 val ref_phone_and_email_and_account = database
-                    .child("phone and email and account")
-                    .child(shareViewModel.index_of_last_ele_phone_email_account.toString())
+                    .child("email and account")
+                    .child(shareViewModel.index_of_last_ele_email_account.toString())
                     .child("email")
                 ref_phone_and_email_and_account.setValue(email)
                     .addOnCompleteListener(signup1activity) { task ->
@@ -161,15 +163,65 @@ class frag_change_email_when_auth : Fragment(R.layout.frag_change_email_when_aut
 
     private fun go_to_frag_auth_email_address_account() {
         //Why i don't use popbackstack
-        //Because when i use it , the phone don't popback
+        //Because when i use it , the phone didn't popback
         //The phone just reset the UI of this frag .
         //That is a bug i can't solve on March 19 2022.
+        CoroutineScope(Dispatchers.IO).launch {
+           update_email_user_and_verify_it()
+        }
         replacefrag(
             "frag_auth_email_address_account",
             frag_auth_email_address_account(),
             signup1activity.supportFragmentManager
         )
     }
+
+    private fun update_email_user_and_verify_it() {
+        //My method for sign in in this app is SignInWithEmailAndPassword
+        //You can see it in frag_signing
+        //And you will see that i set email = account + "@gmail.com"
+        //I have explained why i did that in frag_signing in function signin_user_and_move_frag
+
+        //So firebase will understand that email of user is "user.account + @gmail.com"
+        //So when we need to send a verification email to user
+        //We need to update email of user to user.email that user has entered
+        //When we done we just need reset it to the way it was
+
+        val user = Firebase.auth.currentUser
+        val email_address_for_verification = shareViewModel.user_info.email.toString()
+        if (user == null){
+            return
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            user.updateEmail(email_address_for_verification)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        verify_user_email()
+                    } else {
+                        println("debug vao error network trong update email")
+                        error_network()
+                    }
+                }
+                .addOnFailureListener(signup1activity) {
+                    println("debug update email e: $it")
+                }
+        }
+    }
+
+
+
+    private fun verify_user_email() {
+        val user = Firebase.auth.currentUser
+        if (user != null) {
+            if (!user.isEmailVerified) {
+                user.sendEmailVerification()
+            }
+        } else {
+            error_network()
+        }
+    }
+
+
 
     private fun set_error_text_view(str: String) {
         binding.tvChangeEmailWhenAuthInfo.text = str

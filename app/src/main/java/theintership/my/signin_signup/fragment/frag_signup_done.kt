@@ -22,11 +22,10 @@ import theintership.my.all_class.MyMethod.Companion.set_today
 import theintership.my.all_class.MyMethod.Companion.showToastLong
 import theintership.my.R
 import theintership.my.databinding.FragSignupDoneBinding
-import theintership.my.signin_signup.model.Phone_and_Email_Account
 import theintership.my.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
+import theintership.my.signin_signup.model.Email_Account
 import theintership.my.signin_signup.shareViewModel
-import java.util.*
 
 
 class frag_signup_done : Fragment(R.layout.frag_signup_done) {
@@ -51,14 +50,14 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done) {
             if (!MyMethod.check_wifi(signup1activity)) {
                 return@setOnClickListener
             }
-            add_phone_email_account_to_firebase_realtime_database_and_move_frag_create_account()
+            add_email_account_to_firebase_realtime_database_and_move_frag_create_account()
         }
 
         binding.btnSignupDoneGo2.setOnClickListener {
             if (!MyMethod.check_wifi(signup1activity)) {
                 return@setOnClickListener
             }
-            add_phone_email_account_to_firebase_realtime_database_and_move_frag_create_account()
+            add_email_account_to_firebase_realtime_database_and_move_frag_create_account()
         }
 
 
@@ -76,8 +75,6 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done) {
             }
         }
 
-
-
         return binding.root
     }
 
@@ -90,7 +87,7 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done) {
     }
 
 
-    private fun add_phone_email_account_to_firebase_realtime_database_and_move_frag_create_account() {
+    private fun add_email_account_to_firebase_realtime_database_and_move_frag_create_account() {
         if (!isWifi(signup1activity)) {
             val s = "Please connect wifi to continue"
             s.showToastLong(signup1activity)
@@ -100,9 +97,9 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done) {
         println("debug today $today")
         viewmodel.set_user_info_create_at(today)
         var id = 1
-        if (viewmodel.index_of_last_ele_phone_email_account != -1) {
-            id = viewmodel.index_of_last_ele_phone_email_account + 1
-            viewmodel.index_of_last_ele_phone_email_account = id // Update index
+        if (viewmodel.index_of_last_ele_email_account != -1) {
+            id = viewmodel.index_of_last_ele_email_account + 1
+            viewmodel.index_of_last_ele_email_account = id // Update index
         }
 
         var add_user = false
@@ -127,18 +124,16 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done) {
             }
 
         //Add data of phone and email and account on fireabase database
-        val ref_phone_email_account = database.child("phone and email and account")
+        val ref_phone_email_account = database.child("email and account")
         val email = viewmodel.user_info.email
-        val phone = viewmodel.user_info.phone
         val account = viewmodel.account_user
-        val phoneAndEmailAccount =
-            Phone_and_Email_Account(
+        val EmailAccount =
+            Email_Account(
                 id = id,
                 email = email,
-                phone = phone,
                 account = account
             )
-        ref_phone_email_account.child(id.toString()).setValue(phoneAndEmailAccount)
+        ref_phone_email_account.child(id.toString()).setValue(EmailAccount)
             .addOnCompleteListener(signup1activity) { task ->
                 if (task.isSuccessful) {
                     add_phone_email_account = true

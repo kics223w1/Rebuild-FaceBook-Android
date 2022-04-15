@@ -44,46 +44,20 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
         database = Firebase.database.reference
         auth = Firebase.auth
         signup1activity = activity as Signup1Activity
-        auth.setLanguageCode("en")
-
-        if (shareViewModel.first_time_auth_email_address || shareViewModel.is_email_address_change) {
-            if (shareViewModel.first_time_auth_email_address) {
-                shareViewModel.first_time_auth_email_address = false
-            }
-            if (shareViewModel.is_email_address_change) {
-                shareViewModel.is_email_address_change = false
-            }
-            val User = Firebase.auth.currentUser
-            if (User != null) {
-                if (!User.isEmailVerified) {
-                    update_email_user_and_verify_it()
-                }
-            } else {
-                error_network()
-            }
-        } else {
-            binding.tvAuthEmailAddressInfo.text =
-                "Please check the verification email which we've just sent you"
-            val s = "Please check your email to verify."
-            s.showToastLong(signup1activity)
-        }
-
 
         binding.btnAuthEmailAddressConfirm.setOnClickListener {
             if (!check_wifi(signup1activity)) {
                 return@setOnClickListener
             }
-
             val mUser = Firebase.auth.currentUser
             //Init user again to make sure that isEmailVerified true or false
             //If use the old one , it will not set isEmailVerified on time
             if (mUser != null) {
+                mUser.reload()
                 if (!mUser.isEmailVerified) {
-                    //OK224
-                    println("debug mUser email: ${mUser.email.toString()}")
+                    println("debug mUser fail email: ${mUser.email.toString()}")
                     val s = "If you have verified , please click again. Or please verify the eamil."
-                    s.showToastShort(signup1activity)
-                    update_email_user_and_verify_it()
+                    s.showToastShort(requireContext())
                 } else {
                     reset_account_user_and_move_frag()
                 }
@@ -96,13 +70,12 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
                 return@setOnClickListener
             }
             if (is_sending_verification_email_sucess) {
-                val s = "If you don't see email please wait.\nWe use free firebase so it might be late."
+                val s =
+                    "If you don't see email please wait.\nWe use free firebase so it might be late."
                 s.showToastLong(signup1activity)
                 return@setOnClickListener
             }
             val mUser = Firebase.auth.currentUser
-            //Init user again to make sure that isEmailVerified true or false
-            //If use the old one , it will not set isEmailVerified on time
             if (mUser != null) {
                 if (!mUser.isEmailVerified) {
                     //Don't need to update email again
@@ -122,20 +95,6 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
                 signup1activity.supportFragmentManager
             )
         }
-
-        binding.btnAuthEmailAddressConfirmByPhoneNumber.setOnClickListener {
-            val phone = shareViewModel.user_info.phone
-            if (phone == "") {
-                val s =
-                    "We can't confirm phone number when you don't enter it when sign up account."
-                s.showToastLong(signup1activity)
-                return@setOnClickListener
-            } else {
-                signup1activity.supportFragmentManager.popBackStack()
-            }
-        }
-
-
 
         return binding.root
     }
@@ -163,53 +122,10 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
     }
 
 
-    private fun update_email_user_and_verify_it() {
-        //My method for sign in in this app is SignInWithEmailAndPassword
-        //You can see it in frag_signing
-        //And you will see that i set email = account + "@gmail.com"
-        //I have explained why i did that in frag_signing in function signin_user_and_move_frag
-
-        //So firebase will understand that email of user is "user.account + @gmail.com"
-        //So when we need to send a verification email to user
-        //We need to update email of user to user.email that user has entered
-        //When we done we just need reset it to the way it was
-
-        val user = Firebase.auth.currentUser
-        val email_address_for_verification = shareViewModel.user_info.email.toString()
-        println("debug vao update email ne $email_address_for_verification")
-        if (user == null) {
-            if (!isWifi(signup1activity)) {
-                val s = "Please connect wifi and click send again. Thank you so much."
-                s.showToastLong(signup1activity)
-            }
-            return
-        }
-        viewLifecycleOwner.lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                user.updateEmail(email_address_for_verification)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            if (!is_sending_verification_email_sucess) {
-                                //Make sure that we just send one time when this fragment is created
-                                verify_user_email()
-                            }
-                        } else {
-                            println("debug vao error network trong update email")
-                            error_network()
-                        }
-                    }
-                    .addOnFailureListener(signup1activity) {
-                        println("debug update email e: $it")
-                    }
-            }
-        }
-    }
-
-
     private fun reset_account_user_and_move_frag() {
-        println("debug vao reset email ne")
         val user = Firebase.auth.currentUser
         val account_user = shareViewModel.account_user + "@gmail.com"
+        println("debug account trong reset: $account_user")
         if (user == null) {
             if (!isWifi(signup1activity)) {
                 val s = "Please connect wifi and click send again. Thank you so much."
@@ -217,14 +133,42 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
             }
             return
         }
+
+        val account_ref = shareViewModel.account_user
+        val ref = database
+            .child("User")
+            .child(account_ref)
+            .child("user info")
+        shareViewModel.set_user_verify_email(true)
+
         viewLifecycleOwner.lifecycleScope.launch {
             withContext(Dispatchers.IO) {
+                var done_ref = false
+                var done_update = false
+                ref.setValue(shareViewModel.user_info).addOnCompleteListener(signup1activity) { task ->
+                    if (task.isSuccessful) {
+                        done_ref = true
+                        if (done_ref && done_update) {
+                            go_to_frag_set_avatar_and_set_ref_user_info_verify_email()
+                        }
+                    }else{
+                        //We can set it later
+                        done_ref = true
+                        if (done_ref && done_update) {
+                            go_to_frag_set_avatar_and_set_ref_user_info_verify_email()
+                        }
+                    }
+                }
+
                 user.updateEmail(account_user)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             set_tv_email_has_verified()
                             println("debug user email sau khi reset: ${user.email}")
-                            go_to_frag_set_avatar_and_set_ref_user_info_verify_email()
+                            done_update = true
+                            if (done_ref && done_update) {
+                                go_to_frag_set_avatar_and_set_ref_user_info_verify_email()
+                            }
                         } else {
                             error_network()
                         }
@@ -238,41 +182,15 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
 
 
     private fun verify_user_email() {
-        val email_user = shareViewModel.user_info.email.toString()
         val user = Firebase.auth.currentUser
-
         if (user != null) {
-            println("debug user email trong verify: ${user.email}")
             if (!user.isEmailVerified) {
-                set_tv_email_are_sending(email_user = email_user)
                 user.sendEmailVerification()
-                    .addOnCompleteListener(signup1activity) { task ->
-                        if (task.isSuccessful) {
-                            is_sending_verification_email_sucess = true
-                            set_tv_after_sending_verification_email()
-                            val s = "Please check your email to verify."
-                            s.showToastLong(signup1activity)
-                        } else {
-                            error_network()
-                        }
-                    }
-            } else {
-                set_tv_email_has_verified()
             }
         } else {
             error_network()
         }
     }
-
-    private fun set_tv_email_are_sending(email_user: String) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            withContext(Dispatchers.Main) {
-                binding.tvAuthEmailAddressInfo.text =
-                    "We are sending a verification email to ${email_user}"
-            }
-        }
-    }
-
 
     private fun set_tv_email_has_verified() {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -288,15 +206,6 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
                     )
                 )
 
-            }
-        }
-    }
-
-    private fun set_tv_after_sending_verification_email() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            withContext(Dispatchers.Main) {
-                binding.tvAuthEmailAddressInfo.text =
-                    "Please check the verification email which we've just sent you"
             }
         }
     }

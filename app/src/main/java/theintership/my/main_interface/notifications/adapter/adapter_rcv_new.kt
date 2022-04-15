@@ -69,7 +69,7 @@ class adapter_rcv_new(private val interaction: Interaction? = null) :
             itemView.setOnClickListener {
                 interaction?.onItemSelected(adapterPosition, item)
             }
-            itemView.rcv_item_notifications_content.text = item.black_out_content()
+            itemView.rcv_item_notifications_content.setText(item.black_out_content())
             itemView.rcv_item_notifications_day_and_time.text = item.day_and_time.toString()
 
             if (item.is_readed) {
@@ -78,17 +78,12 @@ class adapter_rcv_new(private val interaction: Interaction? = null) :
             }
 
             val background_icon_color = setup_background_icon(item.icon.toString())
-            if (background_icon_color != 42) {
-                itemView.rcv_item_notifications_layout_icon.setCardBackgroundColor(
-                    ContextCompat.getColor(
-                        context.applicationContext,
-                        background_icon_color
-                    )
+            itemView.rcv_item_notifications_layout_icon.setCardBackgroundColor(
+                ContextCompat.getColor(
+                    context.applicationContext,
+                    background_icon_color
                 )
-            }
-            if (background_icon_color == 42) {
-                itemView.rcv_item_notifications_layout_icon.setCardBackgroundColor(Color.TRANSPARENT)
-            }
+            )
 
             Glide.with(context).load(item.link_avatar_person)
                 .placeholder(R.drawable.icon_loading_image).error(R.drawable.error_image)
@@ -121,7 +116,7 @@ class adapter_rcv_new(private val interaction: Interaction? = null) :
                 "love" -> return R.color.background_icon_love
                 "reply" -> return R.color.background_icon_reply
             }
-            return 42
+            return R.color.light_blue
         }
     }
 
