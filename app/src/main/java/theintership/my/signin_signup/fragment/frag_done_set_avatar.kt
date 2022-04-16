@@ -12,7 +12,9 @@ import androidx.lifecycle.lifecycleScope
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import theintership.my.Main_Interface_Activity
 import theintership.my.R
@@ -21,8 +23,9 @@ import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.all_class.upload_image_by_putBytes_to_firebase
 import theintership.my.all_class.upload_image_by_putFile_to_firebase
 import theintership.my.Signup1Activity
+import theintership.my.all_class.GetUri_Image_Firebase
 import theintership.my.databinding.FragDoneSetAvatarBinding
-import theintership.my.model.category_privacy_avatar
+import theintership.my.signin_signup.model.category_privacy_avatar
 import theintership.my.signin_signup.adapter.adapter_category_privacy_avatar
 import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.shareViewModel
@@ -57,7 +60,6 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
             object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                     privacy = adapter.getItem(p2)?.name.toString()
-                    println("debug $privacy")
                 }
 
                 override fun onNothingSelected(p0: AdapterView<*>?) {
@@ -79,36 +81,18 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
             if (!check_wifi(signup1activity)) {
                 return@setOnClickListener
             }
+            binding.btnDoneSetAvatarSave.visibility = View.INVISIBLE
+            binding.progressDoneSetAvatarSave.visibility = View.VISIBLE
+
             val check = shareViewmodel.image_is_local_or_bitmap
-            //true is user use local image
-            //false is user use take photo
-            val account_ref = shareViewmodel.account_user
-            val ref_privacy_avatar = database
-                .child("User")
-                .child("1122")
-                .child("user info")
-                .child("privacy_avatar")
             viewLifecycleOwner.lifecycleScope.launchWhenCreated {
                 withContext(Dispatchers.IO) {
-                    ref_privacy_avatar.setValue(privacy).addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            if (check == "local") {
-                                upload_image_from_local()
-                            }
-                            if (check == "bitmap") {
-                                upload_image_from_take_photo()
-                            }
-                        } else {
-                            //Don't worry when it fail , i will set it default is everyone later
-                            if (check == "local") {
-                                upload_image_from_local()
-                            }
-                            if (check == "bitmap") {
-                                upload_image_from_take_photo()
-                            }
-                        }
+                    if (check == "local") {
+                        upload_image_from_local()
                     }
-
+                    if (check == "bitmap") {
+                        upload_image_from_take_photo()
+                    }
                 }
             }
         }
@@ -134,21 +118,16 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
         val account_ref = shareViewmodel.account_user
         val image_path = shareViewmodel.image_path_from_local
 
-        val dialogLoading = dialog_loading(signup1activity)
-        dialogLoading.setCancelable(true)
-        dialogLoading.show()
-
-        val path_ref = "avatar_user/$account_ref"
+        var path_ref = "avatar_user/"
+        path_ref += account_ref.toString()
         val upload2 = upload_image_by_putFile_to_firebase()
             .upload(path_image = image_path, path_ref = path_ref)
 
         upload2.addOnSuccessListener {
-            dialogLoading.dismiss()
             val s = "Upload Success."
             s.showToastShort(signup1activity)
-            go_to_main_interface()
+            getUriImage_andUpdateDatabase()
         }.addOnFailureListener {
-            dialogLoading.dismiss()
             val s = "Please click again. My sever went wrong."
             s.showToastShort(signup1activity)
         }
@@ -158,22 +137,50 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
     private fun upload_image_from_take_photo() {
         val imageBitmap = shareViewmodel.photo_user
 
-        val dialogLoading = dialog_loading(signup1activity)
-        dialogLoading.setCancelable(true)
-        dialogLoading.show()
-
         val account_ref = shareViewmodel.account_user
-        val path_ref = "avatar_user/$account_ref"
+        println("debug account ref trong upload : $account_ref")
+        var path_ref = "avatar_user/"
+        path_ref += account_ref.toString()
         val upload2 = upload_image_by_putBytes_to_firebase()
             .upload(bitmap = imageBitmap, path_ref = path_ref)
 
         upload2.addOnSuccessListener {
-            dialogLoading.dismiss()
             val s = "Upload Success."
             s.showToastShort(signup1activity)
-            go_to_main_interface()
+            getUriImage_andUpdateDatabase()
         }.addOnFailureListener {
-            dialogLoading.dismiss()
+            val s = "Please take a photo again. My sever went wrong."
+            s.showToastShort(signup1activity)
+        }
+    }
+
+    private fun getUriImage_andUpdateDatabase() {
+        val account_ref = shareViewmodel.account_user
+        val ref = "avatar_user/$account_ref"
+        val ref_user = database
+            .child("User")
+            .child(account_ref)
+            .child("link avatar")
+        GetUri_Image_Firebase().getUri(ref).addOnSuccessListener {
+            ref_user.setValue(it.toString()).addOnCompleteListener(signup1activity) { task ->
+                if (task.isSuccessful) {
+                    go_to_main_interface()
+                } else {
+                   error()
+                }
+            }
+        }.addOnFailureListener {
+            println("debug e in get uri frag done set avatar: $it")
+           error()
+        }
+    }
+
+    private fun error(){
+        val check = shareViewmodel.image_is_local_or_bitmap
+        if (check == "local") {
+            val s = "Please click again. My sever went wrong."
+            s.showToastShort(signup1activity)
+        } else {
             val s = "Please take a photo again. My sever went wrong."
             s.showToastShort(signup1activity)
         }

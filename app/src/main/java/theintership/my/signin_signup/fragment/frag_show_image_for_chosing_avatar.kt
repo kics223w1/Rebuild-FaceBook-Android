@@ -47,7 +47,8 @@ class frag_show_image_for_chosing_avatar : Fragment(R.layout.frag_show_image_for
         val list_image = get_all_image_gallery(signup1activity).getAllImage()
 
         val linearLayout: RecyclerView.LayoutManager = LinearLayoutManager(signup1activity)
-        val adapter = adapter_image(this, signup1activity)
+        val adapter = adapter_image(this, requireContext())
+
         adapter.submitList(list_image)
 
         rcv.layoutManager = linearLayout

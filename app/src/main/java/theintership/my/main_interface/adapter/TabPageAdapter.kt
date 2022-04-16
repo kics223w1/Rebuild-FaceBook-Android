@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import theintership.my.R
 import theintership.my.main_interface.fragment.*
+import theintership.my.main_interface.notifications.frag_notifications
 
 class TabPageAdapter(activity: FragmentActivity, private val tab_count: Int) :
     FragmentStateAdapter(activity) {
@@ -19,7 +20,7 @@ class TabPageAdapter(activity: FragmentActivity, private val tab_count: Int) :
             1->frag_group()
             2->frag_video()
             3->frag_heart()
-            4->frag_notifications()
+            4-> frag_notifications()
             5->frag_setting()
             else -> frag_home()
         }

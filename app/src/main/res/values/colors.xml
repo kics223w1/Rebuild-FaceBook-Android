@@ -9,8 +9,15 @@
     <color name="white">#FFFFFFFF</color>
     <color name="background_white">#ffffff</color>
     <color name="light_blue">#1878f3</color>
-    
+
     <color name="error">#c74d66</color>
     <color name="light_grey">#767676</color>
     <color name="background_grey">#e1e8e5</color>
+
+    <!--    Notifications color-->
+    <color name="background_notification_readed">#e7f3ff</color>
+    <color name="background_icon_like">#3aa2f3</color>
+    <color name="background_icon_love">#f8536d</color>
+    <color name="background_icon_reply">#68e788</color>
+    <!--    Notifications color-->
 </resources>

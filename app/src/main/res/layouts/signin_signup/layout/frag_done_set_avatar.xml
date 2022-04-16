@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="@color/background_white"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_white"
+    android:orientation="vertical"
     android:tag="frag_done_set_avatar">
 
     <LinearLayout
@@ -39,60 +39,73 @@
 
     <View
         android:id="@+id/layout2"
-        android:layout_below="@id/layout1"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_below="@id/layout1"
         android:layout_marginTop="10dp"
         android:background="@android:color/darker_gray" />
 
 
     <Spinner
-        android:background="@android:color/transparent"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginStart="20dp"
-        android:layout_below="@+id/layout2"
         android:id="@+id/spinner_done_set_avatar"
         android:layout_width="match_parent"
-        android:layout_height="40dp"/>
+        android:layout_height="40dp"
+        android:layout_below="@+id/layout2"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="60dp"
+        android:background="@android:color/transparent" />
 
 
     <LinearLayout
-        android:layout_below="@id/spinner_done_set_avatar"
-        android:background="@drawable/bg_rectangle_grey"
-        android:orientation="vertical"
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="250dp">
+        android:layout_height="250dp"
+        android:layout_below="@id/spinner_done_set_avatar"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/bg_rectangle_grey"
+        android:orientation="vertical">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/image_avatar_in_done_set_avatar"
-            app:civ_border_color="@color/light_grey"
-            android:scaleType="centerCrop"
-            app:civ_border_width="2dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:civ_border_color="@color/light_grey"
+            app:civ_border_width="2dp" />
 
 
     </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/btn_done_set_avatar_save"
+    <FrameLayout
+        android:background="@drawable/bg_8dp_all_lightblue_ripple"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/bg_8dp_all_lightblue_ripple"
-        android:gravity="center"
-        android:text="Save"
-        android:textAllCaps="false"
-        android:textColor="#ecfcff"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
 
+
+        <ProgressBar
+            android:visibility="gone"
+            android:id="@+id/progress_done_set_avatar_save"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:id="@+id/btn_done_set_avatar_save"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="Save"
+            android:textAllCaps="false"
+            android:textColor="#ecfcff"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </FrameLayout>
 
 </RelativeLayout>

@@ -18,6 +18,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import theintership.my.R
 import java.lang.Math.ceil
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.Temporal
 import java.util.*
 
 class MyMethod {
@@ -31,13 +35,18 @@ class MyMethod {
         }
 
 
-        fun blackout_char(text : String , list : MutableList<String>) : SpannableString{
+        fun blackout_char(text: String, list: MutableList<String>): SpannableString {
             var span = SpannableString(text)
-            for (word in list){
+            for (word in list) {
                 val startIndex = text.indexOf(word)
                 val endIndex = startIndex + word.length
-                if (startIndex != -1){
-                    span.setSpan(StyleSpan(Typeface.BOLD) , startIndex , endIndex , Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                if (startIndex != -1) {
+                    span.setSpan(
+                        StyleSpan(Typeface.BOLD),
+                        startIndex,
+                        endIndex,
+                        Spannable.SPAN_INCLUSIVE_INCLUSIVE
+                    )
                 }
             }
             return span
@@ -80,6 +89,14 @@ class MyMethod {
                 .commit()
         }
 
+        fun replacefrag_in_main_interface(tag: String, frag: Fragment, fm: FragmentManager) {
+            fm.beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .addToBackStack(tag)
+                .replace(R.id.layout_Signup1Activity, frag)
+                .commit()
+        }
+
         fun addfrag(tag: String, frag: Fragment, fm: FragmentManager) {
             fm.beginTransaction()
                 .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
@@ -102,17 +119,58 @@ class MyMethod {
         }
 
         fun set_today(): String {
-            var mtoday = Calendar.getInstance()
-            var today = ""
-            today += (mtoday.get(Calendar.MONTH) + 1).toString()
-            today += "/"
-            today += mtoday.get(Calendar.DAY_OF_MONTH).toString()
-            today += "/"
-            today += mtoday.get(Calendar.YEAR).toString()
-
-            return today
+            var today = Calendar.getInstance().time
+            val DateFormat = SimpleDateFormat("MM/dd/yyyy")
+            return DateFormat.format(today)
         }
 
+        fun get_hour(): String {
+            val current = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("HH")
+            return formatter.toString()
+        }
+
+        fun get_minutes(): String {
+            val current = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("mm")
+            return formatter.toString()
+        }
+
+        fun get_AM_or_PM(): String {
+            val hour = get_hour()
+            if (hour in "0".."12") {
+                return "AM"
+            } else {
+                return "PM"
+            }
+        }
+
+        fun get_day_of_week(): String {
+            val today = Calendar.getInstance()
+            var day = ""
+            when (today.get(Calendar.DAY_OF_WEEK)) {
+                Calendar.MONDAY -> day = "Monday"
+                Calendar.TUESDAY -> day = "Tuesday"
+                Calendar.WEDNESDAY -> day = "Wednesday"
+                Calendar.THURSDAY -> day = "Thursday"
+                Calendar.FRIDAY -> day = "Friday"
+                Calendar.SATURDAY -> day = "Saturday"
+                Calendar.SUNDAY -> day = "Sunday"
+            }
+            return day
+        }
+        //ok
+        fun count_days(start : String, end : String) : Int{
+            val DateFormat = SimpleDateFormat("MM/dd/yyyy")
+
+            val start_day = DateFormat.parse(start)
+            val end_day = DateFormat.parse(end)
+
+            val mDifference = kotlin.math.abs(start_day.time - end_day.time)
+
+            val DifferenceDates = mDifference / (24 * 60 * 60 * 1000)
+            return DifferenceDates.toInt()
+        }
 
     }
 }

@@ -35,3 +35,15 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+
+
+      - name: Download Dependencies
+        run: ./gradlew androidDependencies
+
+#       Don't know how correct way to test UI on github actions
+#      - name: Run UI Test
+#        run: ./gradlew connectedAndroidTest
+
+      - name: Run Instrusment Test and Unit Test
+        run: ./gradlew test
+

@@ -41,7 +41,6 @@ class Main_Interface_Activity : AppCompatActivity() {
 
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                println("debug posi trong page: $position")
                 tabLayout.selectTab(tabLayout.getTabAt(position))
             }
         })
@@ -51,7 +50,6 @@ class Main_Interface_Activity : AppCompatActivity() {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 viewPager.currentItem = tab.position
-                println("debug posi trong tab: ${tab.position}")
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}

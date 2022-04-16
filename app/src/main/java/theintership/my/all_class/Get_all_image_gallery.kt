@@ -4,7 +4,8 @@ import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
-import theintership.my.model.image
+import theintership.my.all_class.MyMethod.Companion.showToastShort
+import theintership.my.signin_signup.model.image
 
 class get_all_image_gallery(mcontext: Context) {
 
@@ -39,6 +40,7 @@ class get_all_image_gallery(mcontext: Context) {
             if (id3 < list_string.size){
                 path3 = list_string[id3]
             }
+
             val image = image(path1 , path2 ,path3)
             list2.add(image)
         }

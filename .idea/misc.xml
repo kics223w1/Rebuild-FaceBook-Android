@@ -16,31 +16,41 @@
         <entry key="app/src/main/res/layouts/activity/layout/activity_main_interface.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/activitys/layout/activity_main.xml" value="0.18206521739130435" />
         <entry key="app/src/main/res/layouts/activitys/layout/activity_main_interface.xml" value="0.1721014492753623" />
+        <entry key="app/src/main/res/layouts/activitys/layout/activity_signup.xml" value="0.1" />
         <entry key="app/src/main/res/layouts/custom_item/layout/custom_icon_notification.xml" value="0.625" />
+        <entry key="app/src/main/res/layouts/dialog/layout/dialog_bottom_sex.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layouts/dialog/layout/dialog_cannot_create_account.xml" value="0.1793478260869565" />
+        <entry key="app/src/main/res/layouts/dialog/layout/dialog_delete_account.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layouts/dialog/layout/dialog_loading.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/dialog/layout/dialog_log_in_with_1_click.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/dialog/layout/dialog_show_account_and_password.xml" value="0.15070921985815602" />
+        <entry key="app/src/main/res/layouts/dialog/layout/dialog_show_language_select.xml" value="0.3098958333333333" />
+        <entry key="app/src/main/res/layouts/dialog/layout/dialog_signup_age.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layouts/dialog/layout/dialog_stop_signup.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/main_interface/layout/frag_group.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/main_interface/layout/frag_heart.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/main_interface/layout/frag_home.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/main_interface/layout/frag_notification.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/main_interface/layout/frag_notifications.xml" value="0.15070921985815602" />
+        <entry key="app/src/main/res/layouts/main_interface/layout/frag_post.xml" value="0.1082427536231884" />
+        <entry key="app/src/main/res/layouts/main_interface/layout/frag_posts.xml" value="0.1" />
+        <entry key="app/src/main/res/layouts/main_interface/layout/frag_replies.xml" value="0.1" />
         <entry key="app/src/main/res/layouts/main_interface/layout/frag_setting.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/main_interface/layout/frag_video.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/rcv_item/layout/item_rcv_language.xml" value="0.1203125" />
         <entry key="app/src/main/res/layouts/rcv_items/layout/item_rcv_image_for_selecting_avatar.xml" value="0.15416666666666667" />
-        <entry key="app/src/main/res/layouts/rcv_items/layout/item_rcv_notification.xml" value="0.22083501255294363" />
+        <entry key="app/src/main/res/layouts/rcv_items/layout/item_rcv_notification.xml" value="0.21962651645919365" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_auth_email_address_account.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_auth_phone_number_account.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_change_email_when_auth.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_change_phone_when_auth.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_done_set_avatar.xml" value="0.1793478260869565" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_set_avatar.xml" value="0.15070921985815602" />
+        <entry key="app/src/main/res/layouts/signin_signup/layout/frag_show_image_for_chosing_avatar.xml" value="0.1082427536231884" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_signup_account.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_signup_age.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_signup_creating_account.xml" value="0.15070921985815602" />
+        <entry key="app/src/main/res/layouts/signin_signup/layout/frag_signup_done.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_signup_email.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_signup_name.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_signup_password.xml" value="0.15070921985815602" />
@@ -55,7 +65,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="corretto-15" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
