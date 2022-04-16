@@ -127,13 +127,13 @@ class MyMethod {
         fun get_hour(): String {
             val current = LocalDateTime.now()
             val formatter = DateTimeFormatter.ofPattern("HH")
-            return formatter.toString()
+            return formatter.format(current).toString()
         }
 
         fun get_minutes(): String {
             val current = LocalDateTime.now()
             val formatter = DateTimeFormatter.ofPattern("mm")
-            return formatter.toString()
+            return formatter.format(current).toString()
         }
 
         fun get_AM_or_PM(): String {

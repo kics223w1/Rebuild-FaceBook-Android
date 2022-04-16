@@ -74,6 +74,9 @@ class ViewModelFragNotifications : ViewModel() {
                     val link_avatar_person = it.child("link_avatar_person").getValue().toString()
                     val from_person = it.child("from_person").getValue().toString()
                     val day_and_time = it.child("day_and_time").getValue().toString()
+                    val link_post = it.child("link_post").getValue().toString()
+                    val mId_comment = it.child("id_comment").getValue().toString()
+                    val id_comment = mId_comment.toInt()
                     val is_readed = if (_readed == "true") true else false
                     if (count_days(day_create, today) >= 14) {
                         //Just show notifications before 2 weeks
@@ -88,6 +91,8 @@ class ViewModelFragNotifications : ViewModel() {
                         kind_of_noti = kind_of_noti,
                         group = group,
                         icon = icon,
+                        link_post = link_post,
+                        id_comment = id_comment,
                         link_avatar_person = link_avatar_person,
                         is_readed = is_readed
                     )

@@ -50,11 +50,21 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done) {
             if (!MyMethod.check_wifi(signup1activity)) {
                 return@setOnClickListener
             }
+            if (viewmodel.account_user == "" || viewmodel.password_user == ""){
+                val s = "Some thing went wrong. Please sign up again."
+                s.showToastLong(signup1activity)
+                return@setOnClickListener
+            }
             add_email_account_to_firebase_realtime_database_and_move_frag_create_account()
         }
 
         binding.btnSignupDoneGo2.setOnClickListener {
             if (!MyMethod.check_wifi(signup1activity)) {
+                return@setOnClickListener
+            }
+            if (viewmodel.account_user == "" || viewmodel.password_user == "") {
+                val s = "Some thing went wrong. Please sign up again."
+                s.showToastLong(signup1activity)
                 return@setOnClickListener
             }
             add_email_account_to_firebase_realtime_database_and_move_frag_create_account()
@@ -103,7 +113,7 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done) {
         }
 
         var add_user = false
-        var add_phone_email_account = false
+        var add_email_account = false
 
         //Add user to ref on firebase realtime database
         viewLifecycleOwner.lifecycleScope.launch{
@@ -115,7 +125,7 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done) {
             .addOnCompleteListener(signup1activity) { task ->
                 if (task.isSuccessful) {
                     add_user = true
-                    if (add_user && add_phone_email_account) {
+                    if (add_user && add_email_account) {
                         move_to_frag_creating_account()
                     }
                 } else {
@@ -123,8 +133,8 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done) {
                 }
             }
 
-        //Add data of phone and email and account on fireabase database
-        val ref_phone_email_account = database.child("email and account")
+        //Add data of email and account on fireabase database
+        val ref_email_account = database.child("email and account")
         val email = viewmodel.user_info.email
         val account = viewmodel.account_user
         val EmailAccount =
@@ -133,11 +143,11 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done) {
                 email = email,
                 account = account
             )
-        ref_phone_email_account.child(id.toString()).setValue(EmailAccount)
+        ref_email_account.child(id.toString()).setValue(EmailAccount)
             .addOnCompleteListener(signup1activity) { task ->
                 if (task.isSuccessful) {
-                    add_phone_email_account = true
-                    if (add_user && add_phone_email_account) {
+                    add_email_account = true
+                    if (add_user && add_email_account) {
                         move_to_frag_creating_account()
                     }
                 } else {

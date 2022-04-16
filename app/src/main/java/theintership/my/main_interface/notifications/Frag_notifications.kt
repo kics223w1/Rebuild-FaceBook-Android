@@ -47,11 +47,14 @@ class frag_notifications : Fragment(), adapter_rcv_earlier.Interaction,
         mainInterfaceActivity = activity as Main_Interface_Activity
         val layout = view.findViewById<SwipeRefreshLayout>(R.id.frag_notificaions_swipelayout)
         val rcv_new = view.findViewById<RecyclerView>(R.id.frag_notifications_rcv_new)
-        val progress_loading_rcv_new = view.findViewById<ProgressBar>(R.id.frag_notifications_progressBar_rcv_new)
-        val progress_loading_rcv_earlier = view.findViewById<ProgressBar>(R.id.frag_notifications_progressBar_rcv_earlier)
+        val progress_loading_rcv_new =
+            view.findViewById<ProgressBar>(R.id.frag_notifications_progressBar_rcv_new)
+        val progress_loading_rcv_earlier =
+            view.findViewById<ProgressBar>(R.id.frag_notifications_progressBar_rcv_earlier)
         val rcv_earlier = view.findViewById<RecyclerView>(R.id.frag_notifications_rcv_earlier)
         val linearLayout: RecyclerView.LayoutManager = LinearLayoutManager(mainInterfaceActivity)
         val linearLayout1: RecyclerView.LayoutManager = LinearLayoutManager(mainInterfaceActivity)
+        val btn = view.findViewById<TextView>(R.id.frag_notifications_tv_new)
 
         database = Firebase.database.reference
 
@@ -61,26 +64,33 @@ class frag_notifications : Fragment(), adapter_rcv_earlier.Interaction,
             .child("notifications")
         val noti1 = Notifications(
             to_person = "Huy44",
-            "Tue at 8:33 PM",
-            day_create = "04/12/2022",
+            "",
+            day_create = "04/16/2022",
             from_person = "Cao Viet Huy",
             content = "Cao Viet Huy da thich bai viet cua ban trong Hoi Lap trinh Android",
             group = "Hoi Lap trinh Android",
             icon = "love love",
             kind_of_noti = "Comment",
             link_avatar_person = "https://firebasestorage.googleapis.com/v0/b/the-intership.appspot.com/o/avatar_user%2Fhuy1?alt=media&token=52d4b2e6-1a74-4ee5-ad19-51d9db2eead5",
-            is_readed = false
+            is_readed = false,
+            link_post = "Link Post ne",
+            id_comment = 22
         )
-//        for (i in 0 until 40) {
-//            if (i % 2 == 0) {
-//                noti1.content = "Cao Viet Huy da tra loi binh luan cua ban trong Hoi Lap trinh Android"
-//                noti1.icon = "love"
-//                noti1.is_readed = true
-//            }else{
-//                noti1.is_readed = false
-//            }
-//            ref.child("${i}").setValue(noti1)
-//        }
+        btn.setOnClickListener {
+            for (i in 0 until 40) {
+                noti1.set_day_and_time()
+                if (i % 2 == 0) {
+                    noti1.content =
+                        "Cao Viet Huy da tra loi binh luan cua ban trong Hoi Lap trinh Android cua ban trong hoi lap trinh IOS nha"
+                    noti1.icon = "love"
+                    noti1.is_readed = true
+                } else {
+                    noti1.is_readed = false
+                    noti1.icon = "love love"
+                }
+                ref.child("${i}").setValue(noti1)
+            }
+        }
 
 
         adapterRcvNew = adapter_rcv_new(this)
@@ -91,14 +101,14 @@ class frag_notifications : Fragment(), adapter_rcv_earlier.Interaction,
         rcv_earlier.layoutManager = linearLayout1
 
         rcv_new.isNestedScrollingEnabled = false
-//        rcv_earlier.isNestedScrollingEnabled = false
+        rcv_earlier.isNestedScrollingEnabled = false
 
         viewModelFragNotifications.setup_list_new_noti_and_old_noti("admin1")
 
         viewModelFragNotifications.getList_NewNoti_LiveData()
             .observe(viewLifecycleOwner, Observer {
                 adapterRcvNew.submitList(it)
-                println("debug sz new: ${it.size}")
+                println("debug obser sz new: ${it.size}")
                 progress_loading_rcv_new.visibility = View.GONE
                 rcv_new.visibility = View.VISIBLE
                 rcv_new.adapter = adapterRcvNew
@@ -106,17 +116,27 @@ class frag_notifications : Fragment(), adapter_rcv_earlier.Interaction,
 
         viewModelFragNotifications.getList_OldNoti_LiveData().observe(
             viewLifecycleOwner, Observer {
+                println("debug vao obser old ne ${it.size}")
                 adapterRcvEarlier.submitList(it)
-                println("debug sz old: ${it.size}")
                 progress_loading_rcv_earlier.visibility = View.GONE
                 rcv_earlier.visibility = View.VISIBLE
                 rcv_earlier.adapter = adapterRcvEarlier
             }
         )
 
-
+        var id = 40
         layout.setOnRefreshListener {
-            println("debug refresh ne")
+            noti1.set_day_and_time()
+            println("debug vao layout refresh ne")
+            ref.child(id.toString()).setValue(noti1)
+                .addOnCompleteListener(requireActivity()) { task ->
+                    if (task.isSuccessful) {
+                        layout.isRefreshing = false
+                    }else{
+                        layout.isRefreshing = false
+                    }
+                }
+            id++
         }
 
 
