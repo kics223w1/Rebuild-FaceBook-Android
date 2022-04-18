@@ -17,7 +17,7 @@
 ✅ Comment like Facebook (Not done)</br>
 ✅ Send friend request , show list photos (Not done)</br>
 ✅ Upload video stories like Facebook (Not done)</br>
-
+✅ User Profile like Facebook (Not done)</br>
 
 # Summary
 All of features of this app is like features in Facebook. I will try to make all features and UI like Facebook as much as possible.
