@@ -19,12 +19,14 @@ import theintership.my.all_class.MyMethod.Companion.get_minutes
 //Request friend
 
 data class Notifications(
-    var to_person : String?,
+    var to_person: String?,
     var day_and_time: String?,
     var day_create: String?,
     var from_person: String?,
     var content: String?,
     var kind_of_noti: String?,
+    var link_post: String?,
+    var id_comment: Int?,
     var group: String?,
     var icon: String?,
     var link_avatar_person: String?,
@@ -47,7 +49,15 @@ data class Notifications(
         val hour = get_hour()
         val minutes = get_minutes()
         val am_or_pm = get_AM_or_PM()
-        this.day_and_time = "$day at $hour:$minutes $am_or_pm"
+        var ans = ""
+        ans += day
+        ans += " at "
+        ans += hour
+        ans += ":"
+        ans += minutes
+        ans += " "
+        ans += am_or_pm
+        this.day_and_time = ans
     }
 
 

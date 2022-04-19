@@ -124,7 +124,8 @@ class frag_auth_email_address_account : Fragment(R.layout.frag_auth_email_addres
 
     private fun reset_account_user_and_move_frag() {
         val user = Firebase.auth.currentUser
-        val account_user = shareViewModel.account_user + "@gmail.com"
+        var account_user = shareViewModel.account_user
+        account_user += "@gmail.com"
         println("debug account trong reset: $account_user")
         if (user == null) {
             if (!isWifi(signup1activity)) {

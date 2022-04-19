@@ -9,7 +9,10 @@ import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
@@ -39,7 +42,6 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
     private val shareViewmodel: shareViewModel by activityViewModels()
     private lateinit var database: DatabaseReference
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,6 +51,8 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
         signup1activity = activity as Signup1Activity
         database = Firebase.database.reference
         var privacy = ""
+
+
 
         val adapter = adapter_category_privacy_avatar(
             signup1activity,
@@ -87,12 +91,32 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
             val check = shareViewmodel.image_is_local_or_bitmap
             viewLifecycleOwner.lifecycleScope.launchWhenCreated {
                 withContext(Dispatchers.IO) {
-                    if (check == "local") {
-                        upload_image_from_local()
-                    }
-                    if (check == "bitmap") {
-                        upload_image_from_take_photo()
-                    }
+                    //When user take photo by camera
+                    //Signup1Activity will stop , and variable in shareViewModel will lost
+                    //So we need get account ref from firebase realtime database
+                    val ref = database.child("email and account")
+                    ref.orderByKey().limitToLast(1).addListenerForSingleValueEvent(object :ValueEventListener{
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val ele = snapshot.children
+                            //Just one element
+                            var account_ref = ""
+                            ele.forEach {
+                                account_ref = it.child("account").getValue().toString()
+                            }
+                            if (check == "local") {
+                                upload_image_from_local(account_ref)
+                            }
+                            if (check == "bitmap") {
+                                upload_image_from_take_photo(account_ref)
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            val s = "Please do that again"
+                            s.showToastShort(signup1activity)
+                        }
+                    })
+
                 }
             }
         }
@@ -114,19 +138,16 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
     }
 
 
-    private fun upload_image_from_local() {
-        val account_ref = shareViewmodel.account_user
+    private fun upload_image_from_local(account_ref: String) {
         val image_path = shareViewmodel.image_path_from_local
-
-        var path_ref = "avatar_user/"
-        path_ref += account_ref.toString()
+        val path_ref = "avatar_user/$account_ref"
         val upload2 = upload_image_by_putFile_to_firebase()
             .upload(path_image = image_path, path_ref = path_ref)
 
         upload2.addOnSuccessListener {
             val s = "Upload Success."
             s.showToastShort(signup1activity)
-            getUriImage_andUpdateDatabase()
+            getUriImage_andUpdateDatabase(account_ref)
         }.addOnFailureListener {
             val s = "Please click again. My sever went wrong."
             s.showToastShort(signup1activity)
@@ -134,28 +155,23 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
 
     }
 
-    private fun upload_image_from_take_photo() {
+    private fun upload_image_from_take_photo(account_ref: String) {
         val imageBitmap = shareViewmodel.photo_user
-
-        val account_ref = shareViewmodel.account_user
-        println("debug account ref trong upload : $account_ref")
-        var path_ref = "avatar_user/"
-        path_ref += account_ref.toString()
+        val path_ref = "avatar_user/$account_ref"
         val upload2 = upload_image_by_putBytes_to_firebase()
             .upload(bitmap = imageBitmap, path_ref = path_ref)
 
         upload2.addOnSuccessListener {
             val s = "Upload Success."
             s.showToastShort(signup1activity)
-            getUriImage_andUpdateDatabase()
+            getUriImage_andUpdateDatabase(account_ref)
         }.addOnFailureListener {
             val s = "Please take a photo again. My sever went wrong."
             s.showToastShort(signup1activity)
         }
     }
 
-    private fun getUriImage_andUpdateDatabase() {
-        val account_ref = shareViewmodel.account_user
+    private fun getUriImage_andUpdateDatabase(account_ref : String) {
         val ref = "avatar_user/$account_ref"
         val ref_user = database
             .child("User")
