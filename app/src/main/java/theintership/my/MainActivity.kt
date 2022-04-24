@@ -43,10 +43,8 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
 
-        println("debug ${get_day_of_week()}")
 
         val check_user_save_password = sharedPref.getBoolean("User save password", false)
-        println("debug check user save password : $check_user_save_password")
 
 
         edt_signin_password.setOnEditorActionListener { textView, i, Keyevent ->
@@ -99,17 +97,11 @@ class MainActivity : AppCompatActivity() {
 
 
         icon_password_eye.setOnClickListener {
-            println("debug vao click eye")
             if (icon_password_line.visibility == View.VISIBLE) {
                 icon_password_line.visibility = View.GONE
                 edt_signin_password.transformationMethod =
                     HideReturnsTransformationMethod.getInstance()
                 edt_signin_password.setSelection(edt_signin_password.length())
-                if (icon_password_line.visibility == View.GONE){
-                    println("debug line gone after click eye")
-                }else{
-                    println("debug line does not gone after click eye")
-                }
             } else {
                 icon_password_line.visibility = View.VISIBLE
                 edt_signin_password.transformationMethod =
@@ -119,16 +111,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         icon_password_line.setOnClickListener {
-            println("debug vao click line")
             edt_signin_password.transformationMethod =
                 HideReturnsTransformationMethod.getInstance()
             edt_signin_password.setSelection(edt_signin_password.length())
             icon_password_line.visibility = View.GONE
-            if (icon_password_line.visibility == View.GONE){
-                println("debug line gone after click")
-            }else{
-                println("debug line does not gone after click")
-            }
         }
 
 
@@ -141,10 +127,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun signin_user(account: String, password: String) {
-        println("debug vao signin user")
         auth.signInWithEmailAndPassword(account, password)
             .addOnSuccessListener {
-                go_to_main_interface()
+                store_account_ref_and_move_frag(maccount_ref = account)
             }.addOnFailureListener {
                 val s = "Password or Account is incorrect."
                 s.showToastShort(this)
@@ -159,6 +144,26 @@ class MainActivity : AppCompatActivity() {
             R.anim.slide_out_left
         )
         this.finish()
+    }
+
+    private fun store_account_ref_and_move_frag(maccount_ref: String){
+        var account_ref = ""
+        for (i in 0 until maccount_ref.length){
+            if (maccount_ref[i] == '@'){
+                break
+            }
+            account_ref += maccount_ref[i]
+        }
+        val sharedPref = getSharedPreferences(
+            getString(R.string.preference_file_key), Context.MODE_PRIVATE
+        )
+        if(sharedPref != null){
+            with(sharedPref.edit()){
+                putString("account_ref", account_ref)
+                apply()
+                go_to_main_interface()
+            }
+        }
     }
 
 

@@ -15,6 +15,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/layout_tv_custom_icon_notifications"
         android:layout_width="15dp"
         android:layout_height="15dp"
         app:cardBackgroundColor="#fd3b5d"

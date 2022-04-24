@@ -1,7 +1,5 @@
 package theintership.my.main_interface.notifications.adapter
 
-import android.annotation.SuppressLint
-import android.graphics.Color
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +10,6 @@ import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_rcv_notification.view.*
 import theintership.my.R
-import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.main_interface.notifications.model.Notifications
 
 class adapter_rcv_new(private val interaction: Interaction? = null) :
@@ -55,7 +52,12 @@ class adapter_rcv_new(private val interaction: Interaction? = null) :
         return differ.currentList.size
     }
 
+    fun getCurrentList() : MutableList<Notifications>{
+        return differ.currentList.toMutableList()
+    }
+
     fun submitList(list: List<Notifications>) {
+        println("debug size trong new : ${list.size}")
         differ.submitList(list)
     }
 

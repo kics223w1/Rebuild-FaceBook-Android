@@ -54,7 +54,14 @@ class adapter_rcv_earlier(private val interaction: Interaction? = null) :
         return differ.currentList.size
     }
 
+    fun getCurrentList() : MutableList<Notifications>{
+        return differ.currentList.toMutableList()
+    }
+
+
+
     fun submitList(list: List<Notifications>) {
+        println("debug size trong earlier: ${list.size}")
         differ.submitList(list)
     }
 

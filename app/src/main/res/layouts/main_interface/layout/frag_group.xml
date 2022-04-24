@@ -6,13 +6,25 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/btn_frag_group"
         android:textSize="26sp"
         android:gravity="center"
         android:layout_gravity="center"
-        android:text="Group"
+        android:text="Add test notifications"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="40dp"/>
 
+
+
+    <EditText
+        android:textColor="@color/black"
+        android:textSize="26sp"
+        android:text="ID"
+        android:layout_marginTop="20dp"
+        android:background="@color/background_grey"
+        android:id="@+id/edt_frag_group"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"/>
 
 </LinearLayout>
 
