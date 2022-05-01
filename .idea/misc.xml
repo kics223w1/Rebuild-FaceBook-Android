@@ -8,10 +8,15 @@
         <entry key="..\:/Users/Admin/AndroidStudioProjects/the-intership/app/src/main/res/layouts/dialog/layout/dialog_stop_signup.xml" value="0.16576086956521738" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/the-intership/app/src/main/res/layouts/signin_signup/layout/frag_signup_creating_account.xml" value="0.1" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/the-intership/app/src/main/res/layouts/signin_signup/layout/frag_signup_signing_in.xml" value="0.1109375" />
+        <entry key="app/src/main/res/drawable-v24/bg_8dp_all_grey_ripple.xml" value="0.1575" />
+        <entry key="app/src/main/res/drawable-v24/bg_8dp_all_lightblue_ripple.xml" value="0.1575" />
+        <entry key="app/src/main/res/drawable-v24/bg_8dp_all_white.xml" value="0.1575" />
         <entry key="app/src/main/res/drawable-v24/bg_circle_light_grey.xml" value="0.27314814814814814" />
         <entry key="app/src/main/res/drawable-v24/bg_circle_pink.xml" value="0.2814814814814815" />
         <entry key="app/src/main/res/drawable-v24/bg_circle_white.xml" value="0.27314814814814814" />
+        <entry key="app/src/main/res/drawable-v24/bg_rectangle_grey.xml" value="0.1575" />
         <entry key="app/src/main/res/drawable-v24/bg_white_ripple.xml" value="0.2777777777777778" />
+        <entry key="app/src/main/res/drawable-v24/boder_light_blue.xml" value="0.1575" />
         <entry key="app/src/main/res/layouts/activity/layout/activity_main.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/activity/layout/activity_main_interface.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/activitys/layout/activity_main.xml" value="0.18206521739130435" />
@@ -27,6 +32,7 @@
         <entry key="app/src/main/res/layouts/dialog/layout/dialog_show_language_select.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layouts/dialog/layout/dialog_signup_age.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layouts/dialog/layout/dialog_stop_signup.xml" value="0.15070921985815602" />
+        <entry key="app/src/main/res/layouts/main_interface/layout/frag_friends.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layouts/main_interface/layout/frag_group.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/main_interface/layout/frag_heart.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/main_interface/layout/frag_home.xml" value="0.15070921985815602" />
@@ -38,7 +44,11 @@
         <entry key="app/src/main/res/layouts/main_interface/layout/frag_setting.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/main_interface/layout/frag_video.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/rcv_item/layout/item_rcv_language.xml" value="0.1203125" />
+        <entry key="app/src/main/res/layouts/rcv_items/layout/item_rcv_friends.xml" value="0.20416666666666666" />
+        <entry key="app/src/main/res/layouts/rcv_items/layout/item_rcv_friends_may_know.xml" value="0.20520833333333333" />
+        <entry key="app/src/main/res/layouts/rcv_items/layout/item_rcv_friends_request.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layouts/rcv_items/layout/item_rcv_image_for_selecting_avatar.xml" value="0.15416666666666667" />
+        <entry key="app/src/main/res/layouts/rcv_items/layout/item_rcv_language.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layouts/rcv_items/layout/item_rcv_notification.xml" value="0.21962651645919365" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_auth_email_address_account.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_auth_phone_number_account.xml" value="0.15070921985815602" />
@@ -47,6 +57,7 @@
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_done_set_avatar.xml" value="0.1793478260869565" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_set_avatar.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_show_image_for_chosing_avatar.xml" value="0.1082427536231884" />
+        <entry key="app/src/main/res/layouts/signin_signup/layout/frag_signing.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_signup_account.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_signup_age.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/signin_signup/layout/frag_signup_creating_account.xml" value="0.15070921985815602" />

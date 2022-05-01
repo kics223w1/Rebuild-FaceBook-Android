@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.activity_main_interface.*
 import theintership.my.Main_Interface_Activity
 import theintership.my.R
 import theintership.my.databinding.FragPostBinding
@@ -24,7 +25,9 @@ class frag_post : Fragment(R.layout.frag_post) {
     ): View {
         _binding = FragPostBinding.inflate(inflater, container, false)
         Main_Interface_Activity = activity as Main_Interface_Activity
-
+        binding.btnBack.setOnClickListener {
+            Main_Interface_Activity.supportFragmentManager.popBackStack()
+        }
 
 
 

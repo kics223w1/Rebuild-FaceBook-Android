@@ -1,5 +1,6 @@
 package theintership.my.signin_signup.fragment
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -28,6 +29,7 @@ import theintership.my.all_class.upload_image_by_putFile_to_firebase
 import theintership.my.Signup1Activity
 import theintership.my.all_class.GetUri_Image_Firebase
 import theintership.my.databinding.FragDoneSetAvatarBinding
+import theintership.my.main_interface.friends.model.Friends
 import theintership.my.signin_signup.model.category_privacy_avatar
 import theintership.my.signin_signup.adapter.adapter_category_privacy_avatar
 import theintership.my.signin_signup.dialog.dialog_loading
@@ -51,8 +53,6 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
         signup1activity = activity as Signup1Activity
         database = Firebase.database.reference
         var privacy = ""
-
-
 
         val adapter = adapter_category_privacy_avatar(
             signup1activity,
@@ -95,27 +95,28 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
                     //Signup1Activity will stop , and variable in shareViewModel will lost
                     //So we need get account ref from firebase realtime database
                     val ref = database.child("email and account")
-                    ref.orderByKey().limitToLast(1).addListenerForSingleValueEvent(object :ValueEventListener{
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            val ele = snapshot.children
-                            //Just one element
-                            var account_ref = ""
-                            ele.forEach {
-                                account_ref = it.child("account").getValue().toString()
+                    ref.orderByKey().limitToLast(1)
+                        .addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                val ele = snapshot.children
+                                //Just one element
+                                var account_ref = ""
+                                ele.forEach {
+                                    account_ref = it.child("account").getValue().toString()
+                                }
+                                if (check == "local") {
+                                    upload_image_from_local(account_ref)
+                                }
+                                if (check == "bitmap") {
+                                    upload_image_from_take_photo(account_ref)
+                                }
                             }
-                            if (check == "local") {
-                                upload_image_from_local(account_ref)
-                            }
-                            if (check == "bitmap") {
-                                upload_image_from_take_photo(account_ref)
-                            }
-                        }
 
-                        override fun onCancelled(error: DatabaseError) {
-                            val s = "Please do that again"
-                            s.showToastShort(signup1activity)
-                        }
-                    })
+                            override fun onCancelled(error: DatabaseError) {
+                                val s = "Please do that again"
+                                s.showToastShort(signup1activity)
+                            }
+                        })
 
                 }
             }
@@ -171,27 +172,30 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
         }
     }
 
-    private fun getUriImage_andUpdateDatabase(account_ref : String) {
+    private fun getUriImage_andUpdateDatabase(account_ref: String) {
         val ref = "avatar_user/$account_ref"
         val ref_user = database
             .child("User")
             .child(account_ref)
             .child("link avatar")
         GetUri_Image_Firebase().getUri(ref).addOnSuccessListener {
-            ref_user.setValue(it.toString()).addOnCompleteListener(signup1activity) { task ->
-                if (task.isSuccessful) {
-                    go_to_main_interface()
-                } else {
-                   error()
+            if (it != null) {
+                val link_avatar = it.toString()
+                ref_user.setValue(link_avatar).addOnCompleteListener(signup1activity) { task ->
+                    if (task.isSuccessful) {
+                        set_up_sharePref_and_move_frag(link_avatar, account_ref)
+                    } else {
+                        error()
+                    }
                 }
             }
         }.addOnFailureListener {
             println("debug e in get uri frag done set avatar: $it")
-           error()
+            error()
         }
     }
 
-    private fun error(){
+    private fun error() {
         val check = shareViewmodel.image_is_local_or_bitmap
         if (check == "local") {
             val s = "Please click again. My sever went wrong."
@@ -201,6 +205,79 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
             s.showToastShort(signup1activity)
         }
     }
+
+    private fun set_up_sharePref_and_move_frag(link_avatar: String, maccount_ref: String) {
+        val sharedPref = signup1activity.getSharedPreferences(
+            getString(R.string.preference_file_key), Context.MODE_PRIVATE
+        )
+        var account_ref = ""
+        for (i in 0 until maccount_ref.length) {
+            if (maccount_ref[i] == '@') {
+                break
+            }
+            account_ref += maccount_ref[i]
+        }
+        if (sharedPref != null) {
+            with(sharedPref.edit()) {
+                putString("link avatar", link_avatar)
+                apply()
+
+            }
+            with(sharedPref.edit()) {
+                putString("account ref", account_ref)
+                apply()
+            }
+            var name = shareViewmodel.user_info.fullname.toString()
+            if (name.isEmpty()) {
+
+                val ref = database.child("User")
+                    .child(account_ref)
+                    .child("user info")
+                ref.get().addOnSuccessListener {
+                    name = it.child("fullname").getValue().toString()
+                    with(sharedPref.edit()) {
+                        putString("user name", name)
+                        apply()
+                        setup_friends_mayknow(account_ref)
+                    }
+                }
+            } else {
+                with(sharedPref.edit()) {
+                    putString("user name", name)
+                    apply()
+                    setup_friends_mayknow(account_ref)
+                }
+            }
+
+        }
+
+    }
+
+    private fun setup_friends_mayknow(account_ref: String){
+        val ref_fr_may_know = database.child("User")
+            .child(account_ref)
+            .child("friends")
+            .child("may know")
+        val fr = Friends(
+            name = "Admin The Intership",
+            account_ref = "admin1",
+            link_avatar = "https://firebasestorage.googleapis.com/v0/b/the-intership.appspot.com/o/avatar_user%2Fadmin1?alt=media&token=b185369e-8418-40f2-8b7a-415541451593",
+            day = "18/12/2001",
+            hour = "11h"
+        )
+        for (i in 1 until 11) {
+            ref_fr_may_know.child(i.toString()).setValue(fr).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    if (i == 10){
+                        go_to_main_interface()
+                    }
+                }
+            }.addOnFailureListener {
+                go_to_main_interface()
+            }
+        }
+    }
+
 
     private fun go_to_main_interface() {
         startActivity(Intent(activity, Main_Interface_Activity::class.java))

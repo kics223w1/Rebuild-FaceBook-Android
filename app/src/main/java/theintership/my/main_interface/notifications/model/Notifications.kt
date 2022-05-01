@@ -10,6 +10,7 @@ import theintership.my.all_class.MyMethod.Companion.get_AM_or_PM
 import theintership.my.all_class.MyMethod.Companion.get_day_of_week
 import theintership.my.all_class.MyMethod.Companion.get_hour
 import theintership.my.all_class.MyMethod.Companion.get_minutes
+import theintership.my.all_class.MyMethod.Companion.set_today
 
 
 //List kind of notifcations:
@@ -49,17 +50,14 @@ data class Notifications(
         val hour = get_hour()
         val minutes = get_minutes()
         val am_or_pm = get_AM_or_PM()
-        var ans = ""
-        ans += day
-        ans += " at "
-        ans += hour
-        ans += ":"
-        ans += minutes
-        ans += " "
-        ans += am_or_pm
+        var ans = day + " at " + hour + ":" + minutes + " " + am_or_pm
         this.day_and_time = ans
     }
 
+    fun set_day_create(){
+        var today = set_today()
+        this.day_create = today
+    }
 
 }
 

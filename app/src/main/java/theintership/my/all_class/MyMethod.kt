@@ -93,7 +93,7 @@ class MyMethod {
             fm.beginTransaction()
                 .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                 .addToBackStack(tag)
-                .replace(R.id.layout_Signup1Activity, frag)
+                .replace(R.id.layout_main_interface, frag)
                 .commit()
         }
 
@@ -159,7 +159,7 @@ class MyMethod {
             }
             return day
         }
-        //ok
+
         fun count_days(start : String, end : String) : Int{
             val DateFormat = SimpleDateFormat("MM/dd/yyyy")
 
@@ -170,6 +170,23 @@ class MyMethod {
 
             val DifferenceDates = mDifference / (24 * 60 * 60 * 1000)
             return DifferenceDates.toInt()
+        }
+
+        fun count_hour(start : String) : Int{
+            var hour_start = start
+            if (start[0] == '0'){
+                hour_start = start[1].toString()
+            }
+            var current_hour = get_hour()
+            if (current_hour[0] == '0'){
+                current_hour = current_hour[1].toString()
+            }
+            val s1 = hour_start.toInt()
+            val s2 = current_hour.toInt()
+            if (s2 - s1 <= 0){
+                return 1
+            }
+            return s2 - s1
         }
 
     }

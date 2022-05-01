@@ -1,30 +1,39 @@
 package theintership.my.main_interface.notifications
 
-import android.media.Image
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.core.graphics.createBitmap
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.bumptech.glide.Glide
+import com.google.firebase.database.ChildEventListener
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import theintership.my.Main_Interface_Activity
 import theintership.my.R
-import theintership.my.all_class.Dowload_image_from_Firebase_by_dowloadURL
+import theintership.my.all_class.MyMethod.Companion.count_days
+import theintership.my.all_class.MyMethod.Companion.replacefrag_in_main_interface
+import theintership.my.all_class.MyMethod.Companion.set_today
 import theintership.my.all_class.MyMethod.Companion.showToastShort
-import theintership.my.main_interface.notifications.adapter.adapter_rcv_earlier
-import theintership.my.main_interface.notifications.adapter.adapter_rcv_new
+import theintership.my.main_interface.adapter.TabPageAdapter
+import theintership.my.main_interface.notifications.adapter.*
+import theintership.my.main_interface.notifications.fragments.frag_post
+import theintership.my.main_interface.notifications.fragments.frag_replies
 import theintership.my.main_interface.notifications.model.Notifications
 import theintership.my.main_interface.notifications.viewModel.ViewModelFragNotifications
 
@@ -37,6 +46,15 @@ class frag_notifications : Fragment(), adapter_rcv_earlier.Interaction,
     private lateinit var mainInterfaceActivity: Main_Interface_Activity
     private lateinit var adapterRcvNew: adapter_rcv_new
     private lateinit var adapterRcvEarlier: adapter_rcv_earlier
+    private lateinit var rcv_new: RecyclerView
+    private lateinit var rcv_earlier: RecyclerView
+    private lateinit var progress_loading_rcv_new: ProgressBar
+    private lateinit var progress_loading_rcv_earlier: ProgressBar
+    private lateinit var layout: SwipeRefreshLayout
+    private lateinit var account_ref: String
+    private val new_notis: MutableList<Notifications> = mutableListOf()
+    private val earlier_notis: MutableList<Notifications> = mutableListOf()
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,53 +63,20 @@ class frag_notifications : Fragment(), adapter_rcv_earlier.Interaction,
     ): View? {
         val view = inflater.inflate(R.layout.frag_notifications, container, false)
         mainInterfaceActivity = activity as Main_Interface_Activity
-        val layout = view.findViewById<SwipeRefreshLayout>(R.id.frag_notificaions_swipelayout)
-        val rcv_new = view.findViewById<RecyclerView>(R.id.frag_notifications_rcv_new)
-        val progress_loading_rcv_new =
-            view.findViewById<ProgressBar>(R.id.frag_notifications_progressBar_rcv_new)
-        val progress_loading_rcv_earlier =
-            view.findViewById<ProgressBar>(R.id.frag_notifications_progressBar_rcv_earlier)
-        val rcv_earlier = view.findViewById<RecyclerView>(R.id.frag_notifications_rcv_earlier)
+        layout = view.findViewById(R.id.frag_notificaions_swipelayout)
+        rcv_new = view.findViewById(R.id.frag_notifications_rcv_new)
+        progress_loading_rcv_new =
+            view.findViewById(R.id.frag_notifications_progressBar_rcv_new)
+        progress_loading_rcv_earlier =
+            view.findViewById(R.id.frag_notifications_progressBar_rcv_earlier)
+        rcv_earlier = view.findViewById(R.id.frag_notifications_rcv_earlier)
         val linearLayout: RecyclerView.LayoutManager = LinearLayoutManager(mainInterfaceActivity)
         val linearLayout1: RecyclerView.LayoutManager = LinearLayoutManager(mainInterfaceActivity)
-        val btn = view.findViewById<TextView>(R.id.frag_notifications_tv_new)
-
-        database = Firebase.database.reference
-
-        val ref = database
-            .child("User")
-            .child("admin1")
-            .child("notifications")
-        val noti1 = Notifications(
-            to_person = "Huy44",
-            "",
-            day_create = "04/16/2022",
-            from_person = "Cao Viet Huy",
-            content = "Cao Viet Huy da thich bai viet cua ban trong Hoi Lap trinh Android",
-            group = "Hoi Lap trinh Android",
-            icon = "love love",
-            kind_of_noti = "Comment",
-            link_avatar_person = "https://firebasestorage.googleapis.com/v0/b/the-intership.appspot.com/o/avatar_user%2Fhuy1?alt=media&token=52d4b2e6-1a74-4ee5-ad19-51d9db2eead5",
-            is_readed = false,
-            link_post = "Link Post ne",
-            id_comment = 22
+        sharedPref = mainInterfaceActivity.getSharedPreferences(
+            getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
-        btn.setOnClickListener {
-            for (i in 0 until 40) {
-                noti1.set_day_and_time()
-                if (i % 2 == 0) {
-                    noti1.content =
-                        "Cao Viet Huy da tra loi binh luan cua ban trong Hoi Lap trinh Android cua ban trong hoi lap trinh IOS nha"
-                    noti1.icon = "love"
-                    noti1.is_readed = true
-                } else {
-                    noti1.is_readed = false
-                    noti1.icon = "love love"
-                }
-                ref.child("${i}").setValue(noti1)
-            }
-        }
-
+        account_ref = sharedPref.getString("account_ref", "").toString()
+        database = Firebase.database.reference
 
         adapterRcvNew = adapter_rcv_new(this)
         adapterRcvEarlier = adapter_rcv_earlier(this)
@@ -103,50 +88,105 @@ class frag_notifications : Fragment(), adapter_rcv_earlier.Interaction,
         rcv_new.isNestedScrollingEnabled = false
         rcv_earlier.isNestedScrollingEnabled = false
 
-        viewModelFragNotifications.setup_list_new_noti_and_old_noti("admin1")
+        listen_new_noti_and_add_it_into_list(false)
 
-        viewModelFragNotifications.getList_NewNoti_LiveData()
-            .observe(viewLifecycleOwner, Observer {
-                adapterRcvNew.submitList(it)
-                println("debug obser sz new: ${it.size}")
-                progress_loading_rcv_new.visibility = View.GONE
-                rcv_new.visibility = View.VISIBLE
-                rcv_new.adapter = adapterRcvNew
-            })
-
-        viewModelFragNotifications.getList_OldNoti_LiveData().observe(
-            viewLifecycleOwner, Observer {
-                println("debug vao obser old ne ${it.size}")
-                adapterRcvEarlier.submitList(it)
-                progress_loading_rcv_earlier.visibility = View.GONE
-                rcv_earlier.visibility = View.VISIBLE
-                rcv_earlier.adapter = adapterRcvEarlier
-            }
-        )
-
-        var id = 40
         layout.setOnRefreshListener {
-            noti1.set_day_and_time()
-            println("debug vao layout refresh ne")
-            ref.child(id.toString()).setValue(noti1)
-                .addOnCompleteListener(requireActivity()) { task ->
-                    if (task.isSuccessful) {
-                        layout.isRefreshing = false
-                    }else{
-                        layout.isRefreshing = false
-                    }
-                }
-            id++
+            new_notis.clear()
+            earlier_notis.clear()
+            rcv_new.visibility = View.GONE
+            rcv_earlier.visibility = View.GONE
+            progress_loading_rcv_new.visibility = View.VISIBLE
+            progress_loading_rcv_earlier.visibility = View.VISIBLE
+            listen_new_noti_and_add_it_into_list(true)
         }
+
 
 
         return view
     }
 
     override fun onItemSelected(position: Int, item: Notifications) {
-        val s = position.toString()
-        s.showToastShort(mainInterfaceActivity)
+        when (item.kind_of_noti.toString()) {
+            "Comment" -> {
+                replacefrag_in_main_interface(
+                    "frag_replies",
+                    frag_replies(),
+                    mainInterfaceActivity.supportFragmentManager
+                )
+            }
+            "Post" -> {
+                replacefrag_in_main_interface(
+                    "frag_post",
+                    frag_post(),
+                    mainInterfaceActivity.supportFragmentManager
+                )
+            }
+        }
     }
+
+    fun listen_new_noti_and_add_it_into_list(layout_refresh: Boolean) {
+        val ref_noti = database
+            .child("User")
+            .child(account_ref)
+            .child("notifications")
+        var id_noti_is_readed = 0
+        ref_noti.addChildEventListener(object : ChildEventListener {
+            override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                if (snapshot.key.toString() == "id_noti_is_readed") {
+                    if (id_noti_is_readed > 0) {
+                        with(sharedPref.edit()) {
+                            putInt("id_noti_is_readed", id_noti_is_readed)
+                            apply()
+                        }
+                        CoroutineScope(Dispatchers.IO).launch {
+                            ref_noti.child("id_noti_is_readed")
+                                .setValue(id_noti_is_readed.toString())
+                        }
+                    }
+                    return
+                }
+                val noti = viewModelFragNotifications.setup_noti(snapshot)
+                val today = set_today()
+                progress_loading_rcv_earlier.visibility = View.GONE
+                progress_loading_rcv_new.visibility = View.GONE
+                rcv_new.visibility = View.VISIBLE
+                rcv_earlier.visibility = View.VISIBLE
+                if (count_days(noti.day_create.toString(), today) < 14) {
+                    if (noti.day_create == today) {
+                        new_notis.add(0, noti)
+                        adapterRcvNew.submitList(new_notis)
+                        rcv_new.adapter = adapterRcvNew
+                    } else {
+                        earlier_notis.add(0, noti)
+                        adapterRcvEarlier.submitList(earlier_notis)
+                        rcv_earlier.adapter = adapterRcvEarlier
+                    }
+                }
+                id_noti_is_readed += 1
+                if (layout_refresh) {
+                    layout.isRefreshing = false
+                }
+            }
+
+            override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                println("debug $snapshot")
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+        })
+    }
+
 
 }
 

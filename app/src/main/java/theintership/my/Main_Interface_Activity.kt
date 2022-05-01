@@ -50,6 +50,9 @@ class Main_Interface_Activity : AppCompatActivity() {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 viewPager.currentItem = tab.position
+                if (tab.position == 4){
+                    adapter.remove_layout_number_noti()
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {}
