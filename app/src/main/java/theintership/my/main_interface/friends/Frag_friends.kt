@@ -35,51 +35,51 @@ import theintership.my.main_interface.friends.viewmodel.ViewModelFragFriends
 import theintership.my.main_interface.notifications.model.Notifications
 
 
-class frag_friends : Fragment() , adapter_rcv_friends_request.Interaction  , adapter_rcv_friends_may_know.Interaction2 {
+class frag_friends : Fragment(), adapter_rcv_friends_request.Interaction,
+    adapter_rcv_friends_may_know.Interaction2 {
 
     private var _binding: FragFriendsBinding? = null
     private val binding get() = _binding!!
     private lateinit var database: DatabaseReference
-    private var list_fr_request : MutableList<Friends> = mutableListOf()
-    private var list_fr_may_know : MutableList<Friends> = mutableListOf()
+    private var list_fr_request: MutableList<Friends> = mutableListOf()
+    private var list_fr_may_know: MutableList<Friends> = mutableListOf()
     private lateinit var viewModelFragFriends: ViewModelFragFriends
-    private lateinit var adapter_fr_request : adapter_rcv_friends_request
-    private lateinit var adapter_fr_may_know : adapter_rcv_friends_may_know
+    private lateinit var adapter_fr_request: adapter_rcv_friends_request
+    private lateinit var adapter_fr_may_know: adapter_rcv_friends_may_know
     private lateinit var mainInterfaceActivity: Main_Interface_Activity
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragFriendsBinding.inflate(inflater, container, false)
         database = Firebase.database.reference
         viewModelFragFriends = ViewModelProvider(this).get(ViewModelFragFriends::class.java)
-        adapter_fr_request = adapter_rcv_friends_request(this)
-        adapter_fr_may_know = adapter_rcv_friends_may_know(this)
         mainInterfaceActivity = activity as Main_Interface_Activity
 
         val sharedPref = mainInterfaceActivity.getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
-        val account_ref = sharedPref.getString("account ref" , "null").toString()
+        val account_ref = sharedPref.getString("account ref", "null").toString()
+
+        adapter_fr_request = adapter_rcv_friends_request(this, mainInterfaceActivity, account_ref)
+        adapter_fr_may_know = adapter_rcv_friends_may_know(this)
 
         setupRCV()
-        listen_friends_request(account_ref , false)
+        listen_friends_request(account_ref, false)
         getlist_friends_may_know(account_ref)
 
         binding.layoutFragFriends.setOnRefreshListener {
             list_fr_request.clear()
             binding.fragFirendsRcvRequest.visibility = View.GONE
             binding.fragFriendsProgressBarRcvRequest.visibility = View.VISIBLE
-            listen_friends_request(account_ref , true)
+            listen_friends_request(account_ref, true)
         }
 
 
         return binding.root
     }
 
-    private fun setupRCV(){
+    private fun setupRCV() {
         val linearLayout: RecyclerView.LayoutManager = LinearLayoutManager(mainInterfaceActivity)
         val linearLayout1: RecyclerView.LayoutManager = LinearLayoutManager(mainInterfaceActivity)
 
@@ -90,18 +90,14 @@ class frag_friends : Fragment() , adapter_rcv_friends_request.Interaction  , ada
         binding.fragFriednsRcvMayKnow.isNestedScrollingEnabled = false
     }
 
-    private fun getlist_friends_may_know(account_ref: String){
-        val ref_fr = database
-            .child("User")
-            .child(account_ref)
-            .child("friends")
-            .child("may know")
+    private fun getlist_friends_may_know(account_ref: String) {
+        val ref_fr = database.child("User").child(account_ref).child("friends").child("may know")
         binding.fragFirendsProgressBarRcvMayKnow.visibility = View.GONE
 
-        val postListener = object : ValueEventListener{
+        val postListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val list = snapshot.children.toMutableList()
-                for (ele in list){
+                for (ele in list) {
                     val fr = viewModelFragFriends.setup_friends(ele)
                     list_fr_may_know.add(fr)
                     adapter_fr_may_know.submitList(list_fr_may_know)
@@ -119,23 +115,19 @@ class frag_friends : Fragment() , adapter_rcv_friends_request.Interaction  , ada
     }
 
 
-    private fun listen_friends_request(account_ref : String , layout_refresh : Boolean) {
-        val ref_fr = database
-            .child("User")
-            .child(account_ref)
-            .child("friends")
-            .child("request")
+    private fun listen_friends_request(account_ref: String, layout_refresh: Boolean) {
+        val ref_fr = database.child("User").child(account_ref).child("friends").child("request")
 
         binding.fragFriendsProgressBarRcvRequest.visibility = View.GONE
 
         ref_fr.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 val fr = viewModelFragFriends.setup_friends(snapshot)
-                list_fr_request.add(0 , fr)
+                list_fr_request.add(0, fr)
                 adapter_fr_request.submitList(list_fr_request)
                 binding.fragFirendsRcvRequest.visibility = View.VISIBLE
                 binding.fragFirendsRcvRequest.adapter = adapter_fr_request
-                if (layout_refresh){
+                if (layout_refresh) {
                     binding.layoutFragFriends.isRefreshing = false
                 }
             }
@@ -145,15 +137,15 @@ class frag_friends : Fragment() , adapter_rcv_friends_request.Interaction  , ada
             }
 
             override fun onChildRemoved(snapshot: DataSnapshot) {
-                TODO("Not yet implemented")
+
             }
 
             override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                TODO("Not yet implemented")
+
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+
             }
 
         })
@@ -164,8 +156,8 @@ class frag_friends : Fragment() , adapter_rcv_friends_request.Interaction  , ada
     }
 
     override fun onItemSelectedFrMayKnow(position: Int, item: Friends) {
-       val s = "Not Implement"
-       s.showToastShort(mainInterfaceActivity)
+        val s = "Not Implement"
+        s.showToastShort(mainInterfaceActivity)
     }
 
 

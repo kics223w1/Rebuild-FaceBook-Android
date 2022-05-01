@@ -52,10 +52,11 @@ class frag_video : Fragment() {
         account_ref = sharedPref?.getString("account_ref", "").toString()
 
         btn_friends.setOnClickListener {
-            if (edt_friends.text.toString() == "" || edt_id_friends.text.toString() == ""){
+            if (edt_friends.text.toString() == "" ){
                 return@setOnClickListener
             }
-            add_friends(edt_friends.text.toString() , edt_id_friends.text.toString())
+            val account_ref_owner = sharedPref?.getString("account ref" , "")
+            add_friends(account_ref_owner.toString() , edt_friends.text.toString())
         }
 
         btn_noti.setOnClickListener {
@@ -73,20 +74,19 @@ class frag_video : Fragment() {
     }
 
 
-    private fun add_friends(account_ref : String , id : String){
+    private fun add_friends(account_ref_owner : String , account_ref_fr: String){
         val ref = database
             .child("User")
-            .child(account_ref)
+            .child(account_ref_fr)
             .child("friends")
             .child("request")
-            .child(id)
+            .child(account_ref_owner)
         val sharedPref = context?.applicationContext?.getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
-        val account_ref = sharedPref?.getString("account_ref" , "account_ref == null").toString()
         val link_avatar= sharedPref?.getString("link avatar" , "link avatar == null").toString()
         val user_name =  sharedPref?.getString("user name" , "name == null").toString()
-        val fr = Friends(user_name,account_ref , link_avatar , set_today() , get_hour())
+        val fr = Friends(user_name,account_ref_owner , link_avatar , set_today() , get_hour())
         ref.setValue(fr)
     }
 
