@@ -63,7 +63,6 @@ class ViewModelFragNotifications() : ViewModel() {
         val mId_comment = it.child("id_comment").getValue().toString()
         var id_comment = -1
         if (!mId_comment.isEmpty()) {
-            println("debug vao mid ne: $mId_comment")
             id_comment = mId_comment.toInt()
         }
         val is_readed = if (_readed == "true") true else false

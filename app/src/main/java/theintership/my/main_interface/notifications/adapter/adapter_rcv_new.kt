@@ -57,7 +57,6 @@ class adapter_rcv_new(private val interaction: Interaction? = null) :
     }
 
     fun submitList(list: List<Notifications>) {
-        println("debug size trong new : ${list.size}")
         differ.submitList(list)
     }
 

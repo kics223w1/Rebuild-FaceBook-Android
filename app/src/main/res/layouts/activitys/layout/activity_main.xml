@@ -21,21 +21,20 @@
         <ImageView
             android:id="@+id/one"
             android:layout_width="match_parent"
-            android:scaleType="fitXY"
             android:layout_height="180dp"
             android:background="#053d87"
+            android:scaleType="fitXY"
             android:src="@drawable/background_facebook" />
 
 
-
         <EditText
-            android:layout_marginTop="50dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
             android:id="@+id/edt_signin_account"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_below="@+id/one"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="40dp"
             android:drawableBottom="@color/light_blue"
             android:hint="Phone number or email address"
             android:imeOptions="actionNext"
@@ -51,10 +50,10 @@
             android:id="@+id/layout_two"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:layout_below="@id/edt_signin_account"
             android:layout_marginStart="40dp"
-            android:layout_marginEnd="40dp"
             android:layout_marginTop="5dp"
-            android:layout_below="@id/edt_signin_account">
+            android:layout_marginEnd="40dp">
 
             <EditText
                 android:id="@+id/edt_signin_password"
@@ -92,7 +91,7 @@
         </FrameLayout>
 
 
-        <TextView
+        <FrameLayout
             android:id="@+id/btn_signin_go"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -100,14 +99,27 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="40dp"
-            android:background="@drawable/bg_8dp_all_lightblue_ripple"
-            android:gravity="center"
-            android:text="Sign in"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:background="@drawable/bg_8dp_all_lightblue_ripple">
 
+
+            <TextView
+                android:id="@+id/tv_signin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Sign in"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ProgressBar
+                android:visibility="invisible"
+                android:id="@+id/progress_signin"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/layout_three"
@@ -128,11 +140,11 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_below="@id/layout_three"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
             android:orientation="horizontal"
             android:padding="20dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
             android:weightSum="1">
 
             <View
@@ -178,15 +190,15 @@
             android:textStyle="normal" />
 
         <TextView
-            android:textColor="#767676"
-            android:layout_marginTop="50dp"
-            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/btn_signin_createAccout"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="50dp"
             android:gravity="center"
             android:text="Report bug"
-            android:textSize="14sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:textColor="#767676"
+            android:textSize="14sp" />
 
 
     </RelativeLayout>

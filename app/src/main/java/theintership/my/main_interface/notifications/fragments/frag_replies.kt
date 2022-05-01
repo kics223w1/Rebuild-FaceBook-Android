@@ -23,7 +23,9 @@ class frag_replies : Fragment(R.layout.frag_replies) {
     ): View {
         _binding = FragRepliesBinding.inflate(inflater, container, false)
         Main_Interface_Activity = activity as Main_Interface_Activity
-
+        binding.btnBack.setOnClickListener {
+            Main_Interface_Activity.supportFragmentManager.popBackStack()
+        }
 
 
 
