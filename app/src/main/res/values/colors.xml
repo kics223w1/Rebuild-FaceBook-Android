@@ -13,6 +13,7 @@
     <color name="error">#c74d66</color>
     <color name="light_grey">#767676</color>
     <color name="background_grey">#e1e8e5</color>
+    <color name="grey">#f1f2f6</color>
 
     <!--    Notifications color-->
     <color name="background_notification_readed">#e7f3ff</color>

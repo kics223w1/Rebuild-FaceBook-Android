@@ -91,7 +91,10 @@ class frag_friends : Fragment(), adapter_rcv_friends_request.Interaction,
     }
 
     private fun getlist_friends_may_know(account_ref: String) {
-        val ref_fr = database.child("User").child(account_ref).child("friends").child("may know")
+        val ref_fr = database.child("User")
+            .child(account_ref)
+            .child("friends")
+            .child("may know")
         binding.fragFirendsProgressBarRcvMayKnow.visibility = View.GONE
 
         val postListener = object : ValueEventListener {
@@ -116,7 +119,10 @@ class frag_friends : Fragment(), adapter_rcv_friends_request.Interaction,
 
 
     private fun listen_friends_request(account_ref: String, layout_refresh: Boolean) {
-        val ref_fr = database.child("User").child(account_ref).child("friends").child("request")
+        val ref_fr = database.child("User")
+            .child(account_ref)
+            .child("friends")
+            .child("request")
 
         binding.fragFriendsProgressBarRcvRequest.visibility = View.GONE
 

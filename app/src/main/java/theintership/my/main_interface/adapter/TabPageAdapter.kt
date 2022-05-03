@@ -39,7 +39,7 @@ class TabPageAdapter(activity: FragmentActivity, private val tab_count: Int) :
             0 -> frag_home()
             1 -> frag_friends()
             2 -> frag_video()
-            3 -> frag_heart()
+            3 -> frag_profile_owner()
             4 -> frag_notifications()
             5 -> frag_setting()
             else -> frag_home()
