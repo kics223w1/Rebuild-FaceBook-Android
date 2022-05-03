@@ -67,6 +67,7 @@ class Signup1Activity : AppCompatActivity() {
         btnBack.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            this.finish()
         }
     }
 

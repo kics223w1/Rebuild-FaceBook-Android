@@ -1,6 +1,7 @@
 package theintership.my.main_interface.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +13,11 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.frag_video.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import theintership.my.MainActivity
 import theintership.my.Main_Interface_Activity
 import theintership.my.R
 import theintership.my.all_class.MyMethod
@@ -45,6 +48,7 @@ class frag_video : Fragment() {
         val edt_kind_of_noti = view.findViewById<EditText>(R.id.edt_kind_of_notifications)
         val edt_friends = view.findViewById<EditText>(R.id.edt_friends)
         val edt_id_friends = view.findViewById<EditText>(R.id.edt_id_friends)
+        val btn_back_sign_in = view.findViewById<TextView>(R.id.btn_back_sign_in)
         database = Firebase.database.reference
         val sharedPref = context?.applicationContext?.getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
@@ -57,6 +61,15 @@ class frag_video : Fragment() {
             }
             val account_ref_owner = sharedPref?.getString("account ref" , "")
             add_friends(account_ref_owner.toString() , edt_friends.text.toString())
+        }
+
+        btn_back_sign_in.setOnClickListener {
+            startActivity(Intent(activity, MainActivity::class.java))
+            activity?.overridePendingTransition(
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            )
+            activity?.finish()
         }
 
         btn_noti.setOnClickListener {

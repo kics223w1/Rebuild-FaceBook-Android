@@ -22,6 +22,7 @@ import theintership.my.R
 import theintership.my.main_interface.fragment.*
 import theintership.my.main_interface.friends.frag_friends
 import theintership.my.main_interface.notifications.frag_notifications
+import theintership.my.main_interface.profile_owner.frag_profile_owner
 
 class TabPageAdapter(activity: FragmentActivity, private val tab_count: Int) :
     FragmentStateAdapter(activity) {
