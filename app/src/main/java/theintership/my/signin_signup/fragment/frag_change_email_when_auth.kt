@@ -116,7 +116,6 @@ class frag_change_email_when_auth : Fragment(R.layout.frag_change_email_when_aut
         shareViewModel.is_email_address_change = true
 
         set_loading_process()
-        println("debug index last: ${shareViewModel.index_of_last_ele_email_account}")
 
         var done_ref_phone_email_account = false
         var done_ref_user_info_email = false
@@ -126,7 +125,7 @@ class frag_change_email_when_auth : Fragment(R.layout.frag_change_email_when_aut
             withContext(Dispatchers.IO){
                 val ref_phone_and_email_and_account = database
                     .child("email and account")
-                    .child(shareViewModel.index_of_last_ele_email_account.toString())
+                    .child(shareViewModel.account_user)
                     .child("email")
                 ref_phone_and_email_and_account.setValue(email)
                     .addOnCompleteListener(signup1activity) { task ->

@@ -9,11 +9,15 @@
         <entry key="..\:/Users/Admin/AndroidStudioProjects/the-intership/app/src/main/res/layouts/signin_signup/layout/frag_signup_creating_account.xml" value="0.1" />
         <entry key="..\:/Users/Admin/AndroidStudioProjects/the-intership/app/src/main/res/layouts/signin_signup/layout/frag_signup_signing_in.xml" value="0.1109375" />
         <entry key="app/src/main/res/drawable-v24/bg_10dp_al_light_blue_ripple.xml" value="0.1575" />
+        <entry key="app/src/main/res/drawable-v24/bg_10dp_all_grey_ripple.xml" value="0.1575" />
         <entry key="app/src/main/res/drawable-v24/bg_10dp_all_lighter_blue_ripple.xml" value="0.1575" />
         <entry key="app/src/main/res/drawable-v24/bg_12dp_all_light_grey_ripple.xml" value="0.1575" />
         <entry key="app/src/main/res/drawable-v24/bg_12dp_all_lighter_blue_ripple.xml" value="0.1575" />
+        <entry key="app/src/main/res/drawable-v24/bg_14dp_all_grey_ripple.xml" value="0.1575" />
+        <entry key="app/src/main/res/drawable-v24/bg_14dp_top_white.xml" value="0.1575" />
         <entry key="app/src/main/res/drawable-v24/bg_8dp_all_green_ripple.xml" value="0.1575" />
         <entry key="app/src/main/res/drawable-v24/bg_8dp_all_grey_ripple.xml" value="0.1575" />
+        <entry key="app/src/main/res/drawable-v24/bg_8dp_all_light_grey_ripple.xml" value="0.1575" />
         <entry key="app/src/main/res/drawable-v24/bg_8dp_all_lightblue_ripple.xml" value="0.1575" />
         <entry key="app/src/main/res/drawable-v24/bg_8dp_all_white.xml" value="0.1575" />
         <entry key="app/src/main/res/drawable-v24/bg_circle_light_grey.xml" value="0.27314814814814814" />
@@ -29,6 +33,7 @@
         <entry key="app/src/main/res/layouts/activitys/layout/activity_main_interface.xml" value="0.1721014492753623" />
         <entry key="app/src/main/res/layouts/activitys/layout/activity_signup.xml" value="0.1" />
         <entry key="app/src/main/res/layouts/custom_item/layout/custom_icon_notification.xml" value="0.625" />
+        <entry key="app/src/main/res/layouts/dialog/layout/dialog_bottom_set_avatar_and_coverimage.xml" value="0.20416666666666666" />
         <entry key="app/src/main/res/layouts/dialog/layout/dialog_bottom_sex.xml" value="0.20520833333333333" />
         <entry key="app/src/main/res/layouts/dialog/layout/dialog_cannot_create_account.xml" value="0.1793478260869565" />
         <entry key="app/src/main/res/layouts/dialog/layout/dialog_delete_account.xml" value="0.20520833333333333" />
@@ -46,7 +51,8 @@
         <entry key="app/src/main/res/layouts/main_interface/layout/frag_notifications.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/main_interface/layout/frag_post.xml" value="0.1082427536231884" />
         <entry key="app/src/main/res/layouts/main_interface/layout/frag_posts.xml" value="0.1" />
-        <entry key="app/src/main/res/layouts/main_interface/layout/frag_profile_owner.xml" value="0.20208333333333334" />
+        <entry key="app/src/main/res/layouts/main_interface/layout/frag_profile_others.xml" value="0.25" />
+        <entry key="app/src/main/res/layouts/main_interface/layout/frag_profile_owner.xml" value="0.19145965576171875" />
         <entry key="app/src/main/res/layouts/main_interface/layout/frag_replies.xml" value="0.1" />
         <entry key="app/src/main/res/layouts/main_interface/layout/frag_setting.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layouts/main_interface/layout/frag_video.xml" value="0.15070921985815602" />

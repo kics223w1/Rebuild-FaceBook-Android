@@ -54,6 +54,9 @@ class frag_set_avatar : Fragment(R.layout.frag_set_avatar) {
         imageView = binding.imageViewTest
 
         binding.btnFragSetAvatarChoseFromGallery.setOnClickListener {
+            if (!check_wifi(signup1activity)) {
+                return@setOnClickListener
+            }
             check_permission_read_image()
         }
 

@@ -22,4 +22,19 @@ class SharePrefValue(context : Context) {
         return sharedPref.getString("user name" , "").toString()
     }
 
+    fun get_user_name_other() : String{
+        return sharedPref.getString("user name other" , "").toString()
+    }
+
+    fun get_link_avatar_other() : String{
+        return sharedPref.getString("link avatar other" , "").toString()
+    }
+
+    fun store_string(value : String , key : String){
+       with(sharedPref.edit()){
+           putString(key , value)
+           apply()
+       }
+    }
+
 }

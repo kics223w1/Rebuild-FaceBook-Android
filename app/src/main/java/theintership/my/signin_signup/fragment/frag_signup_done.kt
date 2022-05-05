@@ -104,13 +104,7 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done) {
             return
         }
         val today = set_today()
-        println("debug today $today")
         viewmodel.set_user_info_create_at(today)
-        var id = 1
-        if (viewmodel.index_of_last_ele_email_account != -1) {
-            id = viewmodel.index_of_last_ele_email_account + 1
-            viewmodel.index_of_last_ele_email_account = id // Update index
-        }
 
         var add_user = false
         var add_email_account = false
@@ -139,11 +133,10 @@ class frag_signup_done : Fragment(R.layout.frag_signup_done) {
         val account = viewmodel.account_user
         val EmailAccount =
             Email_Account(
-                id = id,
                 email = email,
                 account = account
             )
-        ref_email_account.child(id.toString()).setValue(EmailAccount)
+        ref_email_account.child(account).setValue(EmailAccount)
             .addOnCompleteListener(signup1activity) { task ->
                 if (task.isSuccessful) {
                     add_email_account = true

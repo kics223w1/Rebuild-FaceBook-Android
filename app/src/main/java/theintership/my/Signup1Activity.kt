@@ -94,9 +94,6 @@ class Signup1Activity : AppCompatActivity() {
                     if (maccount != "") {
                         shareViewModel.list_account.add(maccount)
                     }
-                    if (id != "") {
-                        shareViewModel.index_of_last_ele_email_account = id.toInt()
-                    }
                 }
                 println("debug list email: ${shareViewModel.list_email_address}")
                 println("debug list account: ${shareViewModel.list_account}")

@@ -4,18 +4,21 @@ import android.content.Context
 import android.graphics.Typeface
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.bumptech.glide.Glide
 import theintership.my.R
 import java.lang.Math.ceil
 import java.text.SimpleDateFormat
@@ -89,7 +92,31 @@ class MyMethod {
                 .commit()
         }
 
+        fun replacefrag_in_main_interface_with_slide_in_left(tag: String, frag: Fragment, fm: FragmentManager) {
+            fm.beginTransaction()
+                .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                .addToBackStack(tag)
+                .replace(R.id.layout_main_interface, frag)
+                .commit()
+        }
+
+        fun not_implement(context: Context){
+            val s = "Not implement"
+            s.showToastShort(context)
+        }
+
         fun replacefrag_in_main_interface(tag: String, frag: Fragment, fm: FragmentManager) {
+            fm.beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .addToBackStack(tag)
+                .replace(R.id.layout_main_interface, frag)
+                .commit()
+        }
+
+        fun replacefrag_in_main_interface_with_bundle(tag: String, frag: Fragment, fm: FragmentManager , arg : Bundle) {
+            if (!arg.isEmpty){
+                frag.arguments = arg
+            }
             fm.beginTransaction()
                 .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                 .addToBackStack(tag)
@@ -116,6 +143,11 @@ class MyMethod {
         fun hide_soft_key_board(context: Context, view: View) {
             val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0)
+        }
+
+        fun set_up_image_by_glide(link: String, img: ImageView, context: Context) {
+            Glide.with(context).load(link).placeholder(R.drawable.icon_loading_image).dontAnimate()
+                .error(R.drawable.error_image).into(img)
         }
 
         fun set_today(): String {

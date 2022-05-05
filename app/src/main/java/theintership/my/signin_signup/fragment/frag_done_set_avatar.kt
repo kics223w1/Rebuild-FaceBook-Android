@@ -260,8 +260,8 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
             .child("may know")
         val fr = Friends(
             name = "Admin The Intership",
-            account_ref = "admin1",
-            link_avatar = "https://firebasestorage.googleapis.com/v0/b/the-intership.appspot.com/o/avatar_user%2Fadmin1?alt=media&token=b185369e-8418-40f2-8b7a-415541451593",
+            account_ref = "admin2",
+            link_avatar = "https://firebasestorage.googleapis.com/v0/b/the-intership.appspot.com/o/avatar_user%2Fadmin1?alt=media&token=e555a00b-63ac-4297-845b-16dcbd371d45",
             day = "18/12/2001",
             hour = "11h"
         )
