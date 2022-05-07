@@ -58,7 +58,7 @@
                 android:layout_weight="0.5"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/bg_8dp_all_lightblue_ripple"
+                android:background="@drawable/bg_8dp_all_blue_ripple"
                 android:gravity="center"
                 android:text="Confirm"
                 android:textAllCaps="false"

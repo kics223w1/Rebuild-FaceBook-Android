@@ -67,6 +67,7 @@ class Signup1Activity : AppCompatActivity() {
         btnBack.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+            this.finish()
         }
     }
 
@@ -92,9 +93,6 @@ class Signup1Activity : AppCompatActivity() {
                     }
                     if (maccount != "") {
                         shareViewModel.list_account.add(maccount)
-                    }
-                    if (id != "") {
-                        shareViewModel.index_of_last_ele_email_account = id.toInt()
                     }
                 }
                 println("debug list email: ${shareViewModel.list_email_address}")

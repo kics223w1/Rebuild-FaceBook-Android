@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="80dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/item_rcv_show_all_friends_image"
+        android:layout_weight="0.3"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/avatar_user" />
+
+    <TextView
+        android:id="@+id/item_rcv_show_all_friends_name"
+        android:layout_weight="0.4"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginStart="5dp"
+        android:gravity="start|center_vertical"
+        android:text="Cao Viet Huy"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/item_rcv_show_all_friends_btn_add_friend"
+        android:background="@drawable/bg_10dp_all_blue_ripple"
+        android:padding="6dp"
+        android:textColor="@color/white"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center|center_vertical"
+        android:textSize="18sp"
+        android:lines="1"
+        android:text="Add friend"
+        android:textStyle="bold"
+        android:layout_weight="0.4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

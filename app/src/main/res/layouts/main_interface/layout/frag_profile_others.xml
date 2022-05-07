@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_rectangle_white"
+    android:tag="frag_profile_others">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="-10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/btn_done_set_avatar_back"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="0.1"
+                    android:background="@drawable/bg_circle_white"
+                    android:src="@drawable/back_arrow" />
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="0.9"
+                    android:background="@drawable/bg_14dp_all_grey_ripple">
+
+                    <ImageView
+                        android:id="@+id/one"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:src="@drawable/search_30px" />
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="10dp"
+                        android:layout_toEndOf="@+id/one"
+                        android:gravity="center_vertical"
+                        android:text="Search"
+                        android:textColor="@color/light_grey"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="364dp">
+
+                <ImageView
+                    android:id="@+id/frag_profile_others_cover_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="220dp"
+                    android:contentDescription="Cover image"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/default_female_avatar"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/frag_profile_others_avatar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="160dp"
+                    android:layout_marginTop="152dp"
+                    android:minHeight="150dp"
+                    android:src="@drawable/default_male_avatar"
+                    app:civ_border_color="@color/white"
+                    app:civ_border_width="5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/frag_profile_others_cover_image"
+                    app:layout_constraintVertical_bias="0.0" />
+
+
+                <TextView
+                    android:id="@+id/frag_profile_others_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:lines="1"
+                    android:text="Cao Viet Huy"
+                    android:textColor="@color/black"
+                    android:textSize="26sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/frag_profile_others_avatar"
+                    app:layout_constraintHorizontal_bias="0.777"
+                    app:layout_constraintStart_toStartOf="@+id/frag_profile_others_avatar"
+                    app:layout_constraintTop_toBottomOf="@+id/frag_profile_others_avatar"
+                    app:layout_constraintVertical_bias="0.0" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+
+                <ProgressBar
+                    android:background="@drawable/bg_10dp_all_blue_ripple"
+                    android:id="@+id/frag_profile_others_progress_add_friend"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.8"
+                    android:visibility="visible" />
+
+
+                <RelativeLayout
+                    android:id="@+id/frag_profile_others_btn_add_friend"
+                    android:visibility="gone"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="0.8"
+                    android:background="@drawable/bg_10dp_all_blue_ripple">
+
+                    <TextView
+                        android:id="@+id/frag_profile_others_btn_add_friend_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true"
+                        android:gravity="center"
+                        android:text="Add friend"
+                        android:textColor="#ecfcff"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+
+                    <ImageView
+                        android:id="@+id/frag_profile_others_btn_add_friend_icon"
+                        android:layout_toEndOf="@+id/frag_profile_others_btn_add_friend_text"
+                        android:layout_marginStart="5dp"
+                        android:src="@drawable/add_friend_32"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"/>
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/btn_more"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2"
+                    android:background="@drawable/bg_10dp_all_grey_ripple"
+                    android:src="@drawable/three_dots" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                android:background="@android:color/darker_gray" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_white_ripple"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/house_32" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center_vertical"
+                    android:lines="1"
+                    android:text="Living at Ho Chi Minh City"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_white_ripple"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/hat_graduating_32" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center_vertical"
+                    android:text="Study at Ho Chi Minh University of Technology"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_white_ripple"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/three_dots_32" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:gravity="center_vertical"
+                    android:lines="1"
+                    android:text="See your introduce information"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="-10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="-10dp"
+                android:background="@android:color/darker_gray" />
+
+            <ProgressBar
+                android:id="@+id/frag_profile_others_progress_rcv_friends"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/frag_profile_others_layout_friends"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start"
+                        android:layout_marginStart="10dp"
+                        android:gravity="center"
+                        android:text="Friends"
+                        android:textColor="@color/black"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:layout_marginEnd="10dp"
+                        android:gravity="center"
+                        android:text="Find friend"
+                        android:textColor="@color/light_blue"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/frag_profile_others_number_friends"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="2 friends"
+                    android:textColor="@color/light_grey"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/frag_profile_others_rcv_friends"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/frag_profile_others_btn_show_all_friends"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_14dp_all_grey_ripple"
+                    android:textColor="@color/light_grey"
+                    android:text="See all friends"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

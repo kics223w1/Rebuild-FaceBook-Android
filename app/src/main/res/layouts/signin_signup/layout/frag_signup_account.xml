@@ -103,7 +103,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/bg_8dp_all_lightblue_ripple">
+        android:background="@drawable/bg_8dp_all_blue_ripple">
 
 
         <ProgressBar

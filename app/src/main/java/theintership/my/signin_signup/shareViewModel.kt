@@ -22,7 +22,6 @@ class shareViewModel : ViewModel() {
     )
     var account_user = ""
     var password_user = ""
-    var index_of_last_ele_email_account = -1
 
     var photo_user  = createBitmap(1000 , 1000)
     var photo_user_null = true

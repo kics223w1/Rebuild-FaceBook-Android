@@ -1,5 +1,6 @@
 package theintership.my.main_interface.friends.adapter
 
+import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +15,7 @@ import theintership.my.all_class.MyMethod.Companion.count_hour
 import theintership.my.all_class.MyMethod.Companion.set_today
 import theintership.my.main_interface.friends.model.Friends
 
-class adapter_rcv_friends_may_know(private val interaction: Interaction2? = null) :
+class adapter_rcv_friends_may_know(private val interaction: Interaction2? = null ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Friends>() {

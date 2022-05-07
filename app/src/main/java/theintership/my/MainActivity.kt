@@ -16,24 +16,31 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import theintership.my.all_class.MyMethod.Companion.get_day_of_week
 import theintership.my.all_class.MyMethod.Companion.hide_soft_key_board
+import theintership.my.all_class.MyMethod.Companion.set_today
 import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.signin_signup.dialog.dialog_showlanguage
+import theintership.my.signin_signup.model.Email_Account
+import theintership.my.signin_signup.model.user_info
 
 class MainActivity : AppCompatActivity() {
 
     private val REQUEST_CODE = 100
     private lateinit var auth: FirebaseAuth
     private lateinit var database: DatabaseReference
-    private lateinit var progress_signin : ProgressBar
-    private lateinit var tv_signin : TextView
-
+    private lateinit var progress_signin: ProgressBar
+    private lateinit var tv_signin: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         val icon_password_line = findViewById<ImageView>(R.id.password_line)
         val icon_password_eye = findViewById<ImageView>(R.id.password_eye)
         val btn_signin = findViewById<FrameLayout>(R.id.btn_signin_go)
+        val btn_forgot_password = findViewById<TextView>(R.id.btn_forgot_password)
         progress_signin = findViewById<ProgressBar>(R.id.progress_signin)
         tv_signin = findViewById<TextView>(R.id.tv_signin)
         auth = Firebase.auth
@@ -54,6 +62,9 @@ class MainActivity : AppCompatActivity() {
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
 
+        btn_forgot_password.setOnClickListener {
+            create_100account()
+        }
 
         val check_user_save_password = sharedPref.getBoolean("User save password", false)
 
@@ -139,6 +150,74 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    private fun create_100account() {
+        for (i in 4 until 105) {
+            val account = "admin" + i
+            val email = account + "@gmail.com"
+            val password = "huyhuy"
+            val ref = database.child("User")
+                .child(account)
+                .child("user info")
+            val ref22 = database.child("User")
+                .child(account)
+            ref22.child("link avatar")
+                .setValue("https://firebasestorage.googleapis.com/v0/b/the-intership.appspot.com/o/avatar_user%2Fadmin1?alt=media&token=e555a00b-63ac-4297-845b-16dcbd371d45")
+            ref22.child("link cover image")
+                .setValue("https://firebasestorage.googleapis.com/v0/b/the-intership.appspot.com/o/cover_image%2Fadmin1?alt=media&token=5e9d3275-2230-475e-9ce1-f47c6aa9c220")
+            val user_info: user_info = user_info(
+                email = "admin" + i + "@gmail.com",
+                fullname = "Admin Test " + i,
+                sex = "Male",
+                pronoun = "",
+                gender = "",
+                age = 21,
+                birthday = "18/12/2001",
+                create_at = set_today(),
+                last_login = set_today(),
+                lastname = "Test " + i,
+                firstname = "Admin",
+                verify_email = true,
+            )
+//            var done1 = false
+//            var done2 = false
+//            var done3 = false
+//            ref.setValue(user_info).addOnSuccessListener {
+//                done1 = true
+//                if (done1 && done2 ){
+//                    println("debug create $email success")
+//                }
+//            }
+//            val ref2 = database.child("email and account")
+//                .child(account)
+//            val email_and_account = Email_Account(email = email, account = account)
+//            ref2.setValue(email_and_account).addOnSuccessListener {
+//                done2 = true
+//                if (done1 && done2 ){
+//                    println("debug create $email success")
+//                }
+//            }
+//            create_auth_user_firebase(email, password , done1 , done2)
+        }
+    }
+
+    private fun create_auth_user_firebase(email: String, password: String , done1 : Boolean , done2 : Boolean) {
+        CoroutineScope(Dispatchers.IO).launch {
+            auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this@MainActivity) { task ->
+                    if (task.isSuccessful) {
+                        var done3 = true
+                        if (done1 && done2 && done3){
+                            println("debug create $email success")
+                        }
+                    } else {
+                        println("debug create $email fail")
+                    }
+                }
+        }
+
+    }
+
+
     private fun signin_user(account: String, password: String) {
         auth.signInWithEmailAndPassword(account, password)
             .addOnSuccessListener {
@@ -161,14 +240,14 @@ class MainActivity : AppCompatActivity() {
         this.finish()
     }
 
-    private fun set_up_sharePref_and_move_frag(maccount_ref: String){
+    private fun set_up_sharePref_and_move_frag(maccount_ref: String) {
         val sharedPref = getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
 
         var account_ref = ""
-        for (i in 0 until maccount_ref.length){
-            if (maccount_ref[i] == '@'){
+        for (i in 0 until maccount_ref.length) {
+            if (maccount_ref[i] == '@') {
                 break
             }
             account_ref += maccount_ref[i]
@@ -184,51 +263,52 @@ class MainActivity : AppCompatActivity() {
         var done_avatar = false
         var done_account = false
         var done_name = false
-        fun go(){
-            if (done_avatar && done_account && done_name){
+        fun go() {
+            if (done_avatar && done_account && done_name) {
                 go_to_main_interface()
             }
         }
         ref.get().addOnSuccessListener {
-            if (it.exists()){
+            if (it.exists()) {
                 val link_avatar = it.getValue().toString()
-                if (sharedPref != null){
-                    with(sharedPref.edit()){
-                        putString("link avatar" , link_avatar)
+                if (sharedPref != null) {
+                    with(sharedPref.edit()) {
+                        putString("link avatar", link_avatar)
                         apply()
                         done_avatar = true
                         go()
                     }
                 }
-            }else{
+            } else {
                 done_avatar = true
                 go()
             }
         }
         ref_name.get().addOnSuccessListener {
-            if (it.exists()){
-               val name = it.child("fullname").getValue().toString()
-               if (sharedPref != null){
-                   with(sharedPref.edit()){
-                       putString("user name" , name)
-                       apply()
-                       done_name = true
-                       go()
-                   }
-               }else{
-                   done_name = true
-                   go()
-               }
+            if (it.exists()) {
+                val name = it.child("fullname").getValue().toString()
+                println("debug name owner: $name")
+                if (sharedPref != null) {
+                    with(sharedPref.edit()) {
+                        putString("user name", name)
+                        apply()
+                        done_name = true
+                        go()
+                    }
+                } else {
+                    done_name = true
+                    go()
+                }
             }
         }
-        if(sharedPref != null){
-            with(sharedPref.edit()){
+        if (sharedPref != null) {
+            with(sharedPref.edit()) {
                 putString("account ref", account_ref)
                 apply()
                 done_account = true
                 go()
             }
-        }else{
+        } else {
             done_account = true
             go()
         }

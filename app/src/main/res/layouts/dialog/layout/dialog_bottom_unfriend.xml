@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/bg_16dp_top_white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/btn_unfriend"
+        android:layout_marginStart="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/bg_white_ripple"
+        android:orientation="horizontal">
+
+
+        <androidx.cardview.widget.CardView
+            app:cardBackgroundColor="@color/grey"
+            app:cardCornerRadius="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/unfriend_48" />
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:gravity="center_vertical"
+            android:text="Unfriend"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
+
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

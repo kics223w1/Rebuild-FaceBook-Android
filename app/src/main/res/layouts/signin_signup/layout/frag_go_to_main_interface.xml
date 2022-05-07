@@ -84,7 +84,7 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:gravity="center"
-        android:background="@drawable/bg_8dp_all_lightblue_ripple"
+        android:background="@drawable/bg_8dp_all_blue_ripple"
         android:layout_alignParentBottom="true"
         android:text="OK"
         android:textColor="#ecfcff"

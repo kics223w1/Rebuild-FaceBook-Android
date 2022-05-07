@@ -28,6 +28,7 @@ import theintership.my.all_class.upload_image_by_putBytes_to_firebase
 import theintership.my.all_class.upload_image_by_putFile_to_firebase
 import theintership.my.Signup1Activity
 import theintership.my.all_class.GetUri_Image_Firebase
+import theintership.my.all_class.SharePrefValue
 import theintership.my.databinding.FragDoneSetAvatarBinding
 import theintership.my.main_interface.friends.model.Friends
 import theintership.my.signin_signup.model.category_privacy_avatar
@@ -89,36 +90,12 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
             binding.progressDoneSetAvatarSave.visibility = View.VISIBLE
 
             val check = shareViewmodel.image_is_local_or_bitmap
-            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-                withContext(Dispatchers.IO) {
-                    //When user take photo by camera
-                    //Signup1Activity will stop , and variable in shareViewModel will lost
-                    //So we need get account ref from firebase realtime database
-                    val ref = database.child("email and account")
-                    ref.orderByKey().limitToLast(1)
-                        .addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                val ele = snapshot.children
-                                //Just one element
-                                var account_ref = ""
-                                ele.forEach {
-                                    account_ref = it.child("account").getValue().toString()
-                                }
-                                if (check == "local") {
-                                    upload_image_from_local(account_ref)
-                                }
-                                if (check == "bitmap") {
-                                    upload_image_from_take_photo(account_ref)
-                                }
-                            }
-
-                            override fun onCancelled(error: DatabaseError) {
-                                val s = "Please do that again"
-                                s.showToastShort(signup1activity)
-                            }
-                        })
-
-                }
+            val account_ref = SharePrefValue(signup1activity).get_account_ref()
+            if (check == "local") {
+                upload_image_from_local(account_ref)
+            }
+            if (check == "bitmap") {
+                upload_image_from_take_photo(account_ref)
             }
         }
 
@@ -260,8 +237,8 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
             .child("may know")
         val fr = Friends(
             name = "Admin The Intership",
-            account_ref = "admin1",
-            link_avatar = "https://firebasestorage.googleapis.com/v0/b/the-intership.appspot.com/o/avatar_user%2Fadmin1?alt=media&token=b185369e-8418-40f2-8b7a-415541451593",
+            account_ref = "admin2",
+            link_avatar = "https://firebasestorage.googleapis.com/v0/b/the-intership.appspot.com/o/avatar_user%2Fadmin1?alt=media&token=e555a00b-63ac-4297-845b-16dcbd371d45",
             day = "18/12/2001",
             hour = "11h"
         )

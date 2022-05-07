@@ -1,6 +1,7 @@
 package theintership.my.main_interface.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +13,11 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.frag_video.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import theintership.my.MainActivity
 import theintership.my.Main_Interface_Activity
 import theintership.my.R
 import theintership.my.all_class.MyMethod
@@ -24,12 +27,15 @@ import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.databinding.FragVideoBinding
 import theintership.my.main_interface.friends.model.Friends
 import theintership.my.main_interface.notifications.model.Notifications
+import theintership.my.main_interface.profile.frag_profile_other
 
 
 class frag_video : Fragment() {
 
     private lateinit var database: DatabaseReference
     private lateinit var account_ref: String
+    private lateinit var mainInterfaceActivity: Main_Interface_Activity
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,17 +51,30 @@ class frag_video : Fragment() {
         val edt_kind_of_noti = view.findViewById<EditText>(R.id.edt_kind_of_notifications)
         val edt_friends = view.findViewById<EditText>(R.id.edt_friends)
         val edt_id_friends = view.findViewById<EditText>(R.id.edt_id_friends)
+        val btn_back_sign_in = view.findViewById<TextView>(R.id.btn_back_sign_in)
+        mainInterfaceActivity = activity as Main_Interface_Activity
         database = Firebase.database.reference
         val sharedPref = context?.applicationContext?.getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
-        account_ref = sharedPref?.getString("account_ref", "").toString()
+        account_ref = sharedPref?.getString("account ref", "").toString()
 
         btn_friends.setOnClickListener {
-            if (edt_friends.text.toString() == "" || edt_id_friends.text.toString() == ""){
+            if (edt_friends.text.toString() == "" ){
                 return@setOnClickListener
             }
-            add_friends(edt_friends.text.toString() , edt_id_friends.text.toString())
+            go_to_frag_profile_others(from = account_ref ,to = edt_friends.text.toString())
+//            val account_ref_owner = sharedPref?.getString("account ref" , "")
+//            add_friends(account_ref_owner.toString() , edt_friends.text.toString())
+        }
+
+        btn_back_sign_in.setOnClickListener {
+            startActivity(Intent(activity, MainActivity::class.java))
+            activity?.overridePendingTransition(
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            )
+            activity?.finish()
         }
 
         btn_noti.setOnClickListener {
@@ -73,20 +92,31 @@ class frag_video : Fragment() {
     }
 
 
-    private fun add_friends(account_ref : String , id : String){
+    private fun go_to_frag_profile_others(from: String , to : String) {
+        val arg = Bundle()
+        arg.putString("account ref from", from)
+        arg.putString("account ref to" , to)
+        MyMethod.replacefrag_in_main_interface_with_bundle(
+            "frag_profile_others",
+            frag_profile_other(),
+            mainInterfaceActivity.supportFragmentManager,
+            arg
+        )
+    }
+
+    private fun add_friends(account_ref_owner : String , account_ref_fr: String){
         val ref = database
             .child("User")
-            .child(account_ref)
+            .child(account_ref_fr)
             .child("friends")
             .child("request")
-            .child(id)
+            .child(account_ref_owner)
         val sharedPref = context?.applicationContext?.getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
-        val account_ref = sharedPref?.getString("account_ref" , "account_ref == null").toString()
         val link_avatar= sharedPref?.getString("link avatar" , "link avatar == null").toString()
         val user_name =  sharedPref?.getString("user name" , "name == null").toString()
-        val fr = Friends(user_name,account_ref , link_avatar , set_today() , get_hour())
+        val fr = Friends(user_name,account_ref_owner , link_avatar , set_today() , get_hour())
         ref.setValue(fr)
     }
 
