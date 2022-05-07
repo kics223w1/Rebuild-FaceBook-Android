@@ -3,6 +3,7 @@
 
 <p>If you want to use this app , please email me "caoviethuy11@gmail.com" </p>
 <p>And i will send you the invitation via email to private testing in google play so you can dowload my app in your phone</p>
+<p>Demo app: https://youtu.be/kMPVpH0ErLo </p>
 
 ## 🎉 Technology
 ✅ Firebase RealTime Database , Authencation , Storage</br>
