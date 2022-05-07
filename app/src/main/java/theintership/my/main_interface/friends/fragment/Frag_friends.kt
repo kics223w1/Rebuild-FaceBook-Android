@@ -61,7 +61,7 @@ class frag_friends : Fragment(), adapter_rcv_friends_request.Interaction,
         )
         val account_ref = sharedPref.getString("account ref", "null").toString()
 
-        adapter_fr_request = adapter_rcv_friends_request(this, mainInterfaceActivity, account_ref)
+        adapter_fr_request = adapter_rcv_friends_request(this, mainInterfaceActivity)
         adapter_fr_may_know = adapter_rcv_friends_may_know(this)
 
         setupRCV()

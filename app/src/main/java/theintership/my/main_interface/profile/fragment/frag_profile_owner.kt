@@ -90,7 +90,12 @@ class frag_profile_owner : Fragment(), adapter_rcv_friends_in_profile.Interactio
             ViewModelProvider(this).get(ViewModelFragProfile::class.java)
         mainInterfaceActivity = activity as Main_Interface_Activity
 
-        adapter_rcv_friend_in_profile = adapter_rcv_friends_in_profile(this, mainInterfaceActivity)
+        val account_ref_owner = SharePrefValue(mainInterfaceActivity).get_account_ref()
+        adapter_rcv_friend_in_profile = adapter_rcv_friends_in_profile(
+            this,
+            mainInterfaceActivity,
+            account_ref_from = account_ref_owner
+        )
         get_list_friends_in_proflie()
 
         val name = SharePrefValue(mainInterfaceActivity).get_user_name()
@@ -99,9 +104,8 @@ class frag_profile_owner : Fragment(), adapter_rcv_friends_in_profile.Interactio
         val link_avatar = SharePrefValue(mainInterfaceActivity).get_link_avatar()
         set_up_image_by_glide(link_avatar, binding.fragProfileOwnerAvatar, mainInterfaceActivity)
 
-        val account_ref = SharePrefValue(mainInterfaceActivity).get_account_ref()
         val ref = database.child("User")
-            .child(account_ref)
+            .child(account_ref_owner)
             .child("link cover image")
         ref.get().addOnSuccessListener {
             if (it.exists()) {
@@ -163,9 +167,9 @@ class frag_profile_owner : Fragment(), adapter_rcv_friends_in_profile.Interactio
     }
 
     private fun setAvatar_CoverImage(s: String) {
+        check_avatar_or_cover = s
         val dialog = dialog_set_avatar_and_coverImage(mainInterfaceActivity)
         dialog.show()
-        check_avatar_or_cover = s
         dialog.btn_take_picture.setOnClickListener {
             dispatchTakePictureIntent()
             dialog.dismiss()

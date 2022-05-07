@@ -7,43 +7,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_marginTop="5dp"
-        android:layout_marginStart="5dp"
-        android:id="@+id/btn_chose_from_gallery"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@drawable/bg_white_ripple"
-        android:orientation="horizontal">
-
-
-        <androidx.cardview.widget.CardView
-            app:cardBackgroundColor="@color/grey"
-            app:cardCornerRadius="12dp"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:src="@drawable/photos_48" />
-
-        </androidx.cardview.widget.CardView>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginStart="10dp"
-            android:gravity="center_vertical"
-            android:text="Chose from your gallery"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:textSize="20sp" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/btn_take_picture"
+        android:id="@+id/btn_remove_request"
         android:layout_marginStart="5dp"
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -60,7 +24,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/camera_48" />
+                android:src="@drawable/remove_request" />
 
         </androidx.cardview.widget.CardView>
 
@@ -69,7 +33,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:gravity="center_vertical"
-            android:text="Take a picture"
+            android:text="Remove request"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="20sp" />

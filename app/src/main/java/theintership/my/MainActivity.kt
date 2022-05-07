@@ -287,6 +287,7 @@ class MainActivity : AppCompatActivity() {
         ref_name.get().addOnSuccessListener {
             if (it.exists()) {
                 val name = it.child("fullname").getValue().toString()
+                println("debug name owner: $name")
                 if (sharedPref != null) {
                     with(sharedPref.edit()) {
                         putString("user name", name)

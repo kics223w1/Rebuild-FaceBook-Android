@@ -222,7 +222,7 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="10dp"
-                android:background="@drawable/bg_10dp_al_light_blue_ripple"
+                android:background="@drawable/bg_10dp_all_light_blue_ripple"
                 android:gravity="center"
                 android:text="Update your public information"
                 android:textColor="@color/light_blue"

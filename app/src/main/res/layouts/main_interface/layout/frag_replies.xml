@@ -22,7 +22,7 @@
         android:layout_height="40dp"
         android:gravity="center"
         android:text="Back"
-        android:background="@drawable/bg_8dp_all_lightblue_ripple"
+        android:background="@drawable/bg_8dp_all_blue_ripple"
         android:textColor="#ecfcff"
         android:textSize="20sp"
         android:textStyle="bold" />

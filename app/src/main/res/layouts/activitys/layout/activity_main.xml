@@ -99,7 +99,7 @@
             android:layout_marginStart="40dp"
             android:layout_marginTop="15dp"
             android:layout_marginEnd="40dp"
-            android:background="@drawable/bg_8dp_all_lightblue_ripple">
+            android:background="@drawable/bg_8dp_all_blue_ripple">
 
 
             <TextView

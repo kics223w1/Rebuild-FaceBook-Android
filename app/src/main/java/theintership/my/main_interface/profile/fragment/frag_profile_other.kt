@@ -1,5 +1,6 @@
 package theintership.my.main_interface.profile
 
+import android.content.Context
 import android.graphics.Outline
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,10 +22,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import theintership.my.Main_Interface_Activity
 import theintership.my.all_class.MyMethod.Companion.not_implement
+import theintership.my.all_class.MyMethod.Companion.replacefrag_in_main_interface_with_bundle
 import theintership.my.all_class.MyMethod.Companion.set_up_image_by_glide
 import theintership.my.all_class.SharePrefValue
 import theintership.my.databinding.FragProfileOthersBinding
+import theintership.my.main_interface.friends.fragment.frag_show_all_friends
 import theintership.my.main_interface.profile.adapter.adapter_rcv_friends_in_profile
+import theintership.my.main_interface.profile.dialog.dialog_remove_request_add_friend
+import theintership.my.main_interface.profile.dialog.dialog_unfriend
 import theintership.my.main_interface.profile.model.friend_in_profile
 import theintership.my.main_interface.profile.viewModel.ViewModelFragProfile
 
@@ -37,7 +42,8 @@ class frag_profile_other : Fragment(), adapter_rcv_friends_in_profile.Interactio
     private lateinit var viewModelFragProfile: ViewModelFragProfile
     private lateinit var adapter_rcv_friend_in_profile: adapter_rcv_friends_in_profile
     private lateinit var mainInterfaceActivity: Main_Interface_Activity
-    private var account_ref_other = ""
+    private var account_ref_from = ""
+    private var account_ref_to = ""
     private var done_name = false
     private var done_avatar_and_cover_image = false
 
@@ -50,23 +56,52 @@ class frag_profile_other : Fragment(), adapter_rcv_friends_in_profile.Interactio
         _binding = FragProfileOthersBinding.inflate(inflater, container, false)
         set_boder_cover_image()
         setUpProfile()
-        account_ref_other = arguments?.get("account ref").toString()
+        account_ref_from = arguments?.get("account ref from").toString()
+        account_ref_to = arguments?.get("account ref to").toString()
+
+        viewModelFragProfile =
+            ViewModelProvider(this).get(ViewModelFragProfile::class.java)
+        mainInterfaceActivity = activity as Main_Interface_Activity
+
+        adapter_rcv_friend_in_profile =
+            adapter_rcv_friends_in_profile(this, mainInterfaceActivity, account_ref_from)
+
+        binding.fragProfileOthersBtnShowAllFriends.setOnClickListener {
+            val b = Bundle()
+            b.putString("account ref", account_ref_to)
+            replacefrag_in_main_interface_with_bundle(
+                "frag_show_all_friends",
+                frag_show_all_friends(),
+                mainInterfaceActivity.supportFragmentManager,
+                b
+            )
+        }
 
 
         binding.fragProfileOthersBtnAddFriend.setOnClickListener {
-            if (binding.fragProfileOthersBtnAddFriend.text == "Friend"){
-                //Dialog delete friend is show
+            if (binding.fragProfileOthersBtnAddFriendText.text == "Friend") {
+                show_dialog_unfriend(mainInterfaceActivity, account_ref_from, account_ref_to)
                 return@setOnClickListener
             }
-            binding.fragProfileOthersBtnAddFriend.text = "Requesting"
+            if (binding.fragProfileOthersBtnAddFriendText.text == "Requesting") {
+                show_dialog_remove_request_add_friend(
+                    mainInterfaceActivity,
+                    account_ref_from,
+                    account_ref_to
+                )
+                return@setOnClickListener
+            }
+            binding.fragProfileOthersBtnAddFriendText.text = "Requesting"
+            binding.fragProfileOthersBtnAddFriendIcon.visibility = View.INVISIBLE
             val account_ref_owner = SharePrefValue(mainInterfaceActivity).get_account_ref()
-            val link_avatar_other = SharePrefValue(mainInterfaceActivity).get_link_avatar()
-            val user_name_other = SharePrefValue(mainInterfaceActivity).get_user_name_other()
+            val link_avatar_owner = SharePrefValue(mainInterfaceActivity).get_link_avatar()
+            val user_name_owner = SharePrefValue(mainInterfaceActivity).get_user_name()
             viewModelFragProfile.add_friend(
                 from = account_ref_owner,
-                to = account_ref_other,
-                user_name = user_name_other,
-                link_avatar =  link_avatar_other)
+                to = account_ref_to,
+                user_name = user_name_owner,
+                link_avatar = link_avatar_owner
+            )
         }
 
         binding.btnMore.setOnClickListener {
@@ -82,12 +117,8 @@ class frag_profile_other : Fragment(), adapter_rcv_friends_in_profile.Interactio
 
 
     private fun setUpProfile() {
-        viewModelFragProfile =
-            ViewModelProvider(this).get(ViewModelFragProfile::class.java)
-        mainInterfaceActivity = activity as Main_Interface_Activity
-        adapter_rcv_friend_in_profile = adapter_rcv_friends_in_profile(this, mainInterfaceActivity)
-
         CoroutineScope(Dispatchers.IO).launch {
+            is_pending_friend()
             is_friend()
             get_list_friends_in_proflie()
             set_name()
@@ -97,7 +128,7 @@ class frag_profile_other : Fragment(), adapter_rcv_friends_in_profile.Interactio
 
     private fun set_avatar_and_cover_image() {
         val ref = database.child("User")
-            .child(account_ref_other)
+            .child(account_ref_to)
         ref.get().addOnSuccessListener {
             if (it.exists()) {
                 val link_avatar = it.child("link avatar").getValue().toString()
@@ -128,28 +159,66 @@ class frag_profile_other : Fragment(), adapter_rcv_friends_in_profile.Interactio
         }
     }
 
-    private fun is_friend(){
-        val account_ref_owner = SharePrefValue(mainInterfaceActivity).get_account_ref()
+
+    private fun is_pending_friend() {
         val ref = database.child("User")
-            .child(account_ref_owner)
+            .child(account_ref_from)
+            .child("friends")
+            .child("request")
+            .child(account_ref_to)
+        ref.get().addOnSuccessListener {
+            if (it.exists()) {
+                binding.fragProfileOthersBtnAddFriendText.text = "Requesting"
+                binding.fragProfileOthersBtnAddFriendIcon.visibility = View.INVISIBLE
+            }
+        }
+    }
+
+    fun show_dialog_remove_request_add_friend(context: Context, from: String, to: String) {
+        val dialog = dialog_remove_request_add_friend(context)
+        dialog.show()
+        dialog.btn_remove_request.setOnClickListener {
+            binding.fragProfileOthersBtnAddFriendText.text = "Add friend"
+            binding.fragProfileOthersBtnAddFriendIcon.visibility = View.VISIBLE
+            viewModelFragProfile.remove_request_add_friend(context, from, to)
+            dialog.dismiss()
+        }
+    }
+
+
+    fun show_dialog_unfriend(context: Context, from: String, to: String) {
+        val dialog = dialog_unfriend(context)
+        dialog.show()
+        dialog.btn_unfriend.setOnClickListener {
+            binding.fragProfileOthersBtnAddFriendText.text = "Add friend"
+            binding.fragProfileOthersBtnAddFriendIcon.visibility = View.VISIBLE
+            viewModelFragProfile.unfriend(context, from, to)
+            dialog.dismiss()
+        }
+    }
+
+    private fun is_friend() {
+        val ref = database.child("User")
+            .child(account_ref_from)
             .child("friends")
             .child("real")
-            .child(account_ref_other)
+            .child(account_ref_to)
         ref.get().addOnSuccessListener {
-            if (it.exists()){
-                binding.fragProfileOthersBtnAddFriend.text = "Friend"
+            if (it.exists()) {
+                binding.fragProfileOthersBtnAddFriendText.text = "Friend"
+                binding.fragProfileOthersBtnAddFriendIcon.visibility = View.INVISIBLE
             }
         }
     }
 
     private fun set_name() {
         val ref = database.child("User")
-            .child(account_ref_other)
+            .child(account_ref_to)
             .child("user info")
         ref.get().addOnSuccessListener {
             if (it.exists()) {
                 val name = it.child("fullname").getValue().toString()
-
+                println("debug name other: $name")
                 SharePrefValue(mainInterfaceActivity).store_string(name, "user name other")
                 binding.fragProfileOthersName.text = name
 
@@ -165,16 +234,23 @@ class frag_profile_other : Fragment(), adapter_rcv_friends_in_profile.Interactio
     private fun get_list_friends_in_proflie() {
         val ref = database
             .child("User")
-            .child(account_ref_other)
+            .child(account_ref_to)
             .child("friends")
             .child("real")
-        binding.fragProfileOthersProgressRcvFriends.visibility = View.GONE
+        ref.get().addOnSuccessListener {
+            if (!it.exists()){
+                binding.fragProfileOthersProgressRcvFriends.visibility = View.GONE
+                binding.fragProfileOthersNumberFriends.text = "0 friends"
+                binding.fragProfileOthersBtnShowAllFriends.visibility = View.GONE
+            }
+        }
         val postListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val number_friends = snapshot.children.toMutableList().size
                 val list = viewModelFragProfile.setup_list_friend_in_profile(snapshot)
                 //List just have maximum 6 elements
                 if (list.size > 0) {
+                    binding.fragProfileOthersProgressRcvFriends.visibility = View.GONE
                     binding.fragProfileOthersLayoutFriends.visibility = View.VISIBLE
                     binding.fragProfileOthersNumberFriends.text = "$number_friends friends"
                     val linearLayout: RecyclerView.LayoutManager =

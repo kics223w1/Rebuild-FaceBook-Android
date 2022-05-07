@@ -14,6 +14,8 @@ import theintership.my.all_class.MyMethod.Companion.blackout_char
 import theintership.my.all_class.MyMethod.Companion.count_days
 import theintership.my.all_class.MyMethod.Companion.set_today
 import theintership.my.all_class.MyMethod.Companion.showToastLong
+import theintership.my.all_class.MyMethod.Companion.showToastShort
+import theintership.my.all_class.SharePrefValue
 import theintership.my.all_class.get_all_image_gallery
 import java.text.SimpleDateFormat
 import java.util.*
@@ -31,6 +33,9 @@ class frag_home : Fragment() {
         val view = inflater.inflate(R.layout.frag_home , container ,false)
         val textView = view.findViewById<TextView>(R.id.tv_frag_home)
         mainInterfaceActivity = activity as Main_Interface_Activity
+
+        val account_ref_owner = SharePrefValue(mainInterfaceActivity).get_account_ref()
+        account_ref_owner.showToastShort(mainInterfaceActivity)
 
         val tv2 = "Cao Viet Huy da thich bai viet cua ban trong hoi lap trinh android vao ngay hom truoc kia do"
         val list = mutableListOf<String>()

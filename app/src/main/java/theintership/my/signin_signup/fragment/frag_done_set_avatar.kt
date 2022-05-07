@@ -28,6 +28,7 @@ import theintership.my.all_class.upload_image_by_putBytes_to_firebase
 import theintership.my.all_class.upload_image_by_putFile_to_firebase
 import theintership.my.Signup1Activity
 import theintership.my.all_class.GetUri_Image_Firebase
+import theintership.my.all_class.SharePrefValue
 import theintership.my.databinding.FragDoneSetAvatarBinding
 import theintership.my.main_interface.friends.model.Friends
 import theintership.my.signin_signup.model.category_privacy_avatar
@@ -89,36 +90,12 @@ class frag_done_set_avatar : Fragment(R.layout.frag_done_set_avatar) {
             binding.progressDoneSetAvatarSave.visibility = View.VISIBLE
 
             val check = shareViewmodel.image_is_local_or_bitmap
-            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-                withContext(Dispatchers.IO) {
-                    //When user take photo by camera
-                    //Signup1Activity will stop , and variable in shareViewModel will lost
-                    //So we need get account ref from firebase realtime database
-                    val ref = database.child("email and account")
-                    ref.orderByKey().limitToLast(1)
-                        .addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                val ele = snapshot.children
-                                //Just one element
-                                var account_ref = ""
-                                ele.forEach {
-                                    account_ref = it.child("account").getValue().toString()
-                                }
-                                if (check == "local") {
-                                    upload_image_from_local(account_ref)
-                                }
-                                if (check == "bitmap") {
-                                    upload_image_from_take_photo(account_ref)
-                                }
-                            }
-
-                            override fun onCancelled(error: DatabaseError) {
-                                val s = "Please do that again"
-                                s.showToastShort(signup1activity)
-                            }
-                        })
-
-                }
+            val account_ref = SharePrefValue(signup1activity).get_account_ref()
+            if (check == "local") {
+                upload_image_from_local(account_ref)
+            }
+            if (check == "bitmap") {
+                upload_image_from_take_photo(account_ref)
             }
         }
 

@@ -17,6 +17,9 @@ import theintership.my.all_class.GetUri_Image_Firebase
 import theintership.my.all_class.MyMethod
 import theintership.my.all_class.upload_image_by_putBytes_to_firebase
 import theintership.my.main_interface.friends.model.Friends
+import theintership.my.main_interface.friends.model.friend_in_show_all
+import theintership.my.main_interface.profile.dialog.dialog_remove_request_add_friend
+import theintership.my.main_interface.profile.dialog.dialog_unfriend
 import theintership.my.main_interface.profile.model.friend_in_profile
 import kotlin.math.min
 
@@ -69,13 +72,13 @@ class ViewModelFragProfile : ViewModel() {
         return ans
     }
 
-    fun setup_link_avatar_and_storage(account_ref: String , image : Bitmap) {
+    fun setup_link_avatar_and_storage(account_ref: String, image: Bitmap) {
         val ref = database.child("User")
             .child(account_ref)
             .child("link avatar")
         val ref_storage = "avatar_user/$account_ref"
         CoroutineScope(Dispatchers.IO).launch {
-            upload_image_by_putBytes_to_firebase().upload(image , ref_storage).addOnSuccessListener {
+            upload_image_by_putBytes_to_firebase().upload(image, ref_storage).addOnSuccessListener {
                 GetUri_Image_Firebase().getUri(ref_storage).addOnSuccessListener {
                     ref.setValue(it.toString())
                 }
@@ -84,13 +87,13 @@ class ViewModelFragProfile : ViewModel() {
         //If it fail , user will set it again in next time
     }
 
-    fun setup_link_coverImage_and_storage(account_ref: String , image : Bitmap) {
+    fun setup_link_coverImage_and_storage(account_ref: String, image: Bitmap) {
         val ref = database.child("User")
             .child(account_ref)
             .child("link cover image")
         val ref_storage = "cover_image/$account_ref"
         CoroutineScope(Dispatchers.IO).launch {
-            upload_image_by_putBytes_to_firebase().upload(image , ref_storage).addOnSuccessListener {
+            upload_image_by_putBytes_to_firebase().upload(image, ref_storage).addOnSuccessListener {
                 GetUri_Image_Firebase().getUri(ref_storage).addOnSuccessListener {
                     ref.setValue(it.toString())
                 }
@@ -99,15 +102,64 @@ class ViewModelFragProfile : ViewModel() {
         //If it fail , user will set it again in next time
     }
 
-    fun add_friend(from : String , to : String , user_name : String , link_avatar : String ){
+    fun add_friend(from: String, to: String, user_name: String, link_avatar: String) {
         val ref = database
             .child("User")
             .child(to)
             .child("friends")
             .child("request")
             .child(from)
-        val fr = Friends(user_name,from, link_avatar , MyMethod.set_today() , MyMethod.get_hour())
+        val fr = Friends(user_name, from, link_avatar, MyMethod.set_today(), MyMethod.get_hour())
         ref.setValue(fr)
+    }
+
+    fun remove_request_add_friend(context: Context, from: String, to: String) {
+        val ref = database.child("User")
+            .child(from)
+            .child("friends")
+            .child("request")
+            .child(to)
+        CoroutineScope(Dispatchers.IO).launch {
+            ref.removeValue()
+        }
+    }
+
+
+    fun unfriend(context: Context, from: String, to: String) {
+        val ref = database.child("User")
+            .child(from)
+            .child("friends")
+            .child("real")
+            .child(to)
+        val ref2 = database.child("User")
+            .child(to)
+            .child("friends")
+            .child("real")
+            .child(from)
+        CoroutineScope(Dispatchers.IO).launch {
+            ref2.removeValue()
+            ref.removeValue()
+        }
+    }
+
+    fun setup_friend_in_show_all(snapshot: DataSnapshot): MutableList<friend_in_show_all> {
+        val list = snapshot.children.toMutableList()
+        val friendInShowAlls = mutableListOf<friend_in_show_all>()
+        for (i in 0 until list.size){
+            val it = list[i]
+            if (it.exists()){
+                val name = it.child("name").getValue().toString()
+                val link_avatar = it.child("link_avatar").getValue().toString()
+                val account_ref = it.child("account_ref").getValue().toString()
+                val fr = friend_in_show_all(
+                    name = name,
+                    link_avatar = link_avatar,
+                    account_ref = account_ref
+                )
+                friendInShowAlls.add(fr)
+            }
+        }
+        return friendInShowAlls
     }
 
 

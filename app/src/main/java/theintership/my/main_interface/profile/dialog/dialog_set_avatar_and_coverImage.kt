@@ -8,7 +8,7 @@ import android.widget.LinearLayout
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import theintership.my.R
 
-class dialog_set_avatar_and_coverImage(context: Context ) : BottomSheetDialog(context , R.style.SheetDialog) {
+class dialog_set_avatar_and_coverImage(context: Context ) : BottomSheetDialog(context) {
 
     lateinit var btn_take_picture: LinearLayout
     lateinit var btn_chose_from_gallery: LinearLayout

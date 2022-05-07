@@ -13,6 +13,7 @@ import theintership.my.all_class.MyMethod.Companion.replacefrag
 import theintership.my.R
 import theintership.my.databinding.FragSignupAccountBinding
 import theintership.my.Signup1Activity
+import theintership.my.all_class.SharePrefValue
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.shareViewModel
 
@@ -38,6 +39,7 @@ class frag_signup_account : Fragment(R.layout.frag_signup_account) {
             val account = binding.edtSignupAccount.text.toString()
             hide_soft_key_board(signup1Activity , binding.btnSignupAccountGo)
             if (check_account(account)) {
+                SharePrefValue(signup1Activity).store_string(account , "account ref")
                 go_to_frag_password(account)
             }
         }

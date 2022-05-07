@@ -27,12 +27,15 @@ import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.databinding.FragVideoBinding
 import theintership.my.main_interface.friends.model.Friends
 import theintership.my.main_interface.notifications.model.Notifications
+import theintership.my.main_interface.profile.frag_profile_other
 
 
 class frag_video : Fragment() {
 
     private lateinit var database: DatabaseReference
     private lateinit var account_ref: String
+    private lateinit var mainInterfaceActivity: Main_Interface_Activity
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,18 +52,20 @@ class frag_video : Fragment() {
         val edt_friends = view.findViewById<EditText>(R.id.edt_friends)
         val edt_id_friends = view.findViewById<EditText>(R.id.edt_id_friends)
         val btn_back_sign_in = view.findViewById<TextView>(R.id.btn_back_sign_in)
+        mainInterfaceActivity = activity as Main_Interface_Activity
         database = Firebase.database.reference
         val sharedPref = context?.applicationContext?.getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
-        account_ref = sharedPref?.getString("account_ref", "").toString()
+        account_ref = sharedPref?.getString("account ref", "").toString()
 
         btn_friends.setOnClickListener {
             if (edt_friends.text.toString() == "" ){
                 return@setOnClickListener
             }
-            val account_ref_owner = sharedPref?.getString("account ref" , "")
-            add_friends(account_ref_owner.toString() , edt_friends.text.toString())
+            go_to_frag_profile_others(from = account_ref ,to = edt_friends.text.toString())
+//            val account_ref_owner = sharedPref?.getString("account ref" , "")
+//            add_friends(account_ref_owner.toString() , edt_friends.text.toString())
         }
 
         btn_back_sign_in.setOnClickListener {
@@ -86,6 +91,18 @@ class frag_video : Fragment() {
         return view
     }
 
+
+    private fun go_to_frag_profile_others(from: String , to : String) {
+        val arg = Bundle()
+        arg.putString("account ref from", from)
+        arg.putString("account ref to" , to)
+        MyMethod.replacefrag_in_main_interface_with_bundle(
+            "frag_profile_others",
+            frag_profile_other(),
+            mainInterfaceActivity.supportFragmentManager,
+            arg
+        )
+    }
 
     private fun add_friends(account_ref_owner : String , account_ref_fr: String){
         val ref = database
