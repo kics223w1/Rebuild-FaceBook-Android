@@ -24,6 +24,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import theintership.my.Main_Interface_Activity
 import theintership.my.R
+import theintership.my.all_class.MyMethod
 import theintership.my.all_class.MyMethod.Companion.not_implement
 import theintership.my.all_class.MyMethod.Companion.replacefrag_in_main_interface_with_slide_in_left
 import theintership.my.all_class.MyMethod.Companion.set_up_image_by_glide
@@ -31,6 +32,7 @@ import theintership.my.all_class.MyMethod.Companion.showToastLong
 import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.all_class.SharePrefValue
 import theintership.my.databinding.FragProfileOwnerBinding
+import theintership.my.main_interface.friends.fragment.frag_show_all_friends
 import theintership.my.main_interface.profile.adapter.adapter_rcv_friends_in_profile
 import theintership.my.main_interface.profile.dialog.dialog_set_avatar_and_coverImage
 import theintership.my.main_interface.profile.model.friend_in_profile
@@ -47,8 +49,8 @@ class frag_profile_owner : Fragment(), adapter_rcv_friends_in_profile.Interactio
     private lateinit var adapter_rcv_friend_in_profile: adapter_rcv_friends_in_profile
     private lateinit var mainInterfaceActivity: Main_Interface_Activity
     private val REQUEST_CODE = 1
-    private val REQUEST_IMAGE_CAPTURE = 2
-    private var check_avatar_or_cover = ""
+    private val REQUEST_IMAGE_CAPTURE_AVATAR = 2
+    private val REQUEST_IMAGE_CAPTURE_COVER_IMAGE = 3
 
 
     override fun onCreateView(
@@ -62,11 +64,11 @@ class frag_profile_owner : Fragment(), adapter_rcv_friends_in_profile.Interactio
 
 
         binding.cameraAvatar.setOnClickListener {
-            setAvatar_CoverImage("avatar")
+            setAvatar_CoverImage(requestCode = REQUEST_IMAGE_CAPTURE_AVATAR)
         }
 
         binding.cameraCoverImage.setOnClickListener {
-            setAvatar_CoverImage("cover")
+            setAvatar_CoverImage(requestCode = REQUEST_IMAGE_CAPTURE_COVER_IMAGE)
         }
 
         binding.btnSetStatus.setOnClickListener {
@@ -79,6 +81,18 @@ class frag_profile_owner : Fragment(), adapter_rcv_friends_in_profile.Interactio
 
         binding.btnMore.setOnClickListener {
             not_implement(mainInterfaceActivity)
+        }
+
+        binding.fragProfileOwnerBtnShowAllFriends.setOnClickListener {
+            val b = Bundle()
+            val account_ref = SharePrefValue(mainInterfaceActivity).get_account_ref()
+            b.putString("account ref", account_ref)
+            MyMethod.replacefrag_in_main_interface_with_bundle(
+                "frag_show_all_friends",
+                frag_show_all_friends(),
+                mainInterfaceActivity.supportFragmentManager,
+                b
+            )
         }
 
         return binding.root
@@ -166,40 +180,40 @@ class frag_profile_owner : Fragment(), adapter_rcv_friends_in_profile.Interactio
         binding.fragProfileOwnerCoverImage.clipToOutline = true
     }
 
-    private fun setAvatar_CoverImage(s: String) {
-        check_avatar_or_cover = s
+    private fun setAvatar_CoverImage(requestCode: Int) {
         val dialog = dialog_set_avatar_and_coverImage(mainInterfaceActivity)
         dialog.show()
         dialog.btn_take_picture.setOnClickListener {
-            dispatchTakePictureIntent()
+            dispatchTakePictureIntent(requestCode)
             dialog.dismiss()
         }
     }
 
 
-    private fun dispatchTakePictureIntent() {
+    private fun dispatchTakePictureIntent(requestCode: Int) {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         try {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+            startActivityForResult(takePictureIntent, requestCode)
         } catch (e: ActivityNotFoundException) {
             println("debug e in dispatchTakePictureIntent: $e")
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE_COVER_IMAGE && resultCode == Activity.RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             val account_ref = SharePrefValue(mainInterfaceActivity).get_account_ref()
-            if (check_avatar_or_cover == "avatar") {
-                binding.fragProfileOwnerAvatar.setImageBitmap(imageBitmap)
-                viewModelFragProfileOwner.setup_link_avatar_and_storage(account_ref, imageBitmap)
-            } else {
-                binding.fragProfileOwnerCoverImage.setImageBitmap(imageBitmap)
-                viewModelFragProfileOwner.setup_link_coverImage_and_storage(
-                    account_ref,
-                    imageBitmap
-                )
-            }
+            binding.fragProfileOwnerCoverImage.setImageBitmap(imageBitmap)
+            viewModelFragProfileOwner.setup_link_coverImage_and_storage(
+                account_ref,
+                imageBitmap
+            )
+        }
+        if (requestCode == REQUEST_IMAGE_CAPTURE_AVATAR && resultCode == Activity.RESULT_OK) {
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            val account_ref = SharePrefValue(mainInterfaceActivity).get_account_ref()
+            binding.fragProfileOwnerAvatar.setImageBitmap(imageBitmap)
+            viewModelFragProfileOwner.setup_link_avatar_and_storage(account_ref, imageBitmap)
         }
     }
 

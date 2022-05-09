@@ -295,6 +295,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
+                <TextView
+                    android:id="@+id/frag_profile_owner_btn_show_all_friends"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    android:background="@drawable/bg_14dp_all_grey_ripple"
+                    android:textColor="@color/light_grey"
+                    android:text="See all friends"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"/>
+
             </LinearLayout>
 
         </LinearLayout>
