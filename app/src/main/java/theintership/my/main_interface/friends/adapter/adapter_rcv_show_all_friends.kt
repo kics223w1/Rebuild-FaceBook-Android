@@ -18,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import theintership.my.R
 import theintership.my.all_class.MyMethod
+import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.all_class.SharePrefValue
 import theintership.my.main_interface.friends.model.Friends
 import theintership.my.main_interface.friends.model.friend_in_show_all
@@ -117,16 +118,20 @@ class adapter_rcv_show_all_friends(private val interaction: Interaction? = null,
 
             fun remove_request_add_friend(context: Context, from: String, to: String) {
                 val ref = database.child("User")
-                    .child(from)
+                    .child(to)
                     .child("friends")
                     .child("request")
-                    .child(to)
+                    .child(from)
                 CoroutineScope(Dispatchers.IO).launch {
                     ref.removeValue()
                 }
             }
 
             fun is_friend(account_ref_from: String, account_ref_to: String) {
+                if(account_ref_from == account_ref_to){
+                    itemView.item_rcv_show_all_friends_btn_add_friend.text = "You"
+                    return
+                }
                 val ref = database.child("User")
                     .child(account_ref_from)
                     .child("friends")
@@ -141,10 +146,10 @@ class adapter_rcv_show_all_friends(private val interaction: Interaction? = null,
 
             fun is_pending_friend(account_ref_from: String, account_ref_to: String) {
                 val ref = database.child("User")
-                    .child(account_ref_from)
+                    .child(account_ref_to)
                     .child("friends")
                     .child("request")
-                    .child(account_ref_to)
+                    .child(account_ref_from)
                 ref.get().addOnSuccessListener {
                     if (it.exists()) {
                         itemView.item_rcv_show_all_friends_btn_add_friend.text = "Requesting"
@@ -214,6 +219,11 @@ class adapter_rcv_show_all_friends(private val interaction: Interaction? = null,
                         from = account_ref_owner,
                         to = account_ref_fr
                     )
+                    return@setOnClickListener
+                }
+                if(check == "You"){
+                    val s = "This is you bro"
+                    s.showToastShort(context)
                     return@setOnClickListener
                 }
                 itemView.item_rcv_show_all_friends_btn_add_friend.text = "Requesting"

@@ -28,6 +28,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import theintership.my.all_class.MyMethod.Companion.get_day_of_week
 import theintership.my.all_class.MyMethod.Companion.hide_soft_key_board
+import theintership.my.all_class.MyMethod.Companion.isWifi
 import theintership.my.all_class.MyMethod.Companion.set_today
 import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.signin_signup.dialog.dialog_showlanguage
@@ -99,6 +100,11 @@ class MainActivity : AppCompatActivity() {
             }
             if (password == "") {
                 val s = "Please enter password."
+                s.showToastShort(this)
+                return@setOnClickListener
+            }
+            if (!isWifi(this)){
+                val s = "Please connect wifi"
                 s.showToastShort(this)
                 return@setOnClickListener
             }
