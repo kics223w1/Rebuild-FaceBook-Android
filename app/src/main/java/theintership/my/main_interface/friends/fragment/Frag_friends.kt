@@ -5,9 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
-import android.widget.EditText
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,20 +16,14 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import theintership.my.Main_Interface_Activity
+import theintership.my.activity.Main_Interface_Activity
 import theintership.my.R
-import theintership.my.all_class.MyMethod
 import theintership.my.all_class.MyMethod.Companion.showToastShort
-import theintership.my.databinding.FragDoneSetAvatarBinding
 import theintership.my.databinding.FragFriendsBinding
 import theintership.my.main_interface.friends.adapter.adapter_rcv_friends_may_know
 import theintership.my.main_interface.friends.adapter.adapter_rcv_friends_request
 import theintership.my.main_interface.friends.model.Friends
 import theintership.my.main_interface.friends.viewmodel.ViewModelFragFriends
-import theintership.my.main_interface.notifications.model.Notifications
 
 
 class frag_friends : Fragment(), adapter_rcv_friends_request.Interaction,

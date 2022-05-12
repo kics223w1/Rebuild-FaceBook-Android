@@ -7,16 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
-import theintership.my.MainActivity
+import theintership.my.activity.MainActivity
 import theintership.my.all_class.MyMethod.Companion.hide_soft_key_board
 import theintership.my.all_class.MyMethod.Companion.replacefrag
-import theintership.my.all_class.MyMethod.Companion.showToastLong
 import theintership.my.R
 import theintership.my.databinding.FragSignupEmailBinding
-import theintership.my.Signup1Activity
+import theintership.my.activity.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.shareViewModel
 

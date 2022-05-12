@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import theintership.my.Main_Interface_Activity
+import theintership.my.activity.Main_Interface_Activity
 import theintership.my.R
 import theintership.my.databinding.FragRepliesBinding
 

@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.item_rcv_friends_in_profile.view.*
-import theintership.my.Main_Interface_Activity
+import theintership.my.activity.Main_Interface_Activity
 import theintership.my.R
 import theintership.my.all_class.MyMethod.Companion.replacefrag_in_main_interface_with_bundle
 import theintership.my.all_class.MyMethod.Companion.showToastShort

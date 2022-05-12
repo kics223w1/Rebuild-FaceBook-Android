@@ -9,31 +9,22 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import theintership.my.Main_Interface_Activity
+import theintership.my.activity.Main_Interface_Activity
 import theintership.my.R
 import theintership.my.all_class.MyMethod.Companion.check_wifi
 import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.all_class.upload_image_by_putBytes_to_firebase
 import theintership.my.all_class.upload_image_by_putFile_to_firebase
-import theintership.my.Signup1Activity
+import theintership.my.activity.Signup1Activity
 import theintership.my.all_class.GetUri_Image_Firebase
 import theintership.my.all_class.SharePrefValue
 import theintership.my.databinding.FragDoneSetAvatarBinding
 import theintership.my.main_interface.friends.model.Friends
 import theintership.my.signin_signup.model.category_privacy_avatar
 import theintership.my.signin_signup.adapter.adapter_category_privacy_avatar
-import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.shareViewModel
 
 

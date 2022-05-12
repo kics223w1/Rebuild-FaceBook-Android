@@ -1,16 +1,13 @@
-package theintership.my
+package theintership.my.activity
 
 import android.os.Bundle
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TableLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayout
+import theintership.my.R
 import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.main_interface.adapter.TabPageAdapter
 

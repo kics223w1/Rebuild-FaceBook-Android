@@ -1,4 +1,4 @@
-package theintership.my
+package theintership.my.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,19 +12,14 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.*
+import theintership.my.R
 import theintership.my.all_class.MyMethod.Companion.check_wifi
 import theintership.my.all_class.MyMethod.Companion.isWifi
 import theintership.my.all_class.MyMethod.Companion.replacefrag
-import theintership.my.all_class.MyMethod.Companion.set_today
 import theintership.my.all_class.MyMethod.Companion.showToastLong
 import theintership.my.all_class.MyMethod.Companion.showToastShort
-import theintership.my.signin_signup.model.limit_auth_phone
 import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.dialog.dialog_stop_signup
-import theintership.my.signin_signup.fragment.frag_done_set_avatar
-import theintership.my.signin_signup.fragment.frag_set_avatar
-import theintership.my.signin_signup.fragment.frag_show_image_for_chosing_avatar
 import theintership.my.signin_signup.fragment.frag_signup_name
 import theintership.my.signin_signup.shareViewModel
 

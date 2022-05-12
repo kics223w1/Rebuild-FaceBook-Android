@@ -2,7 +2,6 @@ package theintership.my.main_interface.profile.viewModel
 
 import android.content.Context
 import android.graphics.Bitmap
-import androidx.core.content.res.TypedArrayUtils.getString
 import androidx.lifecycle.ViewModel
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseReference
@@ -11,15 +10,11 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import theintership.my.Main_Interface_Activity
-import theintership.my.R
 import theintership.my.all_class.GetUri_Image_Firebase
 import theintership.my.all_class.MyMethod
 import theintership.my.all_class.upload_image_by_putBytes_to_firebase
 import theintership.my.main_interface.friends.model.Friends
 import theintership.my.main_interface.friends.model.friend_in_show_all
-import theintership.my.main_interface.profile.dialog.dialog_remove_request_add_friend
-import theintership.my.main_interface.profile.dialog.dialog_unfriend
 import theintership.my.main_interface.profile.model.friend_in_profile
 import kotlin.math.min
 

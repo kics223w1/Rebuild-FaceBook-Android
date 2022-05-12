@@ -18,7 +18,7 @@ import theintership.my.all_class.*
 import theintership.my.all_class.MyMethod.Companion.check_wifi
 import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.databinding.FragShowImageForChosingAvatarBinding
-import theintership.my.Signup1Activity
+import theintership.my.activity.Signup1Activity
 import theintership.my.signin_signup.adapter.IClickImage
 import theintership.my.signin_signup.adapter.adapter_image
 import theintership.my.signin_signup.shareViewModel

@@ -21,6 +21,7 @@ import com.google.firebase.ktx.Firebase
 import theintership.my.R
 import theintership.my.main_interface.fragment.*
 import theintership.my.main_interface.friends.frag_friends
+import theintership.my.main_interface.message.frag_message
 import theintership.my.main_interface.notifications.frag_notifications
 import theintership.my.main_interface.profile.frag_profile_owner
 
@@ -39,7 +40,7 @@ class TabPageAdapter(activity: FragmentActivity, private val tab_count: Int) :
         return when (position) {
             0 -> frag_home()
             1 -> frag_friends()
-            2 -> frag_video()
+            2 -> frag_message()
             3 -> frag_profile_owner()
             4 -> frag_notifications()
             5 -> frag_setting()

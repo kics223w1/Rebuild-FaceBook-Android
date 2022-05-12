@@ -20,7 +20,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import theintership.my.Main_Interface_Activity
+import theintership.my.activity.Main_Interface_Activity
 import theintership.my.all_class.MyMethod.Companion.not_implement
 import theintership.my.all_class.MyMethod.Companion.replacefrag_in_main_interface_with_bundle
 import theintership.my.all_class.MyMethod.Companion.set_up_image_by_glide
