@@ -20,8 +20,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import theintership.my.MainActivity
-import theintership.my.Main_Interface_Activity
+import theintership.my.activity.Main_Interface_Activity
 import theintership.my.all_class.MyMethod.Companion.check_wifi
 import theintership.my.all_class.MyMethod.Companion.replacefrag_by_silde_in_left
 import theintership.my.all_class.MyMethod.Companion.showToastLong
@@ -29,7 +28,7 @@ import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.R
 import theintership.my.all_class.MyMethod.Companion.replacefrag
 import theintership.my.databinding.FragSetAvatarBinding
-import theintership.my.Signup1Activity
+import theintership.my.activity.Signup1Activity
 import theintership.my.signin_signup.shareViewModel
 import theintership.my.all_class.upload_image_by_putBytes_to_firebase
 

@@ -14,7 +14,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import theintership.my.MainActivity
+import theintership.my.activity.MainActivity
 import theintership.my.all_class.MyMethod
 import theintership.my.all_class.MyMethod.Companion.isWifi
 import theintership.my.all_class.MyMethod.Companion.replacefrag
@@ -22,7 +22,7 @@ import theintership.my.all_class.MyMethod.Companion.set_today
 import theintership.my.all_class.MyMethod.Companion.showToastLong
 import theintership.my.R
 import theintership.my.databinding.FragSignupDoneBinding
-import theintership.my.Signup1Activity
+import theintership.my.activity.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.model.Email_Account
 import theintership.my.signin_signup.shareViewModel

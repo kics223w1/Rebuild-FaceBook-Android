@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_rcv_layout_chat_layout_all"
+    android:layout_width="match_parent"
+    android:layout_height="70dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/item_rcv_layout_chat_avatar"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="10dp"
+        android:src="@drawable/avatar_user"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="15dp"
+        android:orientation="vertical"
+        android:layout_toEndOf="@+id/item_rcv_layout_chat_avatar"
+        android:layout_toStartOf="@id/item_rcv_layout_chat_avatar_readed"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/item_rcv_layout_chat_name"
+            android:textStyle="bold"
+            android:text="Cao Viet Huy"
+            android:lines="1"
+            android:gravity="center_vertical"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_weight="0.5"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+        <TextView
+            android:id="@+id/item_rcv_layout_chat_message"
+            android:textStyle="normal"
+            android:text="You: oke luon 4.36 PM"
+            android:lines="1"
+            android:gravity="center_vertical"
+            android:textSize="14sp"
+            android:ellipsize="end"
+            android:textColor="@color/black"
+            android:layout_weight="0.5"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+    </LinearLayout>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/item_rcv_layout_chat_avatar_readed"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="5dp"
+        android:src="@drawable/avatar_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+
+</RelativeLayout>

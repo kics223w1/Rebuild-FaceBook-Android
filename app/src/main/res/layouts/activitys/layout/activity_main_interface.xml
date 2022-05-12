@@ -75,8 +75,8 @@
                 android:layout_height="match_parent"/>
 
             <com.google.android.material.tabs.TabItem
-                android:id="@+id/main_interface_play_video"
-                android:icon="@drawable/play_video"
+                android:id="@+id/main_interface_message"
+                android:icon="@drawable/message_64"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
 

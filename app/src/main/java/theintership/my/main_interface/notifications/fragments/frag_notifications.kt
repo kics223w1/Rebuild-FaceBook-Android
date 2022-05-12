@@ -7,10 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -23,14 +21,11 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import theintership.my.Main_Interface_Activity
+import theintership.my.activity.Main_Interface_Activity
 import theintership.my.R
 import theintership.my.all_class.MyMethod.Companion.count_days
 import theintership.my.all_class.MyMethod.Companion.replacefrag_in_main_interface
 import theintership.my.all_class.MyMethod.Companion.set_today
-import theintership.my.all_class.MyMethod.Companion.showToastShort
-import theintership.my.main_interface.adapter.TabPageAdapter
 import theintership.my.main_interface.notifications.adapter.*
 import theintership.my.main_interface.notifications.fragments.frag_post
 import theintership.my.main_interface.notifications.fragments.frag_replies

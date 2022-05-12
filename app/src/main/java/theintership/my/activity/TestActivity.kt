@@ -1,4 +1,4 @@
-package theintership.my
+package theintership.my.activity
 
 import android.os.Bundle
 import android.widget.ImageView

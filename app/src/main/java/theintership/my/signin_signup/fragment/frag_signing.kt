@@ -23,12 +23,11 @@ import theintership.my.all_class.MyMethod.Companion.replacefrag
 import theintership.my.all_class.MyMethod.Companion.showToastLong
 import theintership.my.R
 import theintership.my.databinding.FragSigningBinding
-import theintership.my.Signup1Activity
+import theintership.my.activity.Signup1Activity
 import theintership.my.all_class.MyMethod.Companion.set_today
 import theintership.my.signin_signup.dialog.dialog_log_in_with_1_click
 import theintership.my.signin_signup.dialog.dialog_show_account_and_password
 import theintership.my.signin_signup.shareViewModel
-import java.util.*
 
 
 class frag_signing : Fragment(R.layout.frag_signing) {

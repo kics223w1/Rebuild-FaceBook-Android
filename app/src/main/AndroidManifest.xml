@@ -18,11 +18,11 @@
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.TheIntership">
-        <activity android:name=".TestActivity" />
-        <activity android:name=".Signup1Activity" />
-        <activity android:name=".Main_Interface_Activity"/>
+        <activity android:name=".activity.TestActivity" />
+        <activity android:name=".activity.Signup1Activity" />
+        <activity android:name=".activity.Main_Interface_Activity"/>
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>

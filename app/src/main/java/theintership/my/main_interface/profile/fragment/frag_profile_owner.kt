@@ -15,15 +15,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import theintership.my.Main_Interface_Activity
-import theintership.my.R
+import theintership.my.activity.Main_Interface_Activity
 import theintership.my.all_class.MyMethod
 import theintership.my.all_class.MyMethod.Companion.not_implement
 import theintership.my.all_class.MyMethod.Companion.replacefrag_in_main_interface_with_slide_in_left

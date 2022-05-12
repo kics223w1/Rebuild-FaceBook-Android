@@ -168,6 +168,13 @@ class MyMethod {
             return formatter.format(current).toString()
         }
 
+        fun get_full(): String {
+            val current = LocalDateTime.now()
+            val formatter = DateTimeFormatter.ofPattern("HH//mm/ss")
+            return formatter.format(current).toString()
+        }
+
+
         fun get_AM_or_PM(): String {
             val hour = get_hour()
             if (hour in "0".."12") {
@@ -219,6 +226,25 @@ class MyMethod {
                 return 1
             }
             return s2 - s1
+        }
+
+        fun setup_ref_chat_between_2_person(from : String , to : String):String{
+            if (from.length > to.length){
+                return "$from $to"
+            }
+            if (to.length > from.length){
+                return "$to $from"
+            }
+            for (i in 0 until from.length){
+                if (from[i] > to[i]){
+                    return "$from $to"
+                }
+                if(to[i] > from[i]){
+                    return "$to $from"
+                }
+            }
+            //Account ref is unique , so code will never go to this.
+            return ""
         }
 
     }

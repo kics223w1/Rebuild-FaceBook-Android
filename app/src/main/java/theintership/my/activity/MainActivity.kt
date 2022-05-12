@@ -1,4 +1,4 @@
-package theintership.my
+package theintership.my.activity
 
 import android.app.Activity
 import android.content.Context
@@ -13,26 +13,20 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
-import androidx.lifecycle.lifecycleScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import theintership.my.all_class.MyMethod.Companion.get_day_of_week
+import kotlinx.coroutines.*
+import theintership.my.R
+import theintership.my.all_class.MyMethod.Companion.get_full
 import theintership.my.all_class.MyMethod.Companion.hide_soft_key_board
 import theintership.my.all_class.MyMethod.Companion.isWifi
 import theintership.my.all_class.MyMethod.Companion.set_today
 import theintership.my.all_class.MyMethod.Companion.showToastShort
-import theintership.my.signin_signup.dialog.dialog_showlanguage
-import theintership.my.signin_signup.model.Email_Account
 import theintership.my.signin_signup.model.user_info
 
 class MainActivity : AppCompatActivity() {
@@ -64,7 +58,18 @@ class MainActivity : AppCompatActivity() {
         )
 
         btn_forgot_password.setOnClickListener {
-            create_100account()
+            val ref = database.child("OK")
+            CoroutineScope(Dispatchers.IO).launch {
+                for (i in 0 until 100) {
+                    delay(1000)
+                    val s = get_full()
+                    if (i % 2 == 0) {
+                        ref.child("admin1@admin2$s").push().setValue("11")
+                    } else {
+                        ref.child("admin2@admin1$s").push().setValue("12")
+                    }
+                }
+            }
         }
 
         val check_user_save_password = sharedPref.getBoolean("User save password", false)
@@ -103,7 +108,7 @@ class MainActivity : AppCompatActivity() {
                 s.showToastShort(this)
                 return@setOnClickListener
             }
-            if (!isWifi(this)){
+            if (!isWifi(this)) {
                 val s = "Please connect wifi"
                 s.showToastShort(this)
                 return@setOnClickListener
@@ -206,13 +211,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun create_auth_user_firebase(email: String, password: String , done1 : Boolean , done2 : Boolean) {
+    private fun create_auth_user_firebase(
+        email: String,
+        password: String,
+        done1: Boolean,
+        done2: Boolean
+    ) {
         CoroutineScope(Dispatchers.IO).launch {
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this@MainActivity) { task ->
                     if (task.isSuccessful) {
                         var done3 = true
-                        if (done1 && done2 && done3){
+                        if (done1 && done2 && done3) {
                             println("debug create $email success")
                         }
                     } else {

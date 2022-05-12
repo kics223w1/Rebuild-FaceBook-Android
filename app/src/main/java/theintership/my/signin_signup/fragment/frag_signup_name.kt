@@ -20,13 +20,13 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
-import theintership.my.MainActivity
+import theintership.my.activity.MainActivity
 import theintership.my.all_class.MyMethod.Companion.hide_soft_key_board
 import theintership.my.all_class.MyMethod.Companion.replacefrag
 import theintership.my.all_class.MyMethod.Companion.showToastLong
 import theintership.my.R
 import theintership.my.databinding.FragSignupNameBinding
-import theintership.my.Signup1Activity
+import theintership.my.activity.Signup1Activity
 import theintership.my.signin_signup.dialog.dialog_loading
 import theintership.my.signin_signup.dialog.dialog_stop_signup
 import theintership.my.signin_signup.shareViewModel
