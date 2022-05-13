@@ -1,5 +1,7 @@
 package theintership.my.all_class
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Typeface
 import android.net.ConnectivityManager
@@ -226,6 +228,12 @@ class MyMethod {
                 return 1
             }
             return s2 - s1
+        }
+
+        fun Context.copyToClipboard(text: CharSequence){
+            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("label",text)
+            clipboard.setPrimaryClip(clip)
         }
 
         fun setup_ref_chat_between_2_person(from : String , to : String):String{

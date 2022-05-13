@@ -1,0 +1,109 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:background="@color/background_white"
+    android:orientation="horizontal">
+
+
+    <RelativeLayout
+        android:id="@+id/btn_reply"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.25">
+
+        <ImageView
+            android:id="@+id/reply1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/reply_48" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/reply1"
+            android:gravity="center"
+            android:text="Reply"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btn_copy"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.25">
+
+        <ImageView
+            android:id="@+id/copy1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/copy_48" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/copy1"
+            android:gravity="center"
+            android:text="Copy"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btn_forward"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.25">
+
+        <ImageView
+            android:id="@+id/forward1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/forward_48" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/forward1"
+            android:gravity="center"
+            android:text="Forward"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/btn_remove"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.25">
+
+        <ImageView
+            android:id="@+id/remove1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/remove_request" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/remove1"
+            android:gravity="center"
+            android:text="Remove"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

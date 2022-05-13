@@ -30,6 +30,15 @@
 
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/item_rcv_chat_person_layout_is_read"
+        android:visibility="gone"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:text="Da xem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <RelativeLayout
         android:id="@+id/item_rcv_chat_person_layout_to"
         android:layout_width="match_parent"

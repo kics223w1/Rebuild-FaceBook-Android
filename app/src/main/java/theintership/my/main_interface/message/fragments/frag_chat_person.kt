@@ -1,17 +1,24 @@
 package theintership.my.main_interface.message.fragments
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import androidx.core.widget.addTextChangedListener
-import androidx.databinding.adapters.TextViewBindingAdapter.AfterTextChanged
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.TextView
+import androidx.emoji.bundled.BundledEmojiCompatConfig
+import androidx.emoji.text.EmojiCompat
+import androidx.emoji.widget.EmojiEditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -23,12 +30,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import theintership.my.R
 import theintership.my.activity.Main_Interface_Activity
-import theintership.my.all_class.MyMethod
-import theintership.my.all_class.MyMethod.Companion.get_minutes
 import theintership.my.all_class.MyMethod.Companion.setup_ref_chat_between_2_person
 import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.all_class.SharePrefValue
-import theintership.my.databinding.FragChatPersonBinding
 import theintership.my.main_interface.message.adapter.adapter_rcv_chat_person
 import theintership.my.main_interface.message.model.item_in_chat_person
 import theintership.my.main_interface.message.viewmodel.ViewModelMessage
@@ -36,45 +40,64 @@ import theintership.my.main_interface.message.viewmodel.ViewModelMessage
 
 class frag_chat_person : Fragment(R.layout.frag_chat_person) {
 
-    private var _binding: FragChatPersonBinding? = null
-    private val binding get() = _binding!!
     private lateinit var mainInterfaceActivity: Main_Interface_Activity
     private val database: DatabaseReference = Firebase.database.reference
     private lateinit var adapter: adapter_rcv_chat_person
     private lateinit var viewModelMessage: ViewModelMessage
     private var stop = true
 
+    //    private lateinit var popup_emoji: EmojiPopup
+    private lateinit var fragChatPersonEdt: EditText
+    private lateinit var fragChatPersonEmoji: ImageView
+    private lateinit var fragChatPersonRcv: RecyclerView
+    private lateinit var fragChatPersonWriting: TextView
+    private lateinit var fragChatPersonBtnSend: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragChatPersonBinding.inflate(inflater, container, false)
+        val view = inflater.inflate(R.layout.frag_chat_person, container, false)
         mainInterfaceActivity = activity as Main_Interface_Activity
         viewModelMessage = ViewModelProvider(this).get(ViewModelMessage::class.java)
-        binding.fragChatPersonWriting.visibility = View.INVISIBLE
+        fragChatPersonEdt = view.findViewById(R.id.frag_chat_person_edt)
+        fragChatPersonEmoji = view.findViewById(R.id.frag_chat_person_emoji)
+        fragChatPersonWriting = view.findViewById(R.id.frag_chat_person_writing)
+        fragChatPersonBtnSend = view.findViewById(R.id.frag_chat_person_btn_send)
+        fragChatPersonRcv = view.findViewById(R.id.frag_chat_person_rcv)
+        fragChatPersonWriting.visibility = View.INVISIBLE
+
+        val packageManager = "theintership.my"
+        fragChatPersonEmoji.setOnClickListener {
+            val gmmIntentUri = Uri.parse("geo:37.7749,-122.4194?z=16")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            startActivity(mapIntent)
+        }
 
         val accout_ref_to = arguments?.get("account ref to").toString()
         val account_ref_owner = SharePrefValue(mainInterfaceActivity).get_account_ref()
 
         adapter = adapter_rcv_chat_person(
             account_ref_owner = account_ref_owner,
+            account_ref_to = accout_ref_to,
             mcontext = mainInterfaceActivity
         )
 
 
-        binding.fragChatPersonRcv.layoutManager = LinearLayoutManager(mainInterfaceActivity)
-        binding.btnScroll.setOnClickListener {
-            val index = adapter.itemCount
-            println("debug vao scroll rcv index")
-            binding.fragChatPersonRcv.scrollToPosition(index - 1)
-        }
+
+        fragChatPersonRcv.layoutManager = LinearLayoutManager(mainInterfaceActivity)
 
         listen_chat(from = account_ref_owner, to = accout_ref_to)
         listen_is_writing(from = account_ref_owner, to = accout_ref_to)
 
-        binding.fragChatPersonEdt.addTextChangedListener(object : TextWatcher {
+        fragChatPersonEdt.setOnClickListener {
+            val index = adapter.itemCount
+            fragChatPersonRcv.scrollToPosition(index - 1)
+        }
+
+        fragChatPersonEdt.addTextChangedListener(object : TextWatcher {
             val ref_chat =
                 setup_ref_chat_between_2_person(from = account_ref_owner, to = accout_ref_to)
             val ref = database.child("Is writing")
@@ -88,9 +111,10 @@ class frag_chat_person : Fragment(R.layout.frag_chat_person) {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 println("debug vao on text change")
                 stop = false
-                if (binding.fragChatPersonEdt.text.toString().length > 0){
+                if (fragChatPersonEdt.text.toString().length > 0) {
                     ref.setValue("writing")
                 }
+
             }
 
             override fun afterTextChanged(p0: Editable?) {
@@ -100,8 +124,8 @@ class frag_chat_person : Fragment(R.layout.frag_chat_person) {
         })
 
 
-        binding.fragChatPersonBtnSend.setOnClickListener {
-            val text = binding.fragChatPersonEdt.text.toString()
+        fragChatPersonBtnSend.setOnClickListener {
+            val text = fragChatPersonEdt.text.toString()
             if (text == "") {
                 val s = "Empty"
                 s.showToastShort(mainInterfaceActivity)
@@ -116,7 +140,7 @@ class frag_chat_person : Fragment(R.layout.frag_chat_person) {
             sendMessage(text = text, from = account_ref_owner, to = accout_ref_to)
         }
 
-        return binding.root
+        return view
     }
 
 
@@ -132,11 +156,12 @@ class frag_chat_person : Fragment(R.layout.frag_chat_person) {
             account_ref = account_ref_owner,
             link_avatar = link_avatar_owner,
             text = text,
-            key = key
+            key = key,
+            status = true
         )
         CoroutineScope(Dispatchers.IO).launch {
             ref.setValue(item).addOnSuccessListener {
-                binding.fragChatPersonEdt.text.clear()
+                fragChatPersonEdt.text?.clear()
             }.addOnFailureListener {
                 val s = "Some thing went wrong, pls do again."
                 s.showToastShort(mainInterfaceActivity)
@@ -159,9 +184,9 @@ class frag_chat_person : Fragment(R.layout.frag_chat_person) {
                     println("debug vao add item message")
                     adapter.add_item(list.last())
                 }
-                binding.fragChatPersonRcv.adapter = adapter
+                fragChatPersonRcv.adapter = adapter
                 val index = adapter.itemCount
-                binding.fragChatPersonRcv.scrollToPosition(index - 1)
+                fragChatPersonRcv.scrollToPosition(index - 1)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -182,12 +207,12 @@ class frag_chat_person : Fragment(R.layout.frag_chat_person) {
                 println("debug vao datachange trong listen writing $stop")
                 if (value == "done") {
                     println("debug vao invisible ne value $value")
-                    binding.fragChatPersonWriting.visibility = View.INVISIBLE
+                    fragChatPersonWriting.visibility = View.INVISIBLE
                     stop = true
-                }else if (value == "writing"){
-                    if (binding.fragChatPersonWriting.visibility == View.INVISIBLE) {
+                } else if (value == "writing") {
+                    if (fragChatPersonWriting.visibility == View.INVISIBLE) {
                         println("debug vao visible ne value $value")
-                        binding.fragChatPersonWriting.visibility = View.VISIBLE
+                        fragChatPersonWriting.visibility = View.VISIBLE
                     }
                 }
             }
