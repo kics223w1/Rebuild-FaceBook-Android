@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
     android:minHeight="80dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:tag="frag_chat_person">
 
     <RelativeLayout
         android:id="@+id/item_rcv_chat_person_layout_from"
@@ -29,6 +30,15 @@
             android:layout_height="wrap_content" />
 
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/item_rcv_chat_person_layout_is_read"
+        android:visibility="gone"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:text="Da xem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <RelativeLayout
         android:id="@+id/item_rcv_chat_person_layout_to"

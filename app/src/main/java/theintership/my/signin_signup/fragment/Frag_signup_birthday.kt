@@ -34,7 +34,6 @@ class frag_signup_birthday : Fragment(R.layout.frag_signup_birthday) {
         val today = Calendar.getInstance()
         var age = -1
         var birthday = ""
-
         binding.datePickerSignupBirthday.maxDate = today.timeInMillis
         binding.datePickerSignupBirthday.init(
             today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH)

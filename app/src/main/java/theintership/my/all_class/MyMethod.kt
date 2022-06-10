@@ -1,5 +1,7 @@
 package theintership.my.all_class
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Typeface
 import android.net.ConnectivityManager
@@ -62,7 +64,6 @@ class MyMethod {
                 connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
             if (capabilities != null) {
                 if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
-
                     return true
                 } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
 
@@ -92,7 +93,11 @@ class MyMethod {
                 .commit()
         }
 
-        fun replacefrag_in_main_interface_with_slide_in_left(tag: String, frag: Fragment, fm: FragmentManager) {
+        fun replacefrag_in_main_interface_with_slide_in_left(
+            tag: String,
+            frag: Fragment,
+            fm: FragmentManager
+        ) {
             fm.beginTransaction()
                 .setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
                 .addToBackStack(tag)
@@ -100,7 +105,7 @@ class MyMethod {
                 .commit()
         }
 
-        fun not_implement(context: Context){
+        fun not_implement(context: Context) {
             val s = "Not implement"
             s.showToastShort(context)
         }
@@ -113,8 +118,13 @@ class MyMethod {
                 .commit()
         }
 
-        fun replacefrag_in_main_interface_with_bundle(tag: String, frag: Fragment, fm: FragmentManager , arg : Bundle) {
-            if (!arg.isEmpty){
+        fun replacefrag_in_main_interface_with_bundle(
+            tag: String,
+            frag: Fragment,
+            fm: FragmentManager,
+            arg: Bundle
+        ) {
+            if (!arg.isEmpty) {
                 frag.arguments = arg
             }
             fm.beginTransaction()
@@ -199,7 +209,7 @@ class MyMethod {
             return day
         }
 
-        fun count_days(start : String, end : String) : Int{
+        fun count_days(start: String, end: String): Int {
             val DateFormat = SimpleDateFormat("MM/dd/yyyy")
 
             val start_day = DateFormat.parse(start)
@@ -211,35 +221,41 @@ class MyMethod {
             return DifferenceDates.toInt()
         }
 
-        fun count_hour(start : String) : Int{
+        fun count_hour(start: String): Int {
             var hour_start = start
-            if (start[0] == '0'){
+            if (start[0] == '0') {
                 hour_start = start[1].toString()
             }
             var current_hour = get_hour()
-            if (current_hour[0] == '0'){
+            if (current_hour[0] == '0') {
                 current_hour = current_hour[1].toString()
             }
             val s1 = hour_start.toInt()
             val s2 = current_hour.toInt()
-            if (s2 - s1 <= 0){
+            if (s2 - s1 <= 0) {
                 return 1
             }
             return s2 - s1
         }
 
-        fun setup_ref_chat_between_2_person(from : String , to : String):String{
-            if (from.length > to.length){
+        fun Context.copyToClipboard(text: CharSequence) {
+            val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = ClipData.newPlainText("label", text)
+            clipboard.setPrimaryClip(clip)
+        }
+
+        fun setup_ref_chat_between_2_person(from: String, to: String): String {
+            if (from.length > to.length) {
                 return "$from $to"
             }
-            if (to.length > from.length){
+            if (to.length > from.length) {
                 return "$to $from"
             }
-            for (i in 0 until from.length){
-                if (from[i] > to[i]){
+            for (i in 0 until from.length) {
+                if (from[i] > to[i]) {
                     return "$from $to"
                 }
-                if(to[i] > from[i]){
+                if (to[i] > from[i]) {
                     return "$to $from"
                 }
             }
