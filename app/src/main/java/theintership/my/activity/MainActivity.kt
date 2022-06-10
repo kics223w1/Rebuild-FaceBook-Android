@@ -8,19 +8,27 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
+import com.facebook.login.widget.LoginButton
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
+import kotlinx.coroutines.tasks.await
 import theintership.my.R
 import theintership.my.all_class.MyMethod.Companion.get_full
 import theintership.my.all_class.MyMethod.Companion.hide_soft_key_board
@@ -28,6 +36,8 @@ import theintership.my.all_class.MyMethod.Companion.isWifi
 import theintership.my.all_class.MyMethod.Companion.set_today
 import theintership.my.all_class.MyMethod.Companion.showToastShort
 import theintership.my.signin_signup.model.user_info
+import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,6 +46,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var database: DatabaseReference
     private lateinit var progress_signin: ProgressBar
     private lateinit var tv_signin: TextView
+    private val RC_SIGN_IN = 12
+    private var callbackManager = CallbackManager.Factory.create();
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +60,8 @@ class MainActivity : AppCompatActivity() {
         val icon_password_line = findViewById<ImageView>(R.id.password_line)
         val icon_password_eye = findViewById<ImageView>(R.id.password_eye)
         val btn_signin = findViewById<FrameLayout>(R.id.btn_signin_go)
+        val btn_signin_google = findViewById<FrameLayout>(R.id.btn_signin_google)
+        val btn_signin_facebook = findViewById<LoginButton>(R.id.tv_signin_facebook)
         val btn_forgot_password = findViewById<TextView>(R.id.btn_forgot_password)
         progress_signin = findViewById<ProgressBar>(R.id.progress_signin)
         tv_signin = findViewById<TextView>(R.id.tv_signin)
@@ -56,6 +71,32 @@ class MainActivity : AppCompatActivity() {
         val sharedPref = getSharedPreferences(
             getString(R.string.preference_file_key), Context.MODE_PRIVATE
         )
+
+        btn_signin_google.setOnClickListener {
+            signin_google()
+        }
+
+        LoginManager.getInstance().registerCallback(callbackManager,
+            object : FacebookCallback<LoginResult?> {
+                override fun onSuccess(loginResult: LoginResult?) {
+                    println("debug sign in facebook success")
+                }
+
+                override fun onCancel() {
+                    println("debug sign in facebook fail")
+                }
+
+                override fun onError(exception: FacebookException) {
+                    println("debug sign in facebook fail $exception")
+                }
+            })
+
+
+        btn_signin_facebook.setOnClickListener {
+            LoginManager.getInstance()
+                .logInWithReadPermissions(this, Arrays.asList("public_profile"));
+
+        }
 
         btn_forgot_password.setOnClickListener {
             val ref = database.child("OK")
@@ -234,6 +275,66 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    private fun signin_google() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        var googleSignInClient: GoogleSignInClient = GoogleSignIn.getClient(this, gso)
+        auth.signOut()
+        //Fast code, please wirte again :))
+        googleSignInClient.signOut().addOnSuccessListener {
+            val signInIntent = googleSignInClient.signInIntent
+            startActivityForResult(signInIntent, RC_SIGN_IN)
+        }.addOnFailureListener {
+            val s = "Some thing went wrong"
+            s.showToastShort(this)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_SIGN_IN) {
+            val account = GoogleSignIn.getSignedInAccountFromIntent(data).result
+            account?.let {
+                println("debug vao on activity result google")
+                firebaseAuthWithGoogle(account)
+            }
+            if (account == null) {
+                val s = "Sign in fail"
+                s.showToastShort(this@MainActivity)
+            }
+        } else {
+            callbackManager.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
+
+    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
+        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+        println("debug vao firebase auth google")
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                auth.signInWithCredential(credential).await()
+                withContext(Dispatchers.Main) {
+                    val user = auth.currentUser
+                    if (user != null) {
+                        go_to_google_activity()
+                        println("debug email: ${user.email.toString()}")
+                    } else {
+                        println("debug user null")
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    println("debug fail sign in google $e")
+                }
+            }
+        }
+
+    }
+
+
     private fun signin_user(account: String, password: String) {
         auth.signInWithEmailAndPassword(account, password)
             .addOnSuccessListener {
@@ -255,6 +356,16 @@ class MainActivity : AppCompatActivity() {
         )
         this.finish()
     }
+
+    private fun go_to_google_activity() {
+        startActivity(Intent(this, GoogleActivity::class.java))
+        this.overridePendingTransition(
+            R.anim.slide_in_right,
+            R.anim.slide_out_left
+        )
+        this.finish()
+    }
+
 
     private fun set_up_sharePref_and_move_frag(maccount_ref: String) {
         val sharedPref = getSharedPreferences(

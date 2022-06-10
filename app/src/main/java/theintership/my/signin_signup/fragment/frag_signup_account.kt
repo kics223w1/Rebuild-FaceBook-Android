@@ -96,7 +96,7 @@ class frag_signup_account : Fragment(R.layout.frag_signup_account) {
         val str =
             "Create account with at least 6 characters. It should be something others couldn't guess."
         binding.tvSignupAccountInfo.text = str
-        binding.tvSignupAccountInfo.setTextColor(resources.getColor(R.color.error, null))
+        binding.tvSignupAccountInfo.setTextColor(resources.getColor(R.color.light_grey, null))
     }
 
     private fun check_account(account: String): Boolean {

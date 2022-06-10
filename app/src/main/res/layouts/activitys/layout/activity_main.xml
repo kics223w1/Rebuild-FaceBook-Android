@@ -92,6 +92,65 @@
 
 
         <FrameLayout
+            android:id="@+id/btn_signin_google"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@+id/btn_signin_go"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="40dp"
+            android:background="@drawable/bg_8dp_all_blue_ripple">
+
+
+            <TextView
+                android:id="@+id/tv_signin_google"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Sign in Google"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ProgressBar
+                android:id="@+id/progress_signin_google"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/btn_signin_facebook"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/btn_signin_google"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="40dp">
+
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/tv_signin_facebook"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Sign in Facebook"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ProgressBar
+                android:id="@+id/progress_signin_facebook"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible" />
+
+        </FrameLayout>
+
+        <FrameLayout
             android:id="@+id/btn_signin_go"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -114,18 +173,19 @@
                 android:textStyle="bold" />
 
             <ProgressBar
-                android:visibility="invisible"
                 android:id="@+id/progress_signin"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:visibility="invisible" />
 
         </FrameLayout>
+
 
         <TextView
             android:id="@+id/btn_forgot_password"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_below="@id/btn_signin_go"
+            android:layout_below="@id/btn_signin_facebook"
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"
@@ -137,9 +197,9 @@
 
         <LinearLayout
             android:id="@+id/layout_four"
-            android:layout_below="@id/btn_forgot_password"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:layout_below="@id/btn_forgot_password"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"

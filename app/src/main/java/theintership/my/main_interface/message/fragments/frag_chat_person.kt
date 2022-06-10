@@ -25,6 +25,9 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.mlkit.nl.translate.TranslateLanguage
+import com.google.mlkit.nl.translate.Translation
+import com.google.mlkit.nl.translate.TranslatorOptions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -36,6 +39,7 @@ import theintership.my.all_class.SharePrefValue
 import theintership.my.main_interface.message.adapter.adapter_rcv_chat_person
 import theintership.my.main_interface.message.model.item_in_chat_person
 import theintership.my.main_interface.message.viewmodel.ViewModelMessage
+import theintership.my.signin_signup.dialog.dialog_loading
 
 
 class frag_chat_person : Fragment(R.layout.frag_chat_person) {
@@ -52,6 +56,10 @@ class frag_chat_person : Fragment(R.layout.frag_chat_person) {
     private lateinit var fragChatPersonRcv: RecyclerView
     private lateinit var fragChatPersonWriting: TextView
     private lateinit var fragChatPersonBtnSend: ImageView
+    private lateinit var btn_change_to_vietnamese: ImageView
+    private lateinit var btn_change_to_australian: ImageView
+    private var vietnamese = false
+    private var australian = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,6 +75,8 @@ class frag_chat_person : Fragment(R.layout.frag_chat_person) {
         fragChatPersonBtnSend = view.findViewById(R.id.frag_chat_person_btn_send)
         fragChatPersonRcv = view.findViewById(R.id.frag_chat_person_rcv)
         fragChatPersonWriting.visibility = View.INVISIBLE
+        btn_change_to_australian = view.findViewById(R.id.btn_change_to_australian)
+        btn_change_to_vietnamese = view.findViewById(R.id.btn_change_to_vietnamese)
 
         val packageManager = "theintership.my"
         fragChatPersonEmoji.setOnClickListener {
@@ -76,16 +86,28 @@ class frag_chat_person : Fragment(R.layout.frag_chat_person) {
             startActivity(mapIntent)
         }
 
+
         val accout_ref_to = arguments?.get("account ref to").toString()
         val account_ref_owner = SharePrefValue(mainInterfaceActivity).get_account_ref()
 
         adapter = adapter_rcv_chat_person(
             account_ref_owner = account_ref_owner,
             account_ref_to = accout_ref_to,
+            activity = mainInterfaceActivity,
             mcontext = mainInterfaceActivity
         )
 
+        btn_change_to_vietnamese.setOnClickListener {
+            vietnamese = true
+            australian = false
+            translate_all_text_en_vi()
+        }
 
+        btn_change_to_australian.setOnClickListener {
+            australian = true
+            vietnamese = false
+            translate_all_text_vi_en()
+        }
 
         fragChatPersonRcv.layoutManager = LinearLayoutManager(mainInterfaceActivity)
 
@@ -143,6 +165,141 @@ class frag_chat_person : Fragment(R.layout.frag_chat_person) {
         return view
     }
 
+    private fun translate_text_en_vi(item : item_in_chat_person) {
+        val options = TranslatorOptions.Builder()
+            .setSourceLanguage(TranslateLanguage.ENGLISH)
+            .setTargetLanguage(TranslateLanguage.VIETNAMESE)
+            .build()
+        val Translator = Translation.getClient(options)
+        Translator.downloadModelIfNeeded()
+            .addOnSuccessListener {
+                val text = item.text.toString()
+                Translator.translate(text)
+                    .addOnSuccessListener { translatedText ->
+                        item.text = translatedText.toString()
+                        adapter.add_item(item)
+                        fragChatPersonRcv.adapter = adapter
+                        val id = adapter.itemCount
+                        fragChatPersonRcv.scrollToPosition(id - 1)
+                    }
+                    .addOnFailureListener { exception ->
+                        adapter.add_item(item)
+                        fragChatPersonRcv.adapter = adapter
+                        val id = adapter.itemCount
+                        fragChatPersonRcv.scrollToPosition(id - 1)
+                    }
+            }
+            .addOnFailureListener { exception ->
+                println("debug $exception")
+            }
+    }
+
+    private fun translate_text_vi_en(item : item_in_chat_person) {
+        val options = TranslatorOptions.Builder()
+            .setSourceLanguage(TranslateLanguage.VIETNAMESE)
+            .setTargetLanguage(TranslateLanguage.ENGLISH)
+            .build()
+        val Translator = Translation.getClient(options)
+        Translator.downloadModelIfNeeded()
+            .addOnSuccessListener {
+                val text = item.text.toString()
+                Translator.translate(text)
+                    .addOnSuccessListener { translatedText ->
+                        item.text = translatedText.toString()
+                        adapter.add_item(item)
+                        fragChatPersonRcv.adapter = adapter
+                        val id = adapter.itemCount
+                        fragChatPersonRcv.scrollToPosition(id - 1)
+                    }
+                    .addOnFailureListener { exception ->
+                        adapter.add_item(item)
+                        fragChatPersonRcv.adapter = adapter
+                        val id = adapter.itemCount
+                        fragChatPersonRcv.scrollToPosition(id - 1)
+                    }
+            }
+            .addOnFailureListener { exception ->
+                println("debug $exception")
+            }
+    }
+
+
+    private fun translate_all_text_vi_en() {
+        val options = TranslatorOptions.Builder()
+            .setSourceLanguage(TranslateLanguage.VIETNAMESE)
+            .setTargetLanguage(TranslateLanguage.ENGLISH)
+            .build()
+        val dialog_loading = dialog_loading(mainInterfaceActivity)
+        val Translator = Translation.getClient(options)
+        Translator.downloadModelIfNeeded()
+            .addOnSuccessListener {
+                val list = adapter.getList()
+                dialog_loading.show()
+                for (i in 0 until list.size){
+                    val text = list.get(i).text.toString()
+                    Translator.translate(text)
+                        .addOnSuccessListener { translatedText ->
+                           adapter.translate_text(i , translatedText.toString())
+                            if (i == list.size - 1){
+                                println("debug list translate: $list")
+                                fragChatPersonRcv.adapter = adapter
+                                fragChatPersonRcv.scrollToPosition(i)
+                                dialog_loading.dismiss()
+                            }
+                        }
+                        .addOnFailureListener { exception ->
+                            adapter.translate_text(i , text)
+                            if (i == list.size - 1){
+                                println("debug list translate: $list")
+                                fragChatPersonRcv.adapter = adapter
+                                fragChatPersonRcv.scrollToPosition(i)
+                                dialog_loading.dismiss()
+                            }
+                        }
+                }
+            }
+            .addOnFailureListener { exception ->
+                println("debug $exception")
+            }
+    }
+
+
+    private fun translate_all_text_en_vi() {
+        val options = TranslatorOptions.Builder()
+            .setSourceLanguage(TranslateLanguage.ENGLISH)
+            .setTargetLanguage(TranslateLanguage.VIETNAMESE)
+            .build()
+        val dialog_loading = dialog_loading(mainInterfaceActivity)
+        val Translator = Translation.getClient(options)
+        Translator.downloadModelIfNeeded()
+            .addOnSuccessListener {
+                val list = adapter.getList()
+                dialog_loading.show()
+                for (i in 0 until list.size){
+                    val text = list.get(i).text.toString()
+                    Translator.translate(text)
+                        .addOnSuccessListener { translatedText ->
+                            adapter.translate_text(i , translatedText.toString())
+                            if (i == list.size - 1){
+                                fragChatPersonRcv.adapter = adapter
+                                fragChatPersonRcv.scrollToPosition(i)
+                                dialog_loading.dismiss()
+                            }
+                        }
+                        .addOnFailureListener { exception ->
+                            adapter.translate_text(i , text)
+                            if (i == list.size - 1){
+                                fragChatPersonRcv.adapter = adapter
+                                fragChatPersonRcv.scrollToPosition(i)
+                                dialog_loading.dismiss()
+                            }
+                        }
+                }
+            }
+            .addOnFailureListener { exception ->
+                println("debug $exception")
+            }
+    }
 
     private fun sendMessage(text: String, from: String, to: String) {
         val ref_chat = setup_ref_chat_between_2_person(from = from, to = to)
@@ -178,11 +335,17 @@ class frag_chat_person : Fragment(R.layout.frag_chat_person) {
                 val list = viewModelMessage.setup_list_item_in_person_chat(snapshot)
                 val size = adapter.itemCount
                 if (size == 0) {
-                    println("debug vao submit list message")
                     adapter.submit_list(list)
                 } else {
-                    println("debug vao add item message")
-                    adapter.add_item(list.last())
+                    if (vietnamese){
+                        translate_text_en_vi(list.last())
+                    }
+                    if (australian){
+                        translate_text_vi_en(list.last())
+                    }
+                    if (!vietnamese && !australian){
+                        adapter.add_item(list.last())
+                    }
                 }
                 fragChatPersonRcv.adapter = adapter
                 val index = adapter.itemCount

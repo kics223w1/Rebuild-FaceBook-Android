@@ -8,8 +8,34 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+   <LinearLayout
+       android:orientation="horizontal"
+       android:id="@+id/layout0"
+       android:layout_width="match_parent"
+       android:layout_height="100px">
+
+       <ImageView
+           android:background="@drawable/bg_14dp_all_light_blue_ripple"
+           android:id="@+id/btn_change_to_vietnamese"
+           android:src="@drawable/vietnam_48"
+           android:layout_weight="0.5"
+           android:layout_width="0dp"
+           android:layout_height="match_parent"/>
+
+       <ImageView
+           android:background="@drawable/bg_8dp_all_blue_ripple"
+           android:id="@+id/btn_change_to_australian"
+           android:src="@drawable/australian_48"
+           android:layout_weight="0.5"
+           android:layout_width="0dp"
+           android:layout_height="match_parent"/>
+
+
+   </LinearLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout1"
+        android:layout_below="@id/layout0"
         android:layout_above="@+id/frag_chat_person_layout_chat"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
