@@ -1,9 +1,10 @@
-#### The Intership
-<p>Rewrite posting , commnets , user profile , stories , friends , status , notifications, sign in and sign up and almost every UI from Facebook.</p>
+#### Rebuild Facebook Android
+ - This is my side project when I **started learning to code**, at that time I haven't tried ReactJS yet.
+ - **The main features**: Rewrite posting , commnets , user profile , stories , friends , status , notifications, sign in and sign up and almost every UI from Facebook.
 
-<p>If you want to use this app , please email me "caoviethuy11@gmail.com" </p>
-<p>And i will send you the invitation via email to private testing in google play so you can dowload my app in your phone</p>
-<p>Demo app: https://youtu.be/kMPVpH0ErLo </p>
+ - If you want to use this app , please email me "caoviethuy11@gmail.com" .
+ - And i will send you the invitation via email to private testing in google play so you can dowload my app in your phone.
+ - Demo app: https://youtu.be/kMPVpH0ErLo 
 
 ## 🎉 Technology
 ✅ Firebase RealTime Database , Authencation , Storage</br>
