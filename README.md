@@ -1,6 +1,6 @@
 #### Rebuild Facebook Android
  - **The main features**: Posting, commnent, user profile, post story, add friend, update status, send notifications, sign in and sign up and almost every UI from Facebook.
- - If you want to use this app , please email me "caoviethuy11@gmail.com". And I will send you the invitation to private testing in google play so you can dowload my app in your phone.
+ - If you want to use this app , please email me "caoviethuy11@gmail.com". I will send you the invitation to private testing in google play so you can dowload my app in your phone.
  - Demo app: https://youtu.be/kMPVpH0ErLo 
 
 ## 💻 Technology
