@@ -5,22 +5,22 @@
 
 ## 💻 Technology
 ✅ Firebase RealTime Database , Authencation , Storage</br>
-✅ Push Notifications , Livedata , MVVM</br>
-✅ Upload and dowload image , file by Firebase</br>
-✅ Create difficult UI like Facebook</br>
+✅ Push Notifications, Livedata, MVVM</br>
+✅ Upload and dowload images, files by Firebase</br>
+✅ Build difficult UI like Facebook</br>
 
 ## 💻 Features
-✅ Sign up with authencation email by Firebase</br>
-✅ User Profile like Facebook</br>
+✅ Authentication sign up via email by Firebase</br>
+✅ User Profile</br>
 ✅ Chatting with friends</br>
-✅ Send notifications like Facebook (Nearly done)</br>
-✅ Send friend request , show list photos (Nearly done)</br>
-✅ Posting like FaceBook (Not done)</br>
-✅ Comment like Facebook (Not done)</br>
-✅ Upload video stories like Facebook (Not done)</br>
+✅ Send notifications (Nearly done)</br>
+✅ Send friend request, show list photos (Nearly done)</br>
+✅ Posting (Not done)</br>
+✅ Comment (Not done)</br>
+✅ Upload video story (Not done)</br>
 
 
 # Summary
-All of features of this app is like features in Facebook. I will try to make all features and UI like Facebook as much as possible.
+All of features in this app is rebuld from Facebook. I will try to make all features and UI same like Facebook as much as possible.
 
 
